@@ -48,6 +48,8 @@ export class EnvError extends Error {}
 export function parseEnv(scope: EnvScope, source: Record<string, string | undefined> = process.env): Env {
   // Empty strings in .env mean "not set".
   const cleaned = Object.fromEntries(Object.entries(source).filter(([, v]) => v !== undefined && v !== ""));
+  // Render Blueprints can only pass the private service's host:port.
+  if (!cleaned.OLLAMA_BASE_URL && cleaned.OLLAMA_HOSTPORT) cleaned.OLLAMA_BASE_URL = `http://${cleaned.OLLAMA_HOSTPORT}`;
   const required = new Set<keyof Env>(NEEDS[scope]);
   if (scope !== "audio" && cleaned.EMAIL_MODE === "resend") required.add("RESEND_API_KEY");
   if (scope === "digest" && cleaned.NEWS_MODE === "serpapi") required.add("SERPAPI_API_KEY");

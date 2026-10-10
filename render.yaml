@@ -1,0 +1,87 @@
+# Render Blueprint: web app, private Ollama (Gemma) and the daily job, all in us-east (virginia),
+# next to Tiger Data's free tier. Secrets are sync: false and are entered in the Render dashboard.
+services:
+  - type: web
+    name: pagdandi-web
+    runtime: node
+    region: virginia
+    plan: starter
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    preDeployCommand: pnpm db:migrate && pnpm treks:load && pnpm treks:embed --if-available
+    startCommand: pnpm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: OLLAMA_HOSTPORT
+        fromService: { name: pagdandi-ollama, type: pserv, property: hostport }
+      - key: CHAT_MODEL
+        value: gemma4:e4b
+      - key: EMBED_MODEL
+        value: embeddinggemma:300m
+      - key: EMAIL_MODE
+        value: resend
+      - key: MASTRA_TELEMETRY_DISABLED
+        value: "1"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: DATABASE_URL
+        sync: false
+      - key: SITE_URL
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+
+  - type: pserv
+    name: pagdandi-ollama
+    runtime: docker
+    region: virginia
+    # 4 CPU / 8 GB: gemma4:e4b needs about 7 GB with an 8k context. Measure e2b against e4b before settling.
+    plan: pro plus
+    dockerfilePath: ./ops/ollama/Dockerfile
+    dockerContext: ./ops/ollama
+    disk:
+      name: ollama-models
+      mountPath: /data
+      sizeGB: 20
+    envVars:
+      - key: PULL_MODELS
+        value: gemma4:e4b gemma4:e2b embeddinggemma:300m
+      - key: CHAT_MODEL
+        value: gemma4:e4b
+
+  - type: cron
+    name: pagdandi-daily
+    runtime: node
+    region: virginia
+    plan: starter
+    schedule: "30 1 * * *" # 07:00 IST every day; Sundays also refresh every trek
+    buildCommand: corepack enable && pnpm install --frozen-lockfile
+    startCommand: pnpm treks:embed --if-available && pnpm digest
+    envVars:
+      - key: OLLAMA_HOSTPORT
+        fromService: { name: pagdandi-ollama, type: pserv, property: hostport }
+      - key: CHAT_MODEL
+        value: gemma4:e4b
+      - key: EMBED_MODEL
+        value: embeddinggemma:300m
+      - key: EMAIL_MODE
+        value: resend
+      - key: NEWS_MODE
+        value: serpapi
+      - key: SERPAPI_DAILY_CAP
+        value: "25"
+      - key: SERPAPI_MONTHLY_CAP
+        value: "200"
+      - key: MASTRA_TELEMETRY_DISABLED
+        value: "1"
+      - key: DATABASE_URL
+        sync: false
+      - key: SITE_URL
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: SERPAPI_API_KEY
+        sync: false
