@@ -19,3 +19,33 @@ Decisions, dead ends, surprises and real numbers, in the order they happened. Ti
 
 ### Surprises
 - The DevRelay manifest is at 0.1.20, and the three maintenance bullets are no longer in its agent rules, so "drop the last three bullets" would have removed real rules. `pnpm devrelay:setup` now drops them by title.
+
+### Trek data: research, then a fact-check pass
+- Four research agents, one per region, drafted 20 YAML files from Wikipedia, Wikivoyage, OpenStreetMap, UNESCO and government pages. Trekking companies were off limits even for comparison.
+- Four more agents then re-opened every cited source and checked each number. They filled gaps where a source allowed it and flagged weak sources. Every file now has `facts_checked_by: Pagdandi fact-check pass (AI-assisted)`, pending a sample review by a person.
+- The validator enforces the rule: a non-null fact must be named in some source's `supports` list. Kheerganga failed this until the checker found sources for its high point.
+
+What the fact-check pass changed (numbers and facts only; about a dozen highlights and permit notes were also reworded because they were too close to the source text):
+
+| Trek | Field | Draft | After check | Why |
+|---|---|---|---|---|
+| agasthyarkoodam | highest point | 1890 m | 1868 m | UNESCO MAB and Kerala Tourism's own event page say 1868; 1890 was a slip on one tourism page |
+| agasthyarkoodam | stage distances | 14 / 12 / 14 km | 20 / 10 / 20 km | the official stages add up to the official 50 km |
+| dzukou-valley | highest point | 2452 m | 2438 m | Kohima district page (2,438.4 m) and Wikipedia; the 2452 m came from a contributed guide page |
+| dzukou-valley | day 1 distance | 9 km | not known | the source doesn't say which route or whether it is one way |
+| kedarkantha | itinerary | 3 days built from OSM trail segments | none | no source lays out the stages |
+| har-ki-dun | days | not known | 4 | Hindi Wikipedia's stages (flagged weak: it cites a forum) |
+| harishchandragad | days | not known | 2 | Marathi Wikipedia's stages |
+| brahmatal | airport | Jolly Grant (DED) | Pantnagar (PGH) | Wikivoyage and Wikipedia |
+| brahmatal | last mobile signal | Lohajung | not known | the source says Lohajung has signal, not that it is the last |
+| kashmir-great-lakes | camps on days 3 and 4 | not known | 3600 m, 3610 m | Wikipedia's Gadsar and Satsar lake articles |
+| hampta-pass | season | none | May–Oct (flagged weak) | Himachal's trek registration portal, 2022 listings |
+| chembra-peak | permits | 2020-era group fees | 2026 Forest Department listing: online booking paused, Rs 800 per Indian adult | ecotourism.forest.kerala.gov.in |
+| dayara-bugyal | permits | "photo ID" | "proof of address" | what the source actually says |
+| kheerganga | highest point | no source (failed validation) | four sources for the name; altitude still not known | Wikivoyage, HP Forest, OSM |
+
+What is still thin:
+- Kedarkantha's winter months. It is famous as a December snow trek, but no open source names its season, so it has the national park's Apr–Jun and Sep–Nov. A December search won't find it. That is the cost of "never guess".
+- Kheerganga and Nongriat have no sourced altitude.
+- Nag Tibba and Brahmatal have no sourced season.
+- 28 `# weak source` comments mark facts that rest on Wikivoyage passages that read like operator copy, or on Wikipedia lines that cite operators.

@@ -1,0 +1,93 @@
+slug: nongriat-root-bridges
+name: Nongriat and the Double-Decker Root Bridge
+name_local: null   # the bridge's Khasi name, Jingkieng Nongriat, is in a language with no ISO 639-1 code
+state: Meghalaya
+region: northeast
+area: Nongriat village below Sohra (Cherrapunji), East Khasi Hills district
+# easy per rubric: day hike well under 3,000 m with no technical sections, though the stepped path is steep and long
+difficulty: easy
+days: 1   # incredibleindia.gov.in: a full day there and back; Wikivoyage (Cherrapunji): about 2 hours each way. Overnight stays in Nongriat are possible.
+distance_km: null   # no open source gives the Tyrna-Nongriat trail length; Wikivoyage gives only about 2 hours each way
+highest_point:
+  name: Tyrna (trailhead)   # the walk descends from Tyrna to Nongriat
+  altitude_m: null   # no height for Tyrna on Wikipedia, Wikivoyage or OSM (no ele tag); Wikipedia's 1430 m is for Sohra town, not Tyrna
+start:
+  name: Tyrna
+  lat: 25.2411
+  lon: 91.6808
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Tyrna
+  lat: 25.2411
+  lon: 91.6808
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Guwahati (GHY), distance_km: null}
+  airport: {name: Shillong, iata: SHL, distance_km: null}   # incredibleindia.gov.in also lists Guwahati (GAU)
+  road_head: Tyrna
+  notes: >-
+    Sohra is about 50 km from Shillong by road. Shared Sumos and smaller
+    shared cars run between the Bara Bazar area of Shillong and Sohra
+    market. Tyrna lies just below the old Cherrapunji-Laitkynsew bridle path;
+    from there a long flight of stone steps leads down through forest to
+    Nongriat.
+season_months: [11, 12, 1, 2]   # incredibleindia.gov.in: November to February; Wikivoyage also says the dry season suits trekking
+permits: >-
+  The sources checked mention no permit. OpenStreetMap shows a ticket counter
+  at Nongriat covering the double-decker bridge, Mawsaw bridge and Rainbow
+  Falls; a mapper noted a Rs 20 entry fee there in 2019, so check the
+  current rate on arrival.
+last_mobile_signal: null
+budget_inr: {min: 2000, max: 5000, basis: "Pagdandi rough estimate: shared transport Guwahati to Shillong to Sohra and back, a taxi to Tyrna, entry tickets, food, and an optional local guide and night in a Nongriat guest house."}
+itinerary:
+  - day: 1   # out and back via Nongriat; about 2 hours each way per Wikivoyage
+    from: Tyrna
+    to: Tyrna
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+highlights:
+  - Jingkieng Nongriat, the famous double-decker bridge, is two spans of living fig-tree roots stacked over a stream.
+  - Khasi villagers grow these bridges by training aerial roots across gorges over many years, and they carry people for generations.
+  - From Tyrna the path drops roughly 3,500 steps through forest, crossing streams and passing a few single-span root bridges on the way down.
+  - The Khasi root-bridge landscapes have been on India's UNESCO World Heritage tentative list since 2022.
+  - Nongriat has guest house rooms, so you can stay the night instead of climbing straight back up.
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikipedia.org/wiki/Nongriat
+    title: Nongriat
+    accessed: 2026-10-11
+    supports: [area, start, highlights]
+  - url: https://en.wikipedia.org/wiki/Living_root_bridge
+    title: Living root bridge
+    accessed: 2026-10-11
+    supports: [highlights]
+  - url: https://en.wikipedia.org/wiki/List_of_World_Heritage_Sites_in_India
+    title: List of World Heritage Sites in India (Tentative list section)
+    accessed: 2026-10-11
+    supports: [highlights]
+  - url: https://en.wikivoyage.org/wiki/Cherrapunji
+    title: Cherrapunji - Wikivoyage
+    accessed: 2026-10-11
+    supports: [days, getting_there, season_months, highlights, itinerary.day1]
+  - url: https://www.incredibleindia.gov.in/en/meghalaya/cherrapunjee
+    title: Places To Visit In Cherrapunji - Incredible India (Ministry of Tourism)
+    accessed: 2026-10-11
+    supports: [season_months, getting_there, highlights, highest_point]
+  - url: https://www.incredibleindia.gov.in/en/meghalaya/cherrapunjee/double-decker-living-root-bridge
+    title: Double decker living root bridge - Incredible India (Ministry of Tourism)
+    accessed: 2026-10-11
+    supports: [days, getting_there, highlights, itinerary.day1]
+  - url: https://www.openstreetmap.org/node/5353533660
+    title: Tyrna (OSM hamlet node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://www.openstreetmap.org/node/5525833823
+    title: Entry to Double Decker, Mawsaw Bridge and Rainbow Falls (OSM ticket node)
+    accessed: 2026-10-11
+    supports: [permits]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

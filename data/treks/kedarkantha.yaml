@@ -1,0 +1,86 @@
+slug: kedarkantha
+name: Kedarkantha
+name_local: {text: केदारकांठा, lang: hi}
+state: Uttarakhand
+region: uttarakhand
+area: Govind Wildlife Sanctuary, Mori tehsil, Uttarkashi district
+difficulty: moderate
+days: 3              # Wikivoyage: about 3 days from the Sankri base (5 counting the drive from Dehradun)
+  # weak source: only the Wikivoyage Dehradun trekking passage gives this, and it reads like operator copy (it ends by recommending a tour operator); neither state tourism nor Wikipedia gives a day count
+distance_km: 20      # Wikivoyage: about 20 km round trip from the base
+  # weak source: same operator-style Wikivoyage passage; no official or Wikipedia figure found
+highest_point:
+  name: Kedarkantha summit
+  altitude_m: 3810   # converted from 12500 ft (Wikipedia gives feet only; Wikivoyage also says 3,810 m)
+  # conflict: Wikipedia, Hindi Wikipedia and Wikivoyage say 12,500 ft (3810 m), OSM node 5519427878 ele says 3800; kept Wikipedia
+start:
+  name: Sankri
+  lat: 31.0784
+  lon: 78.1837
+  altitude_m: 1950
+  coords_source: wikipedia
+end:
+  name: Sankri
+  lat: 31.0784
+  lon: 78.1837
+  altitude_m: 1950
+  coords_source: wikipedia
+getting_there:
+  railhead: {name: Dehradun, distance_km: 200}
+  airport: {name: Dehradun (Jolly Grant), iata: DED, distance_km: null}
+  road_head: Sankri
+  notes: >-
+    From Dehradun the road climbs to Naugaon on the Yamunotri route, then turns off
+    through Purola, Mori and Netwar to Sankri, where it stops. The state tourism page
+    puts Jolly Grant airport about 230 km from Govind National Park, but gives no
+    figure for Sankri itself.
+season_months: [4, 5, 6, 9, 10, 11]   # official best time for Govind National Park as a whole; no open source names Kedarkantha's own months (Wikivoyage only calls it a popular winter trek)
+permits: >-
+  Kedarkantha is inside Govind Pashu Vihar National Park and Sanctuary. Register online
+  first, then pick up the paper permit at the park's head office in Purola.
+last_mobile_signal: Sankri   # Wikipedia's Har Ki Doon article says Sankri is the last place with steady signal before treks from there
+  # weak source: that Wikipedia sentence is cited to a trekking company's web page
+budget_inr: {min: 6000, max: 12000, basis: "Pagdandi rough estimate: shared taxi or bus Dehradun-Sankri-Dehradun, 3 trail days with a local guide and porter share, tent and sleeping bag hire, food, and the park permit."}
+itinerary: []        # no open source lays out day stages; Wikipedia's Sankri page names the campsites Juda Ka Talab, Kedarkantha Base Camp and Hargaon
+highlights:
+  - A full-circle summit panorama that takes in Swargarohini, Bandarpunch and Black Peak.
+  - Juda Ka Talab, a small high lake used as a campsite, tied in local myth to Shiva's hair.
+  - Mostly pine forest, with deodar, oak and rhododendron between about 2,000 and 3,000 m.
+  - Spring wildflowers such as primulas and wild strawberries from late March into April.
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikipedia.org/wiki/Kedarkantha
+    title: Kedarkantha
+    accessed: 2026-10-11
+    supports: [highest_point, area, name_local, highlights]
+  - url: https://hi.wikipedia.org/wiki/केदारकांठा
+    title: केदारकांठा
+    accessed: 2026-10-11
+    supports: [name_local, highest_point]
+  - url: https://en.wikipedia.org/wiki/Sankri
+    title: Sankri
+    accessed: 2026-10-11
+    supports: [start, end, getting_there, area, highlights]
+  - url: https://en.wikipedia.org/wiki/Har_Ki_Doon
+    title: Har Ki Doon
+    accessed: 2026-10-11
+    supports: [last_mobile_signal]
+  - url: https://hi.wikipedia.org/wiki/हर_की_दून_घाटी
+    title: हर की दून घाटी (route section)
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikivoyage.org/wiki/Dehradun
+    title: Dehradun (Wikivoyage), Trekking section
+    accessed: 2026-10-11
+    supports: [highest_point, days, distance_km, highlights]
+  - url: https://uttarakhandtourism.gov.in/destination/govind-national-park
+    title: Govind National Park (Uttarakhand Tourism)
+    accessed: 2026-10-11
+    supports: [season_months, permits, area, getting_there, highlights]
+  - url: https://www.openstreetmap.org/node/5519427878
+    title: Kedar Kantha peak (OSM node)
+    accessed: 2026-10-11
+    supports: [highest_point]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

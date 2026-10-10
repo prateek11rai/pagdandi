@@ -1,0 +1,115 @@
+slug: kumara-parvatha
+name: Kumara Parvatha
+name_local: {text: ಕುಮಾರ ಪರ್ವತ, lang: kn}
+state: Karnataka
+region: western-ghats-south
+area: Pushpagiri Wildlife Sanctuary, on the Dakshina Kannada-Kodagu border above Kukke Subramanya
+# moderate, not easy: under 3,000 m, but a two-day trek climbing from about 165 m at the
+# trailhead to the summit, with rocky scrambles and 8-10 hours of walking (en.wikipedia).
+# weak source: the 8-10 hour figure sits in an unreferenced, promotional-sounding Wikipedia section.
+difficulty: moderate
+days: 2
+# karnatakatourism.org gives a range of 25-28 km in total; left null rather than pick a point in the range.
+distance_km: null
+highest_point:
+  name: Kumara Parvatha summit
+  # converted from 5626 ft (kodagu.nic.in)
+  # conflict: kodagu.nic.in says 5,626 ft (~1,715 m); karnatakatourism.org says "about 1700 m";
+  # en.wikipedia infobox and OSM peak node say 1712. Official precise figure used.
+  altitude_m: 1710
+start:
+  name: Kukke Subramanya
+  lat: 12.6678
+  lon: 75.6132
+  altitude_m: 165   # en.wikipedia: western entrance from Kukke Subramanya
+  coords_source: osm
+end:
+  name: Kukke Subramanya
+  lat: 12.6678
+  lon: 75.6132
+  altitude_m: 165
+  coords_source: osm
+getting_there:
+  railhead: {name: Subramanya Road, distance_km: 12}
+  # conflict: karnatakatourism.org says 105 km; en.wikipedia says 104 km. Official value used.
+  airport: {name: Mangaluru (Bajpe), iata: IXE, distance_km: 105}
+  road_head: Kukke Subramanya
+  notes: >-
+    Kukke Subramanya is a temple town with a few bus services from Mangaluru and
+    Bengaluru. A shorter, less strenuous eastern approach starts from Beedehalli
+    near Somwarpet in Kodagu.
+# conflict: two karnatakatourism.org pages say October-May; a third (2025) says October-February.
+# en.wikipedia says trekking is prohibited June-September. Majority official range used.
+season_months: [10, 11, 12, 1, 2, 3, 4, 5]
+permits: >-
+  Trekkers need Forest Department permission, issued at the forest office near
+  Bhattara Mane, about 6 km up from Kukke Subramanya (en.wikipedia). Camping is
+  not allowed on the summit, only at designated points along the way with
+  Forest Department permission (Karnataka Tourism, pages dated 2020 and July 2025).
+  Wikipedia says trekking is prohibited from June to September. On 11 October
+  2026, Aranya Vihaara, the Forest Department's online trek-booking portal, did
+  not list Kumara Parvatha among its Dakshina Kannada or Kodagu treks. No official
+  page found gives the current fee, daily quota or booking method, so check with
+  the Subramanya forest range before planning.
+last_mobile_signal: null
+budget_inr: {min: 1000, max: 3500, basis: "Pagdandi rough estimate: local bus or auto Subramanya Road-Kukke and back, forest permission and camping fees, a local guide if hired through a homestay, food for two days and rented camping gear."}
+itinerary:
+  - day: 1
+    from: Kukke Subramanya
+    to: Bhattara Mane
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: 6
+  - day: 2
+    from: Bhattara Mane
+    to: Kukke Subramanya
+    camp_altitude_m: null
+    max_altitude_m: 1710   # converted from 5626 ft
+    distance_km: null
+highlights:
+  - The walk starts at the gates of the Kukke Subramanya temple town and climbs through thick evergreen forest.
+  - Above the trees, the trail crosses open grassy ridges past Bhattara Mane and the Girigadde viewpoint.
+  - Near the top the path threads between huge boulders, often in drifting mist, to two small shrines on the summit.
+  - The surrounding hills feed the Kumaradhara, the main tributary of the Netravathi.
+audio_script: null
+photo: null
+sources:
+  - url: https://karnatakatourism.org/en/attractions/kumara-parvatha
+    title: Kumara Parvatha - Karnataka Tourism (dated 2020-06-03)
+    accessed: 2026-10-11
+    supports: [days, distance_km, highest_point, season_months, permits, getting_there, highlights]
+  - url: https://karnatakatourism.org/en/experiences/trekking-to-kumara-parvatha
+    title: Trekking to Kumara Parvatha, Pushpagiri Wildlife Sanctuary - Karnataka Tourism (dated 2025-07-15)
+    accessed: 2026-10-11
+    supports: [season_months, permits, getting_there, highlights, itinerary.day2]
+  - url: https://karnatakatourism.org/en/experiences/kumara-parvatha-a-mist-covered-marvel-in-the-western-ghats
+    title: Kumara Parvatha - A Mist-Covered Marvel in the Western Ghats - Karnataka Tourism (dated 2025-07-19)
+    accessed: 2026-10-11
+    supports: [highest_point, season_months, area]
+  - url: https://kodagu.nic.in/en/tourism/adventures/
+    title: Adventures - Kodagu district
+    accessed: 2026-10-11
+    supports: [highest_point, itinerary.day2]
+  - url: https://en.wikipedia.org/wiki/Pushpagiri_(mountain)
+    title: Pushpagiri (mountain)
+    accessed: 2026-10-11
+    supports: [highest_point, start, end, area, permits, getting_there, season_months, itinerary.day1, highlights]
+  - url: https://kn.wikipedia.org/wiki/ಪುಷ್ಪಗಿರಿ_ಬೆಟ್ಟ
+    title: ಪುಷ್ಪಗಿರಿ ಬೆಟ್ಟ
+    accessed: 2026-10-11
+    supports: [area, highlights]
+  - url: https://www.openstreetmap.org/node/1720160472
+    title: Kumara Parvatha (OSM peak node, ele 1712)
+    accessed: 2026-10-11
+    supports: [name_local, highest_point]
+  - url: https://www.openstreetmap.org/node/245608560
+    title: Subramanya (OSM town node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  # Trek lists read from the portal's public district/trek selector (Dakshina Kannada, Kodagu), no login.
+  - url: https://aranyavihaara.karnataka.gov.in/
+    title: Aranya Vihaara - Karnataka Forest Department trek booking (Kumara Parvatha not listed)
+    accessed: 2026-10-11
+    supports: [permits]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

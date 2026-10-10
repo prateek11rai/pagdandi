@@ -1,0 +1,106 @@
+slug: dayara-bugyal
+name: Dayara Bugyal
+name_local: {text: दयारा बुग्याल, lang: hi}
+state: Uttarakhand
+region: uttarakhand
+area: Above Bhatwari in the Bhagirathi valley, Uttarkashi district
+difficulty: moderate
+days: 3              # Wikivoyage: 3 to 4 days from Raithal
+  # weak source: both Wikivoyage passages read like operator copy (the Uttarkashi listing links to a trek operator); no official or Wikipedia day count found
+distance_km: 22      # Wikivoyage: about 22 km round trip from Raithal
+  # weak source: only the Wikivoyage Uttarkashi listing that links to a trek operator gives this
+  # conflict: Uttarkashi district says the trek in is 9 km one way from Raithal, state tourism says 8 km from Barsu, Wikivoyage's Gangotri page says 6 km from Raithal
+highest_point:
+  name: Dayara Bugyal (upper meadow)
+  altitude_m: 3500
+  # conflict: Uttarkashi district (and Wikipedia's body text, citing it) says the meadow runs from 2600 to 3500 m; state tourism and Wikivoyage's Gangotri page say 3,048 m; Wikipedia's infobox says 3639 m; Wikivoyage's Dehradun page says about 3,660 m; OSM peak node 7015416241 (Dayara) has ele 3651; kept the district figure
+start:
+  name: Raithal
+  lat: 30.8167
+  lon: 78.6038
+  altitude_m: null
+  coords_source: osm   # the OSM node is tagged as an approximate location
+end:
+  name: Raithal
+  lat: 30.8167
+  lon: 78.6038
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Dehradun, distance_km: 185}   # weak source: only the operator-style Wikivoyage Dehradun passage gives this; the district page instead gives Dehradun-Uttarkashi 200 km plus about 30 km on to Bhatwari/Raithal
+  airport: {name: Dehradun (Jolly Grant), iata: DED, distance_km: null}
+  road_head: Raithal
+  notes: >-
+    The road to the meadow leaves the Gangotri highway near Bhatwari. Raithal is the
+    usual start; Barsu village is an alternative start, with a trek of about 8 km.
+    Rishikesh is also an option as a railhead.
+season_months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]   # Wikipedia: reachable all year, monsoon included; snow-covered in winter
+  # weak source: Wikipedia cites a trek operator's blog for the all-year claim; the district page backs summer grazing and winter snow use but names no months
+permits: >-   # weak source: only the operator-style Wikivoyage Dehradun passage; no official page on this permit was found
+  According to Wikivoyage, trekkers need a permit from the Forest Department office in
+  Uttarkashi before setting out, and must show a medical certificate, trek insurance
+  and proof of address to get it.
+last_mobile_signal: null
+budget_inr: {min: 5000, max: 10000, basis: "Pagdandi rough estimate: shared taxi or bus Dehradun-Raithal-Dehradun, 3 trail days with a local guide and porter share, tent hire, food, and the forest permit."}
+itinerary:           # Wikivoyage; distances are given only as ranges
+  # weak source: stages come only from the operator-style Wikivoyage Dehradun passage
+  - day: 1
+    from: Raithal
+    to: Gui
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null   # Wikivoyage: 4 to 5 km
+  - day: 2
+    from: Gui
+    to: Gui (day hike to Dayara Bugyal)
+    camp_altitude_m: null
+    max_altitude_m: 3500   # top of the meadow, per the district page
+    distance_km: null   # Wikivoyage: Dayara is 5 to 6 km beyond Gui
+  - day: 3
+    from: Gui
+    to: Raithal
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+highlights:
+  - A wide alpine meadow facing Bandarpunch, Srikanta, Jaonli and Draupadi ka Danda.
+  - Shepherds and their herds on the grass in summer, and deep snow fit for skiing in winter.
+  - A climb through forest and rhododendron, passing the Sheshnag temple on the way.
+  - The Butter Holi (Andhuri) festival that Raithal villagers hold on the meadow each August.   # weak source: Wikipedia cites a trek operator's blog for this
+audio_script: null
+photo: null
+sources:
+  - url: https://uttarkashi.nic.in/tourist-place/dayara-bugyal/
+    title: Dayara Bugyal (Uttarkashi district)
+    accessed: 2026-10-11
+    supports: [highest_point, start, getting_there, area, highlights, itinerary.day2]
+  - url: https://uttarakhandtourism.gov.in/destination/uttarkashi
+    title: Uttarkashi, Dayara Bugyal entry (Uttarakhand Tourism)
+    accessed: 2026-10-11
+    supports: [name_local, highest_point, getting_there]
+  - url: https://en.wikipedia.org/wiki/Dayara_Bugyal
+    title: Dayara Bugyal
+    accessed: 2026-10-11
+    supports: [highest_point, season_months, area, highlights]
+  - url: https://en.wikivoyage.org/wiki/Dehradun
+    title: Dehradun (Wikivoyage), Trekking and Get in sections
+    accessed: 2026-10-11
+    supports: [days, highest_point, getting_there, permits, itinerary.day1, itinerary.day2, itinerary.day3]
+  - url: https://en.wikivoyage.org/wiki/Uttarkashi
+    title: Uttarkashi (Wikivoyage), Dayara Bugyal listing
+    accessed: 2026-10-11
+    supports: [days, distance_km, start]
+  - url: https://en.wikivoyage.org/wiki/Gangotri
+    title: Gangotri (Wikivoyage), Go next
+    accessed: 2026-10-11
+    supports: [highest_point, highlights]
+  - url: https://www.openstreetmap.org/node/342114020
+    title: Raithal village (OSM node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://www.openstreetmap.org/node/7015416241
+    title: Dayara peak (OSM node, ele 3651)
+    accessed: 2026-10-11
+    supports: [highest_point]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

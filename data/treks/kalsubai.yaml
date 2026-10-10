@@ -1,0 +1,81 @@
+slug: kalsubai
+name: Kalsubai
+name_local: {text: कळसूबाई, lang: mr}
+state: Maharashtra
+region: sahyadri
+area: Kalsubai-Harishchandragad Wildlife Sanctuary, Akole taluka, Ahilyanagar district
+# moderate, not easy: under 3,000 m, but iron ladders over rock steps at three points
+# and roughly 820-900 m of gain in a single day (en and mr Wikipedia).
+difficulty: moderate
+days: 1
+distance_km: 13.2   # round trip from Bari
+highest_point:
+  name: Kalsubai summit
+  altitude_m: 1646
+start:
+  name: Bari
+  lat: 19.6130
+  lon: 73.7304
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Bari
+  lat: 19.6130
+  lon: 73.7304
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Igatpuri, distance_km: 45}   # official page gives ~45 km to Kalsubai, not to Bari specifically
+  airport: {name: Nashik (Ozar), iata: ISK, distance_km: 65}   # official page gives ~65 km to Kalsubai
+  road_head: Bari
+  notes: >-
+    Bari sits on the Ghoti-Bhandardara road, a few kilometres short of
+    Bhandardara. State transport buses and taxis run from Igatpuri to the
+    village. Mumbai airport is the larger alternative to Nashik.
+# conflict: maharashtratourism.gov.in says September-February; mr.wikipedia says August-December
+# (for the wider sanctuary). Official page preferred.
+season_months: [9, 10, 11, 12, 1, 2]
+permits: null
+last_mobile_signal: null
+budget_inr: {min: 500, max: 1500, basis: "Pagdandi rough estimate: shared jeep or state bus Igatpuri-Bari and back, plus village meals and tea stalls on the trail; no guide or permit fee found in official sources."}
+itinerary:
+  - day: 1
+    from: Bari
+    to: Bari
+    camp_altitude_m: null
+    max_altitude_m: 1646
+    distance_km: 13.2
+highlights:
+  - A small shrine to the goddess Kalsubai sits right on the summit, busiest during Navratri.
+  - Iron ladders bolted onto the steeper rock bands carry you up the final stretches.
+  - The top looks down on the Bhandardara reservoir (Arthur Lake) and across to Alang, Madan, Kulang and Harishchandragad.
+  - In the monsoon the flanks turn green and streams and small waterfalls line the path.
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikipedia.org/wiki/Kalsubai
+    title: Kalsubai
+    accessed: 2026-10-11
+    supports: [highest_point, days, distance_km, area, itinerary.day1]
+  - url: https://mr.wikipedia.org/wiki/कळसूबाई_शिखर
+    title: कळसूबाई शिखर
+    accessed: 2026-10-11
+    supports: [name_local, area, getting_there, season_months, highlights]
+  - url: https://maharashtratourism.gov.in/nature/kalsubai-peak/
+    title: Kalsubai Peak - Department of Tourism Maharashtra (last reviewed 24 June 2026)
+    accessed: 2026-10-11
+    supports: [highest_point, start, season_months, getting_there, highlights]
+  - url: https://www.openstreetmap.org/node/4693883696
+    title: Kalsubai (OSM peak node, ele 1646)
+    accessed: 2026-10-11
+    supports: [highest_point, itinerary.day1]
+  - url: https://www.openstreetmap.org/node/2084413111
+    title: Bari (OSM village node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://en.wikipedia.org/wiki/Nashik_Airport
+    title: Nashik International Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

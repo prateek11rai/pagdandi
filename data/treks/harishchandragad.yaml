@@ -1,0 +1,105 @@
+slug: harishchandragad
+name: Harishchandragad
+name_local: {text: हरिश्चंद्रगड, lang: mr}
+state: Maharashtra
+region: sahyadri
+area: Kalsubai-Harishchandragad Wildlife Sanctuary, where Pune, Ahilyanagar and Thane districts meet near Malshej Ghat
+# moderate, not easy: under 3,000 m, but the Khireshwar route climbs a railed rock patch above
+# Tolar Khind and the official page rates it moderate to difficult, 6-7 hours one way.
+difficulty: moderate
+# mr.wikipedia advises allowing at least two days and lays out the stages: Khireshwar to the
+# temple via Tolar Khind (~3 h), nights in the caves by the temple, Taramati a half-hour climb
+# from the caves. The shorter Pachnai route is often done in a day but no source lays that out.
+days: 2
+distance_km: 14   # official page gives ~7 km one way from Khireshwar; doubled for the out-and-back
+highest_point:
+  name: Taramati peak
+  # conflict: maharashtratourism.gov.in, OSM Taramati node and en.wikipedia infobox say 1422;
+  # en.wikipedia text says Taramati is 1429; mr.wikipedia text gives about 4,850 ft (~1,480 m)
+  # and its infobox 4,000 ft. Official value used.
+  altitude_m: 1422
+start:
+  name: Khireshwar
+  lat: 19.3714
+  lon: 73.8107
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Khireshwar
+  lat: 19.3714
+  lon: 73.8107
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Kalyan, distance_km: null}
+  airport: {name: Mumbai (Chhatrapati Shivaji Maharaj International), iata: BOM, distance_km: null}
+  road_head: Khireshwar
+  notes: >-
+    Buses on the Kalyan-Malshej road stop at Khubi Phata, from where Khireshwar
+    is about 5 km away, an hour on foot along the Pimpalgaon Joge dam or a short
+    ride. State buses also run
+    to Khireshwar from Pune, and Pune airport (PNQ) is the other nearby option.
+    The shorter, gentler Pachnai route (about 3 km one way) starts on the
+    Ahilyanagar side via Rajur.
+# maharashtratourism.gov.in names October-February as the best season; it also describes
+# June-September monsoon trekking as possible but slippery. Only the best-season months used.
+season_months: [10, 11, 12, 1, 2]
+permits: null
+last_mobile_signal: null
+budget_inr: {min: 1000, max: 2500, basis: "Pagdandi rough estimate: state bus Kalyan-Khubi Phata and back, local jeep to Khireshwar, meals at the weekend shacks on top, and an optional tent or cave stay; no permit fee found in official sources."}
+itinerary:
+  - day: 1
+    from: Khireshwar
+    to: Harishchandreshwar temple (cave stay)
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: 7   # official: ~7 km one way, 6-7 hours, via Tolar Khind
+  - day: 2
+    from: Harishchandreshwar temple
+    to: Khireshwar
+    camp_altitude_m: null
+    max_altitude_m: 1422
+    distance_km: null   # return leg plus the Taramati climb; no source gives the day's total
+highlights:
+  - Konkan Kada, a huge curved, overhanging cliff that drops away towards the Konkan coast, where a Brocken spectre sometimes shows in the mist.
+  - The carved stone Harishchandreshwar temple, with water tanks and caves clustered around it.
+  - Kedareshwar cave, where a large Shiva linga stands in a pool of icy water.
+  - From Taramati, the top of the fort, the skyline runs across Alang, Madan, Kulang, Kalsubai and the Naneghat range.
+  - The old Nageshwar temple at Khireshwar, whose carvings include a long reclining Vishnu.
+audio_script: null
+photo: null
+sources:
+  - url: https://maharashtratourism.gov.in/fort/harishchandragad/
+    title: Harishchandragad - Department of Tourism Maharashtra (last reviewed 24 June 2026)
+    accessed: 2026-10-11
+    supports: [highest_point, distance_km, start, season_months, getting_there, highlights, itinerary.day1, itinerary.day2]
+  - url: https://en.wikipedia.org/wiki/Harishchandragad
+    title: Harishchandragad
+    accessed: 2026-10-11
+    supports: [highest_point, area, getting_there, highlights]
+  - url: https://mr.wikipedia.org/wiki/हरिश्चंद्रगड
+    title: हरिश्चंद्रगड
+    accessed: 2026-10-11
+    supports: [name_local, days, getting_there, highlights, itinerary.day1, itinerary.day2]
+  - url: https://www.openstreetmap.org/node/13983825787
+    title: Taramati Peak (OSM peak node, ele 1422)
+    accessed: 2026-10-11
+    supports: [highest_point, itinerary.day2]
+  - url: https://www.openstreetmap.org/node/10720685415
+    title: Khireshwar (OSM village node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://www.openstreetmap.org/way/670296587
+    title: Kalsubai Harishchandragad Wildlife Sanctuary (OSM nature reserve)
+    accessed: 2026-10-11
+    supports: [area]
+  - url: https://en.wikipedia.org/wiki/Chhatrapati_Shivaji_Maharaj_International_Airport
+    title: Chhatrapati Shivaji Maharaj International Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikipedia.org/wiki/Pune_Airport
+    title: Pune Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

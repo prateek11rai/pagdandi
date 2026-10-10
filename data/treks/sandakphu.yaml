@@ -1,0 +1,122 @@
+slug: sandakphu
+name: Sandakphu (Singalila Ridge)
+name_local: {text: सन्दकपुर, lang: ne}   # Nepali Wikipedia article title
+state: West Bengal
+region: sikkim-darjeeling
+area: Singalila National Park on the India-Nepal border, Darjeeling district
+# moderate per rubric: high point between 3,000 and 4,000 m on a multi-day route, no pass above 4,000 m
+difficulty: moderate
+days: 4   # darjeeling.gov.in: Darjeeling-Maneybhanjyang-Tonglu-Sandakphu and back by the same route, 4 days
+distance_km: null   # darjeeling.gov.in gives 118 km for that round trip, but it starts in Darjeeling and includes about 26 km of road each way; no trail-only total is given
+highest_point:
+  name: Sandakphu
+  # conflict: darjeeling.gov.in, wbtourism.gov.in, the Wikipedia Sandakphu article and the OSM peak node say 3636 m; the Wikipedia Singalila National Park article says 3630 m. Official pages preferred.
+  altitude_m: 3636
+start:
+  name: Manebhanjan
+  lat: 26.9873
+  lon: 88.1203
+  # conflict: West Bengal Tourism's Singalila National Park page gives 7,054 ft (2150 m to the nearest 10 m); Wikipedia (https://en.wikipedia.org/wiki/Manebhanjyang,_Darjeeling) says 1510 m in its infobox and 1,496 m in its text. Official page preferred.
+  altitude_m: 2150
+  coords_source: osm
+end:
+  name: Manebhanjan
+  lat: 26.9873
+  lon: 88.1203
+  altitude_m: 2150   # wbtourism.gov.in (Singalila page, 7,054 ft); see conflict note on start
+  coords_source: osm
+getting_there:
+  railhead: {name: New Jalpaiguri (NJP), distance_km: null}
+  airport: {name: Bagdogra, iata: IXB, distance_km: null}
+  road_head: Manebhanjan
+  # conflict: darjeeling.gov.in and wbtourism.gov.in put Manebhanjan about 26 km from Darjeeling; Wikipedia says 28 km (Manebhanjyang and Sandakphu articles) or 51 km (Singalila National Park article). Official pages preferred.
+  notes: >-
+    Buses run from Siliguri to Manebhanjan by way of Sukhiapokhri, and jeeps
+    and buses cover the stretch from Darjeeling; wbtourism.gov.in puts
+    Manebhanjan about 26 km from Darjeeling and 92 km from Siliguri. A road
+    now climbs all the way to Sandakphu, and the old Land Rovers based at
+    Manebhanjan carry visitors who would rather ride. West Bengal Tourism also mentions driving from New
+    Jalpaiguri to Dhotrey (Dhotre) instead of Manebhanjan.
+# conflict: darjeeling.gov.in names April, May and October-November as the best months, with the first half of December also good; Wikipedia (Singalila National Park) gives March-May and mid-September to early December. Official page preferred.
+season_months: [4, 5, 10, 11, 12]
+permits: >-
+  The trail enters Singalila National Park at a checkpost on the park boundary
+  near Tumling, and the park is shut to visitors from 16 June to 15 September
+  for the monsoon (Wikipedia). Trekkers' huts on the route are run by the hill
+  council's tourism wing and can be booked in advance in Darjeeling. Entry fees
+  and any guide rule were not found on an official page.
+last_mobile_signal: null
+budget_inr: {min: 6000, max: 14000, basis: "Pagdandi rough estimate: shared jeeps or buses NJP to Manebhanjan and back, four days of trekkers' huts or homestays with meals, a local guide share, and park entry fees."}
+itinerary:
+  - day: 1
+    from: Manebhanjan
+    to: Tonglu
+    # conflict: darjeeling.gov.in says Tonglu is 3070 m (as do Wikipedia and OSM), wbtourism.gov.in says 3036 m. District page preferred.
+    camp_altitude_m: 3070
+    max_altitude_m: 3070
+    distance_km: 9   # darjeeling.gov.in: 7 km to Meghma plus 2 km to Tonglu
+  - day: 2
+    from: Tonglu
+    to: Sandakphu
+    camp_altitude_m: 3636
+    max_altitude_m: 3636
+    distance_km: null   # darjeeling.gov.in gives Tonglu-Gairibas 9 km, Gairibas-Kalipokhri 6 km and Bikhaybhanjyang-Sandakphu 4 km, but not Kalipokhri-Bikhaybhanjyang
+  - day: 3
+    from: Sandakphu
+    to: Gairibas
+    camp_altitude_m: 2621   # darjeeling.gov.in and Wikipedia
+    max_altitude_m: 3636
+    distance_km: null
+  - day: 4
+    from: Gairibas
+    to: Manebhanjan
+    camp_altitude_m: null
+    max_altitude_m: 3070   # back over Tonglu
+    distance_km: 18   # darjeeling.gov.in legs: Gairibas-Tonglu 9 km, Tonglu-Meghma 2 km, Meghma-Maneybhanjyang 7 km
+highlights:
+  - The summit view takes in Everest, Kangchenjunga, Lhotse and Makalu, four of the five highest mountains on Earth.
+  - Seen from here, the Kangchenjunga range has the reclining outline known as the Sleeping Buddha.
+  - Rhododendrons bloom along the ridge from mid-April into early June, with primulas and other small mountain flowers on the ground below.
+  - Singalila National Park is home to the red panda and the Himalayan black bear, and is a well-known spot for birdwatching.
+  - The trail runs along the India-Nepal border and dips in and out of Nepal around Meghma and Tumling.
+audio_script: null
+photo: null
+sources:
+  - url: https://darjeeling.gov.in/adventures/
+    title: Adventures - Darjeeling District Administration
+    accessed: 2026-10-11
+    supports: [highest_point, days, season_months, getting_there, permits, highlights, itinerary.day1, itinerary.day2, itinerary.day3, itinerary.day4]
+  - url: https://www.wbtourism.gov.in/topDestination/details1?template_id=1&id=63d7f015e4bbd858c2063387
+    title: Sandakphu - West Bengal Tourism
+    accessed: 2026-10-11
+    supports: [highest_point, getting_there, highlights]
+  - url: https://www.wbtourism.gov.in/Adventure/details?template_id=1&id=63d80f25e4bbd858c20633c6
+    title: Singalila National Park - West Bengal Tourism
+    accessed: 2026-10-11
+    supports: [area, start, end, getting_there, highlights]
+  - url: https://en.wikipedia.org/wiki/Sandakphu
+    title: Sandakphu
+    accessed: 2026-10-11
+    supports: [highest_point, highlights]
+  - url: https://en.wikipedia.org/wiki/Singalila_National_Park
+    title: Singalila National Park
+    accessed: 2026-10-11
+    supports: [area, permits, highlights, getting_there, itinerary.day1, itinerary.day3]
+  - url: https://www.openstreetmap.org/node/2720675800
+    title: Sandakphu (OSM peak node, ele 3636)
+    accessed: 2026-10-11
+    supports: [highest_point, itinerary.day2]
+  - url: https://www.openstreetmap.org/node/6979214491
+    title: Maney Bhanjyang (OSM viewpoint node; OSM has no place node for the village)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://ne.wikipedia.org/wiki/सन्दकपुर
+    title: सन्दकपुर (Nepali Wikipedia)
+    accessed: 2026-10-11
+    supports: [name_local]
+  - url: https://en.wikipedia.org/wiki/Bagdogra_Airport
+    title: Bagdogra Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

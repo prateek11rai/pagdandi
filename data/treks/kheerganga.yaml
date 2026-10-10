@@ -1,0 +1,131 @@
+slug: kheerganga
+name: Kheerganga
+name_local: {text: खीरगंगा, lang: hi}   # spelling as used in the Hindi Wikipedia title for Khirganga National Park
+state: Himachal Pradesh
+region: himachal
+area: Upper Parvati valley above Barshaini, Kullu district
+# Rubric input missing: no open source gave Kheerganga's altitude, so the 3,000 m test
+# could not be applied. Set to moderate on Wikivoyage's description of a moderate,
+# roughly six-hour climb. Needs review once an altitude is sourced.
+difficulty: moderate
+# No open source lays out the stages: Wikivoyage gives only the ~6-hour climb, and the official
+# Pin Parbati itinerary (trekking.hp.gov.in) splits Barshaini-Kalga-Kheerganga over two days of a longer trek.
+days: null
+distance_km: null
+highest_point:
+  # The hot spring sits in the Khirganga Thatch meadow (OSM landuse=meadow) at the top of the climb.
+  # No open source gives its altitude: the OSM nodes have no ele tag, and the 2,000 m in the
+  # Khirganga National Park article is for the park, not the meadow.
+  name: Kheerganga hot spring meadow
+  altitude_m: null
+start:
+  name: Barshaini
+  lat: 32.0009
+  lon: 77.4400
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Barshaini
+  lat: 32.0009
+  lon: 77.4400
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Chandigarh or Kiratpur Sahib, distance_km: null}   # Himachal Tourism names both as the broad-gauge stations for Kullu
+  airport: {name: Kullu-Manali (Bhuntar), iata: KUU, distance_km: null}
+  road_head: Barshaini
+  notes: >-
+    Buses run from Kullu up the Parvati valley through Kasol and Manikaran to
+    Barshaini, the last village on the road. Kasol, about 30 km from Bhuntar,
+    is the usual place to stay before the walk. A slower rail option is the
+    narrow-gauge line from Pathankot to Joginder Nagar, then road to Kullu.
+# No open source gives trekking months for Kheerganga. Wikipedia (Parvati Valley) says Dec-Jan snow
+# often cuts off the upper valley; the official Pin Parbati Pass window (1 May-31 Oct) is for the high pass, not this walk.
+season_months: []
+permits: null
+# weak source: a single OSM point (node 5561270498, mapped 2018 and never updated) marks a spot with
+# Airtel signal about 400 m west of the hot spring; no other open source covers network on this trail.
+last_mobile_signal: Kheerganga (Airtel only, per a single 2018 OpenStreetMap note)
+budget_inr: {min: 3000, max: 8000, basis: "Pagdandi rough estimate: buses or a shared taxi from Bhuntar (or bus from Chandigarh) to Barshaini and back, one night in a tent or guesthouse at Kheerganga with meals, and an optional local guide."}
+itinerary:
+  # Only the climb is described in the sources (about 6 hours from Barshaini); the return leg and day count are not.
+  - day: 1
+    from: Barshaini
+    to: Kheerganga
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+highlights:
+  - A natural hot spring at the top, treated as a holy site and visited by Hindu and Sikh pilgrims.
+  - The trail climbs above the Parvati river through the forests below Kheerganga.
+  - On the way it passes the Rudranag Shiva temple beside the path.
+  - A side route crosses the river to the hamlets of Pulga (2,210 m) and Kalga (2,280 m).
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikivoyage.org/wiki/Parvati_Valley
+    title: Parvati Valley - Wikivoyage
+    accessed: 2026-10-11
+    supports: [area, start, highest_point, getting_there, highlights, itinerary.day1]
+  - url: https://en.wikipedia.org/wiki/Parvati_Valley
+    title: Parvati Valley
+    accessed: 2026-10-11
+    supports: [area, highlights, season_months]
+  - url: https://hi.wikipedia.org/wiki/खीरगंगा_राष्ट्रीय_उद्यान
+    title: खीरगंगा राष्ट्रीय उद्यान
+    accessed: 2026-10-11
+    supports: [name_local]
+  - url: https://hpforest.gov.in/storage/files/1/pdf/Final%20Trraking%20Route%20in%20Himachal%20Pradesh.pdf
+    title: Identification of Trekking Routes in Himachal Pradesh - HP Forest Department (route 94, Barshani to Kheerganga)
+    accessed: 2026-10-11
+    supports: [start, highest_point, highlights]
+  - url: https://himachaltourism.gov.in/destination/kullu-2/
+    title: Kullu - Himachal Tourism Official Website
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikipedia.org/wiki/Kullu%E2%80%93Manali_Airport
+    title: Kullu-Manali Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikipedia.org/wiki/Tosh,_Himachal_Pradesh
+    title: Tosh, Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikipedia.org/wiki/Kasol
+    title: Kasol
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikipedia.org/wiki/Kalga,_Himachal_Pradesh
+    title: Kalga, Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [highlights, season_months]
+  - url: https://en.wikipedia.org/wiki/Pulga,_Himachal_Pradesh
+    title: Pulga, Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [highlights]
+  - url: https://www.openstreetmap.org/node/773592738
+    title: Barsheni (OSM village node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://www.openstreetmap.org/node/773594154
+    title: Rudranag Shiva Temple (OSM node)
+    accessed: 2026-10-11
+    supports: [highlights]
+  - url: https://www.openstreetmap.org/node/2380563860
+    title: Kheerganga Hot Spring (OSM hot spring node)
+    accessed: 2026-10-11
+    supports: [highest_point]
+  - url: https://www.openstreetmap.org/way/634110405
+    title: Khirganga Thatch (OSM meadow)
+    accessed: 2026-10-11
+    supports: [highest_point]
+  - url: https://www.openstreetmap.org/node/5561270498
+    title: Spot with Airtel signal (OSM node near Kheerganga)
+    accessed: 2026-10-11
+    supports: [last_mobile_signal]
+  - url: https://trekking.hp.gov.in/trekdetail/127
+    title: Pin Parbati Pass - Trekking Management System, Government of Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [highlights]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

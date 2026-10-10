@@ -1,0 +1,101 @@
+slug: chembra-peak
+name: Chembra Peak
+name_local: {text: ചെമ്പ്ര കൊടുമുടി, lang: ml}
+state: Kerala
+region: western-ghats-south
+area: South Wayanad forest division, Vythiri taluk, Wayanad district
+# moderate, not easy: under 3,000 m, but a steep, sustained 3-4 hour climb to the top that
+# Kerala Tourism describes as moderately difficult and steep in parts.
+difficulty: moderate
+days: 1
+# left null: the Forest Department portal calls it a "1.5 km one-way trek to the summit", while the
+# keralatourism.org ecotourism page puts the heart-shaped lake (about halfway) ~3 km from the base camp.
+distance_km: null
+highest_point:
+  name: Chembra Peak summit
+  altitude_m: 2100
+start:
+  name: Meppadi
+  lat: 11.5529
+  lon: 76.1320
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Meppadi
+  lat: 11.5529
+  lon: 76.1320
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Kozhikode, distance_km: 79}
+  airport: {name: "Kozhikode (Calicut International, Karipur)", iata: CCJ, distance_km: 92}
+  road_head: Meppadi
+  notes: >-
+    Meppadi is the nearest town, and Kerala Tourism puts the peak about 8 km
+    from it. The walk itself begins at the Forest Department base camp in the
+    tea estates, where tickets are checked and guides assigned. Kalpetta, the
+    district headquarters, is a larger base about 17 km away.
+# conflict: keralatourism.org destination page says September-March; the keralatourism.org
+# ecotourism page says August-May. Months common to both official pages used.
+season_months: [9, 10, 11, 12, 1, 2, 3]
+permits: >-
+  The trek is run by the Kerala Forest Department (South Wayanad division) and
+  ticketed through its ecotourism portal. On 11 October 2026 the portal's Chembra
+  Peak Trekking listing showed online booking as "temporarily unavailable". The
+  same listing gives entry from 7 to 9 am only, and says tickets not claimed in
+  that window go to walk-in visitors at the counter. Fees are Rs 800 per Indian
+  adult, Rs 200 per Indian student (not on weekends or holidays) and Rs 1,600 per
+  foreigner, and children under 10 go free. A group needs at least 5 people to
+  start. Camera fees are extra and paid at the counter, and plastic is banned. The
+  centre closes whenever the Wayanad district administration issues a red alert.
+  Older group rates on the Kerala Tourism ecotourism page are out of date.
+  Wikipedia says visits are run by the Chembra Peak VSS (forest protection
+  committee) with forest guides.
+last_mobile_signal: null
+budget_inr: {min: 500, max: 2000, basis: "Pagdandi rough estimate: bus Kozhikode-Meppadi and back, jeep or auto to the base camp, a share of the forest group fee plus entry fee, and meals in Meppadi."}
+itinerary:
+  - day: 1
+    from: Meppadi
+    to: Meppadi
+    camp_altitude_m: null
+    max_altitude_m: 2100
+    distance_km: null
+highlights:
+  - The path starts gently through tea gardens, then climbs steeply onto open grassland.
+  - About halfway up sits Hridaya Saras, a small heart-shaped lake said never to dry out.
+  - On clear days the summit, Wayanad's highest point, looks out towards Tamil Nadu and Karnataka.
+  - Birdwatchers can look for the Malabar whistling thrush and white-bellied treepie on the way up.
+audio_script: null
+photo: null
+sources:
+  - url: https://www.keralatourism.org/destination/chembra-peak-wayanad/508/
+    title: Chembra peak - ideal place for trekking in Wayanad | Kerala Tourism
+    accessed: 2026-10-11
+    supports: [highest_point, season_months, permits, getting_there, highlights]
+  - url: https://www.keralatourism.org/ecotourism/trekking-programs/chembra-trek/14
+    title: Chembra Peak Trekking and the heart-shaped lake | Eco Tourism in Kerala
+    accessed: 2026-10-11
+    supports: [highest_point, days, season_months, permits, getting_there, highlights, itinerary.day1]
+  # Listing details (fees, entry window, booking status) read from the portal's public API record for this page.
+  - url: https://ecotourism.forest.kerala.gov.in/propertydetail/113
+    title: Chembra Peak Trekking - Kerala Forest Ecotourism (Kerala Forest Department booking portal)
+    accessed: 2026-10-11
+    supports: [highest_point, area, permits, highlights]
+  - url: https://en.wikipedia.org/wiki/Chembra_Peak
+    title: Chembra Peak
+    accessed: 2026-10-11
+    supports: [name_local, highest_point, area, permits, start]
+  - url: https://www.openstreetmap.org/node/5215512955
+    title: Chembra peak (OSM peak node, ele 2100)
+    accessed: 2026-10-11
+    supports: [highest_point, itinerary.day1]
+  - url: https://www.openstreetmap.org/node/340369491
+    title: Meppadi (OSM village node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://en.wikipedia.org/wiki/Calicut_International_Airport
+    title: Calicut International Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

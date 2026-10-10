@@ -1,0 +1,124 @@
+slug: hampta-pass
+name: Hampta Pass
+name_local: null
+state: Himachal Pradesh
+region: himachal
+area: Hamta valley above Manali (Kullu district), crossing into the Chandra valley of Lahaul
+# difficult per rubric: pass crossing above 4,000 m, with glaciers and fast streams on the route
+difficulty: difficult
+days: 4   # Wikipedia: 3 to 4 days, with four listed stops (Chika, Balu ka Ghera, Shea Goru, Chhatru); trekking.hp.gov.in: minimum 4 days for the Sethan-Chandra valley crossing
+distance_km: null
+highest_point:
+  name: Hampta Pass
+  # conflict: Wikipedia, trekking.hp.gov.in and the OSM pass node (ele) say 4270 m, Wikivoyage (Manali) says 4268 m.
+  altitude_m: 4270
+start:
+  name: Jobri
+  lat: 32.2677
+  lon: 77.2459
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Chhatru
+  lat: 32.3195
+  lon: 77.3653
+  altitude_m: 3383   # OSM node ele tag
+  coords_source: osm
+getting_there:
+  railhead: {name: Chandigarh, distance_km: 310}   # to Manali, per Wikivoyage; Jobri is a further short drive
+  # conflict: Himachal Tourism (and Wikivoyage) say Bhuntar is 50 km from Manali, Wikipedia says 52 km. Official page preferred.
+  airport: {name: Kullu-Manali (Bhuntar), iata: KUU, distance_km: 50}   # to Manali
+  road_head: Jobri (via Manali)
+  notes: >-
+    Treks usually begin with a drive from Manali up the Hamta valley to Jobri
+    and finish at Chhatru in the Chandra valley, so you need transport
+    arranged at both ends. Kiratpur Sahib is another broad-gauge option,
+    and the narrow-gauge line from
+    Pathankot reaches Joginder Nagar. Some trekkers carry on from Chhatru to
+    Chandratal lake.
+# weak source: the official Trekking Management System lists the route as open 1 May to 31 October,
+# but those are 2022 dates, and one of its three Hampta listings closes on 1 October instead.
+season_months: [5, 6, 7, 8, 9, 10]
+permits: >-
+  None of the open sources checked mention a permit or fee. Himachal
+  Pradesh's online Trekking Management System lists the Hampta Pass route,
+  and you can use it to file your trek plan with the authorities before
+  you set out.
+last_mobile_signal: null
+budget_inr: {min: 12000, max: 22000, basis: "Pagdandi rough estimate: bus Chandigarh or Bhuntar to Manali and back, shared jeep to Jobri and from Chhatru back to Manali, four days of local guide, porter or mule share, tents and meals."}
+itinerary:
+  - day: 1
+    from: Jobri
+    to: Chika
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+  - day: 2
+    from: Chika
+    to: Balu ka Ghera
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+  - day: 3
+    from: Balu ka Ghera
+    to: Shea Goru
+    camp_altitude_m: null
+    max_altitude_m: 4270   # pass crossing: Balu ka Ghera and Shea Goru lie on opposite sides of the pass (Wikipedia stop order, OSM map)
+    distance_km: null
+  - day: 4
+    from: Shea Goru
+    to: Chhatru
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+highlights:
+  - A single crossing takes you from the wooded, green Kullu side to the dry, bare landscape of Lahaul's Chandra valley.
+  - On the Kullu side the valley holds pine and rhododendron woods, open meadows and waterfalls, with wildflowers between about 3,000 and 3,800 m.
+  - Higher up the route crosses glaciers and fast-flowing streams, under rock walls, hanging glaciers and 6,000 m peaks such as Deo Tibba and Indrasan.
+  - The pass takes its name from Hampta village, which sits below Sethan.
+  - Chhatru on the far side is a jumping-off point for Chandratal lake.
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikipedia.org/wiki/Hampta_Pass
+    title: Hampta Pass
+    accessed: 2026-10-11
+    supports: [highest_point, area, days, start, getting_there, highlights, itinerary.day1, itinerary.day2, itinerary.day3, itinerary.day4]
+  - url: https://trekking.hp.gov.in/trekdetail/136
+    title: Hampta Pass - Trekking Management System, Government of Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [highest_point, days, season_months, permits, highlights]
+  - url: https://trekking.hp.gov.in/trekdetail/132
+    title: Hampta Pass (second listing) - Trekking Management System, Government of Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [season_months]
+  - url: https://trekking.hp.gov.in/
+    title: Trekking Management System - Government of Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [permits]
+  - url: https://en.wikivoyage.org/wiki/Manali
+    title: Manali - Wikivoyage
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://himachaltourism.gov.in/destination/manali/
+    title: Manali - Himachal Tourism Official Website
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikipedia.org/wiki/Kullu%E2%80%93Manali_Airport
+    title: Kullu-Manali Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://www.openstreetmap.org/node/928457926
+    title: Hamta Pass (OSM mountain pass node, ele 4270)
+    accessed: 2026-10-11
+    supports: [highest_point, itinerary.day3]
+  - url: https://www.openstreetmap.org/node/1911202610
+    title: Jobri (OSM camp site node)
+    accessed: 2026-10-11
+    supports: [start]
+  - url: https://www.openstreetmap.org/node/4547791440
+    title: Chhatru (OSM hamlet node, ele 3383)
+    accessed: 2026-10-11
+    supports: [end]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

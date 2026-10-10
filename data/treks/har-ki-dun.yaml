@@ -1,0 +1,103 @@
+slug: har-ki-dun
+name: Har Ki Dun
+name_local: {text: हर की दून घाटी, lang: hi}
+state: Uttarakhand
+region: uttarakhand
+area: Govind National Park, upper Supin valley, Uttarkashi district
+difficulty: moderate
+days: 4              # inferred from Hindi Wikipedia, which lays out two stages in (Taluka to Osla/Seema, then on to Har Ki Dun) and says the way back is the same route; counted from Taluka, so the Sankri-Taluka leg is extra
+  # weak source: Hindi Wikipedia cites a 2010 forum post for this passage; no official page gives stages
+distance_km: null    # state tourism calls Sankri-Taluka-Osla-Har Ki Dun a 38 km route and Hindi Wikipedia puts the valley about 25 km from Taluka, but neither gives a round-trip figure
+highest_point:
+  name: Har Ki Dun valley
+  altitude_m: 3660   # converted from 12000 ft (state tourism)
+  # conflict: state tourism says 12,000 ft (3660 m), Wikipedia says 3566 m, Wikivoyage 3,570 m, Hindi Wikipedia and OSM way 377765179 say 3500 m; kept the official figure
+start:
+  name: Sankri
+  lat: 31.0784
+  lon: 78.1837
+  altitude_m: 1950
+  coords_source: wikipedia
+end:
+  name: Sankri
+  lat: 31.0784
+  lon: 78.1837
+  altitude_m: 1950
+  coords_source: wikipedia
+getting_there:
+  railhead: {name: Dehradun, distance_km: 200}
+  airport: {name: Dehradun (Jolly Grant), iata: DED, distance_km: null}
+  road_head: Sankri
+  notes: >-
+    The trail heads up the Supin river from Sankri through the villages of Taluka,
+    Dhatmeer, Gangad and Osla to the valley. Hindi Wikipedia counts the walk from
+    Taluka, the next village up the valley from Sankri, and says the valley is about
+    25 km beyond it. Purola is the last town with an ATM before Sankri. The state
+    tourism page puts Jolly Grant airport about 230 km from the park, without a
+    figure for Sankri itself.
+season_months: [4, 5, 6, 9, 10, 11]   # official best time for Govind National Park; Wikipedia and Hindi Wikipedia add that the valley itself is under snow from October to March
+permits: >-
+  Har Ki Dun is inside Govind Pashu Vihar National Park and Sanctuary. Register online
+  first, then pick up the paper permit at the park's head office in Purola.
+last_mobile_signal: Sankri   # weak source: the Wikipedia sentence is cited to a trekking company's web page
+budget_inr: {min: 8000, max: 16000, basis: "Pagdandi rough estimate: shared taxi or bus Dehradun-Sankri-Dehradun, about a week on the trail with a local guide and porter or mule share, tent hire, food, and the park permit."}
+itinerary:           # stages from Hindi Wikipedia; days 3 and 4 retrace days 2 and 1, as it says the return uses the same route
+  - day: 1
+    from: Taluka
+    to: Osla (or nearby Seema)
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+  - day: 2
+    from: Osla (or Seema)
+    to: Har Ki Dun
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+  - day: 3
+    from: Har Ki Dun
+    to: Osla (or Seema)
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+  - day: 4
+    from: Osla (or Seema)
+    to: Taluka
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+highlights:
+  - A cradle-shaped hanging valley ringed by alpine meadows, with Swargarohini rising at its head.
+  - Old villages such as Osla, where people keep a temple to Duryodhana of the Mahabharata.   # weak source: only the operator-style Wikivoyage Dehradun passage places the temple at Osla
+  - Deodar forest along the Supin river on the way in.
+  - A chance to see the Himalayan monal, Uttarakhand's state bird.
+  - An onward trail to the glacial lake of Ruinsara Tal below the Bandarpunch glacier.
+audio_script: null
+photo: null
+sources:
+  - url: https://uttarakhandtourism.gov.in/destination/govind-national-park
+    title: Govind National Park (Uttarakhand Tourism)
+    accessed: 2026-10-11
+    supports: [highest_point, season_months, permits, area, getting_there, highlights]
+  - url: https://en.wikipedia.org/wiki/Har_Ki_Doon
+    title: Har Ki Doon
+    accessed: 2026-10-11
+    supports: [highest_point, season_months, last_mobile_signal, getting_there, start, highlights, name_local]
+  - url: https://hi.wikipedia.org/wiki/हर_की_दून_घाटी
+    title: हर की दून घाटी
+    accessed: 2026-10-11
+    supports: [name_local, days, itinerary, highest_point, season_months, getting_there]
+  - url: https://en.wikipedia.org/wiki/Sankri
+    title: Sankri
+    accessed: 2026-10-11
+    supports: [start, end, getting_there, highlights]
+  - url: https://en.wikivoyage.org/wiki/Dehradun
+    title: Dehradun (Wikivoyage), Trekking and Get in sections
+    accessed: 2026-10-11
+    supports: [highest_point, getting_there, highlights]
+  - url: https://www.openstreetmap.org/way/377765179
+    title: Har Ki Dun meadow (OSM way, ele 3500)
+    accessed: 2026-10-11
+    supports: [highest_point]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

@@ -1,0 +1,117 @@
+slug: dzukou-valley
+name: Dzükou Valley
+name_local: null   # Angami and Mao Naga names have no ISO 639-1 code; only a Hindi transliteration was found
+state: Nagaland
+region: northeast
+area: Southern Angami country behind Mount Japfü, Kohima district, on the Nagaland-Manipur border
+# moderate per rubric: high point under 3,000 m with no technical sections, but it is usually done over two days, and Incredible India warns of a steep climb and slippery tracks
+difficulty: moderate
+days: 2   # Wikivoyage (Kohima): most visitors spend a night at the valley rim, though strong hikers can do the round trip in a day
+distance_km: null   # incredibleindia.gov.in gives about 9 km for the trek but does not say which route or whether that is one way
+highest_point:
+  name: Dzükou Valley
+  # conflict: the Kohima district page gives 2,438.4 m and Wikipedia's infobox 2438 m (its text gives a 2438-2452 m range); Incredible India's main page gives 8045 ft (2450 m to the nearest 10 m) and its contributed guide page 2452 m. District page preferred. This is the valley floor; the ridge crossed on the way in may be a little higher, but no source gives its height.
+  altitude_m: 2438
+start:
+  name: Viswema
+  lat: 25.5640
+  lon: 94.1466
+  altitude_m: 1631   # Wikipedia (Viswema)
+  coords_source: osm
+end:
+  name: Viswema
+  lat: 25.5640
+  lon: 94.1466
+  altitude_m: 1631   # Wikipedia (Viswema)
+  coords_source: osm
+getting_there:
+  railhead: {name: Dimapur (DMV), distance_km: null}
+  airport: {name: Dimapur, iata: DMU, distance_km: 96}   # Wikivoyage (Viswema): about 96 km to Viswema
+  road_head: Viswema
+  notes: >-
+    Viswema sits on the highway about 22 km south of Kohima. From the village
+    a Tata Sumo taxi climbs to a rest house above Teyozwü hill; from there it
+    is about 40 minutes of climbing to the ridge where Dzükou begins, then
+    roughly two more hours on foot to the main valley. The newer Jakhama
+    route, from the next village north, has no vehicle ride and a longer
+    walk. A six-hour trail also comes in from Mount Tempü on the Manipur
+    side.
+# weak source only: Incredible India's contributed guide page recommends May to October but says to avoid the July-September rains; Wikipedia says the wildflowers bloom May-September.
+season_months: [5, 6, 10]
+# conflict: ilp.nagaland.gov.in says the foreigner ILP is Rs 500; Wikipedia (Inner Line Permit) says Rs 300. Official page preferred.
+permits: >-
+  Visitors who are not indigenous to Nagaland, Indian or foreign, need a
+  Nagaland Inner Line Permit, applied for online; the official fee is Rs 200
+  for domestic visitors and Rs 500 for foreigners, each valid for 30 days. At
+  the valley entry point village authorities collect a refundable deposit on
+  plastic items, returned when you carry them back out, and the tourism
+  ministry advises going with a local guide. Access from the Nagaland side is
+  regulated by Southern Angami village bodies, which have fined visitors who
+  start fires.
+last_mobile_signal: null   # Wikivoyage (Kohima) calls coverage on these trails unreliable and Incredible India's guide page says there is none in the valley; neither says where signal ends
+budget_inr: {min: 3000, max: 7000, basis: "Pagdandi rough estimate: shared transport Dimapur to Kohima and Viswema and back, jeep to the trailhead, a local guide share, one night in the rest house dorm or a hired tent, food, ILP and plastic deposit."}
+itinerary:
+  - day: 1
+    from: Viswema
+    to: Dzükou Valley rest house
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null   # incredibleindia.gov.in gives about 9 km and 5-6 hours for "the trek" but not the route or whether it is one way
+  - day: 2
+    from: Dzükou Valley rest house
+    to: Viswema
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+highlights:
+  - A wide bowl of rolling green hills and dwarf bamboo, cut by a cold stream, opens up behind Mount Japfü.
+  - The pink Dzükou lily opens in May and June, and other wildflowers keep the meadows colourful until about September.
+  - The forested slopes around the valley shelter Blyth's tragopan, Nagaland's state bird.
+  - You can sleep in the government-run rest house on the valley rim or camp near it.
+  - The valley straddles the Nagaland-Manipur border and is claimed by communities on both sides.
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikipedia.org/wiki/Dzukou_Valley
+    title: Dzukou Valley
+    accessed: 2026-10-11
+    supports: [area, permits, highlights, getting_there]
+  - url: https://www.incredibleindia.gov.in/en/nagaland/kohima/dzukou-valley
+    title: Explore the Natural Beauty of Dzukou Valley Kohima - Incredible India (Ministry of Tourism)
+    accessed: 2026-10-11
+    supports: [highest_point, getting_there, permits]
+  - url: https://kohima.nic.in/places-of-interest/
+    title: Places of Interest - Kohima District, Government of Nagaland
+    accessed: 2026-10-11
+    supports: [highest_point, area, highlights]
+  # weak source: a contributed guide on a government portal, written like a travel blog, with hotel listings, prices and an outside blog link; kept only for season_months, which no cleaner source gives
+  - url: https://www.incredibleindia.gov.in/en/nagaland/kohima/dzukou-valley-nagaland-guide-to-hidden-valley
+    title: Dzukou Valley Nagaland - Guide to hidden valley - Incredible India (Ministry of Tourism)
+    accessed: 2026-10-11
+    supports: [season_months]
+  - url: https://en.wikivoyage.org/wiki/Kohima
+    title: Kohima - Wikivoyage
+    accessed: 2026-10-11
+    supports: [days, highlights]
+  - url: https://en.wikivoyage.org/wiki/Viswema
+    title: Viswema - Wikivoyage
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikipedia.org/wiki/Viswema
+    title: Viswema
+    accessed: 2026-10-11
+    supports: [start, end, getting_there]
+  - url: https://www.openstreetmap.org/node/8148134766
+    title: Viswema (OSM village node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://ilp.nagaland.gov.in/fees
+    title: ILP Fees - Nagaland Inner Line Permit, Government of Nagaland
+    accessed: 2026-10-11
+    supports: [permits]
+  - url: https://en.wikipedia.org/wiki/Inner_Line_Permit
+    title: Inner Line Permit
+    accessed: 2026-10-11
+    supports: [permits]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

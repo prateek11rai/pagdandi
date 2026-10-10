@@ -1,0 +1,108 @@
+slug: kudremukh
+name: Kudremukh
+name_local: {text: ಕುದುರೆಮುಖ, lang: kn}
+state: Karnataka
+region: western-ghats-south
+area: Kudremukh National Park, Kalasa taluk, Chikkamagaluru district
+# moderate, not easy: under 3,000 m and non-technical, but a ~20 km round trip done in one
+# full day with a long sustained climb through grassland to the summit.
+difficulty: moderate
+days: 1
+# conflict: karnatakatourism.org says ~20 km round trip; the Forest Department's Aranya Vihaara
+# trek record gives 18 km in its data and "about 22 km" in its own description; en.wikipedia
+# says ~20-22 km. 20 used (Karnataka Tourism, inside every other range); worth a human check.
+distance_km: 20
+highest_point:
+  name: Kudremukh peak
+  # conflict: aranya.gov.in park page gives both 1892 (intro) and 1894 (visitor section);
+  # chikkamagaluru.nic.in says 1894.3; en.wikipedia infobox 1894; OSM peak node ele 1892.
+  # 1894 used (stated by both official pages and Wikipedia).
+  altitude_m: 1894
+start:
+  name: Mullodi
+  lat: 13.1622
+  lon: 75.3069
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Mullodi
+  lat: 13.1622
+  lon: 75.3069
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Udupi, distance_km: 80}   # official figure is to Kudremukh town via Karkala, not to Mullodi
+  # conflict: aranya.gov.in says 109 km; en.wikipedia says 99 km. Official value used (to Kudremukh, not Mullodi).
+  airport: {name: Mangaluru (Bajpe), iata: IXE, distance_km: 109}
+  road_head: Mullodi
+  notes: >-
+    Reach Kalasa by bus (services run from Mangaluru, Udupi, Chikkamagaluru and
+    Bengaluru), then take a jeep to Mullodi village, where the trail begins.
+    Mangaluru Junction is the larger railhead, further away than Udupi.
+season_months: [10, 11, 12, 1, 2]
+permits: >-
+  Book online through Aranya Vihaara, the Karnataka Forest Department's trek
+  portal. On 11 October 2026 it listed the Kudremukha Trek (Chikkamagaluru
+  district) as open, starting and ending at the Mullodi anti-poaching camp, with
+  about 8 hours allowed. Slots can be booked from 1 to 30 days ahead. Under rules
+  in force since 15 July 2026, cancelling 8 or more days out refunds half the
+  fare, cancelling within 7 days refunds nothing, and you must bring the original
+  ID used to book. Report at the start point at least 10 minutes before your
+  slot. Karnataka Tourism (July 2025) adds that daily entries are capped. The
+  Forest Department's undated park page lists entry at Rs 200 per adult, Rs 100
+  per child and Rs 1,000 per foreigner, and says department staff go with
+  trekkers as guides. It also says the park is open nine months of the year, and
+  the monsoon is the poorest time to visit. The portal's current trek fee is
+  shown only after login and was not checked.
+last_mobile_signal: null
+budget_inr: {min: 1500, max: 4000, basis: "Pagdandi rough estimate: buses Udupi or Mangaluru to Kalasa and back, jeep Kalasa-Mullodi, Rs 200 park entry, forest guide, and a night's food and homestay near the trailhead."}
+itinerary:
+  - day: 1
+    from: Mullodi
+    to: Mullodi
+    camp_altitude_m: null
+    max_altitude_m: 1894
+    distance_km: 20
+highlights:
+  - The name means "horse face" in Kannada, after the peak's profile from one side.
+  - The trail climbs out of dense forest onto open, rolling shola grassland broken by streams.
+  - High on the mountain you pass the remains of Lobo's house, a farm left empty long ago.
+  - This is lion-tailed macaque country, and the hills feed the Tunga, Bhadra and Netravathi rivers.
+audio_script: null
+photo: null
+sources:
+  - url: https://karnatakatourism.org/en/experiences/kudremukh-trek
+    title: Kudremukh Trek - Karnataka Tourism (dated 2025-07-15)
+    accessed: 2026-10-11
+    supports: [days, distance_km, start, season_months, permits, getting_there, highlights, itinerary.day1]
+  - url: https://aranya.gov.in/aranyacms/English/NationalParks.aspx
+    title: Kudremukh National Park - Karnataka Forest Department
+    accessed: 2026-10-11
+    supports: [highest_point, getting_there, permits, area, highlights]
+  - url: https://chikkamagaluru.nic.in/en/tourism/
+    title: Tourism - Chikkamagaluru district
+    accessed: 2026-10-11
+    supports: [highest_point, area]
+  # Trek record read from the portal's public district/trek selector (Chikkamagaluru), no login.
+  - url: https://aranyavihaara.karnataka.gov.in/
+    title: Aranya Vihaara - Karnataka Forest Department trek booking (Kudremukha Trek listing; booking rules effective 15 July 2026)
+    accessed: 2026-10-11
+    supports: [permits, start]
+  - url: https://en.wikipedia.org/wiki/Kudremukha
+    title: Kudremukha
+    accessed: 2026-10-11
+    supports: [highest_point, distance_km, area, getting_there, highlights]
+  - url: https://kn.wikipedia.org/wiki/ಕುದುರೆಮುಖ
+    title: ಕುದುರೆಮುಖ
+    accessed: 2026-10-11
+    supports: [name_local]
+  - url: https://www.openstreetmap.org/node/1422424823
+    title: Kudremukha (OSM peak node, ele 1892)
+    accessed: 2026-10-11
+    supports: [highest_point]
+  - url: https://www.openstreetmap.org/node/1422424827
+    title: Mullodi (OSM locality node)
+    accessed: 2026-10-11
+    supports: [start, end]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

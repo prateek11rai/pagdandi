@@ -1,0 +1,75 @@
+slug: brahmatal
+name: Brahmatal
+name_local: {text: ब्रह्मताल, lang: hi}
+state: Uttarakhand
+region: uttarakhand
+area: Dewal and Tharali blocks, Chamoli district
+difficulty: moderate
+days: 5              # Wikivoyage: about 5 days there and back from Lohajung
+distance_km: 24      # Wikivoyage
+highest_point:
+  name: Brahmatal lake
+  altitude_m: 3718
+  # conflict: Wikivoyage says 3718 m; Hindi Wikipedia says 1,100 ft, which is below the road head and looks like a typo on an unsourced page; kept Wikivoyage
+start:
+  name: Lohajung
+  lat: 30.1284
+  lon: 79.6191
+  altitude_m: null   # Hindi Wikipedia gives 2,400 ft, which is implausibly low for this village; left null
+  coords_source: osm
+end:
+  name: Lohajung
+  lat: 30.1284
+  lon: 79.6191
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Kathgodam, distance_km: 216}
+  airport: {name: Pantnagar, iata: PGH, distance_km: null}   # conflict: Wikivoyage names Pantnagar (32 km from Kathgodam), the Hindi Wikipedia page (tagged as unsourced) names Jolly Grant; kept Wikivoyage, which matches the Kathgodam railhead
+  road_head: Lohajung
+  notes: >-
+    Two road approaches reach Lohajung: from Kathgodam by way of Garur and Gwaldam,
+    then Tharali or Dewal, or from Rishikesh by way of Srinagar and Karnaprayag.
+    Expect a mostly uphill climb on an unmarked path, and ask local people if the
+    way is unclear. Nothing is sold to eat on the trail, so carry all your food.
+    Wikivoyage reports steady mobile data in Lohajung but says nothing about signal
+    on the trail.
+season_months: []   # Wikivoyage only says the lake gets heavy snow from late December to February; no source names a trekking season
+permits: null
+last_mobile_signal: null   # Wikivoyage confirms signal in Lohajung only; no source says where it ends
+budget_inr: {min: 8000, max: 15000, basis: "Pagdandi rough estimate: shared taxi Kathgodam-Lohajung-Kathgodam, 5 trail days with a local guide and porter or mule share, tent hire, carried food, and small local fees."}
+itinerary: []        # Wikivoyage names camps at Bekaltal and Brahmatal but gives no day-by-day plan; Hindi Wikipedia puts Bekaltal at 8,000 ft (about 2440 m)
+highlights:
+  - Views east to Trishul and Nanda Ghunti, with the Bedni Bugyal and Roopkund side in sight.
+  - A high lake where, by local belief, Brahma sat in meditation, with a large camping ground beside it.
+  - Bekaltal, a forest-ringed pond with an old Nag Devta shrine that freezes over in winter.
+  - Treeline country above the lake, with sunrise and sunset over rows of ridges.
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikivoyage.org/wiki/Brahmatal_Lake
+    title: Brahmatal Lake (Wikivoyage)
+    accessed: 2026-10-11
+    supports: [highest_point, days, distance_km, getting_there, area, highlights]
+  - url: https://hi.wikipedia.org/wiki/ब्रह्मताल
+    title: ब्रह्मताल
+    accessed: 2026-10-11
+    supports: [name_local, area, getting_there, highlights]
+  - url: https://hi.wikipedia.org/wiki/लोहाजंग
+    title: लोहाजंग
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://hi.wikipedia.org/wiki/भेंकलताल
+    title: भेंकलताल
+    accessed: 2026-10-11
+    supports: [area, highlights]
+  - url: https://en.wikipedia.org/wiki/Pantnagar_Airport
+    title: Pantnagar Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://www.openstreetmap.org/way/211182516
+    title: Lohajang village (OSM way)
+    accessed: 2026-10-11
+    supports: [start, end]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

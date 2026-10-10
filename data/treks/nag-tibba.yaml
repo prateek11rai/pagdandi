@@ -1,0 +1,92 @@
+slug: nag-tibba
+name: Nag Tibba
+name_local: {text: नाग टिब्बा, lang: hi}
+state: Uttarakhand
+region: uttarakhand
+area: Nag Tibba (Jaunpur) Range, Tehri Garhwal district
+difficulty: moderate   # rubric: summit is just above 3,000 m
+days: 2              # Wikivoyage: at least 2 days
+  # weak source: only the Wikivoyage Dehradun trekking passage gives this, and that section reads like operator copy; the Tehri district page describes a different route and gives no day count
+distance_km: 20      # Wikivoyage: around 20 km in total
+  # weak source: same operator-style Wikivoyage passage; for its Thatyur route the Tehri district page gives 7 km to Dewalsari plus 14 km on to the summit, one way
+highest_point:
+  name: Nag Tibba summit
+  altitude_m: 3022
+  # conflict: Wikipedia infobox and OSM node 775963633 say 3022 m; Tehri district and Wikipedia's body text say 3048 m (exactly 10,000 ft); Wikivoyage says 3,050 m; kept 3022
+start:
+  name: Pantwari
+  lat: 30.5855
+  lon: 78.0890
+  altitude_m: null
+  coords_source: osm
+  # weak source: only the operator-style Wikivoyage passage names Pantwari as the base; official pages name Thatyur and Devalsari
+end:
+  name: Pantwari
+  lat: 30.5855
+  lon: 78.0890
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Dehradun, distance_km: 90}   # weak source: only the operator-style Wikivoyage passage gives the Dehradun-Pantwari distance
+  airport: {name: Dehradun (Jolly Grant), iata: DED, distance_km: null}
+  road_head: Pantwari
+  notes: >-
+    Wikivoyage routes the drive from Dehradun to Pantwari by way of Mussoorie. Official
+    pages describe a second approach from the Tehri side: the Tehri district page starts
+    at Thatyur, on a branch road off the Chamba-Mussoorie road, and walks 7 km to
+    Dewalsari (forest rest house) and then 14 km to the top. State tourism calls
+    Devalsari village the base camp for the trek.
+season_months: []   # no open source names months: Wikivoyage calls it a popular winter trek, and the Tehri district page says only that winters are chilly and summers pleasant
+permits: null
+last_mobile_signal: null
+budget_inr: {min: 3000, max: 6500, basis: "Pagdandi rough estimate: shared taxi Dehradun-Pantwari-Dehradun, one night at a trailside campsite with guide and meals, plus snacks and small local fees."}
+itinerary:           # weak source: stages come only from the operator-style Wikivoyage Dehradun passage
+  - day: 1
+    from: Pantwari
+    to: Kathian campsite
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: null
+  - day: 2
+    from: Kathian campsite
+    to: Pantwari (via the summit)
+    camp_altitude_m: null
+    max_altitude_m: 3022
+    distance_km: null
+highlights:
+  - A small temple to Nag Devta, the snake god, on the summit; villagers come to pray for their cattle.
+  - Views across to the Bandarpunch massif on the Yamunotri side.
+  - The highest point of the Lesser Himalaya in the Garhwal division, reachable in a weekend.
+audio_script: null
+photo: null
+sources:
+  - url: https://en.wikipedia.org/wiki/Nag_Tibba
+    title: Nag Tibba
+    accessed: 2026-10-11
+    supports: [highest_point, area, name_local, highlights, itinerary.day2]
+  - url: https://hi.wikipedia.org/wiki/नाग_टिब्बा
+    title: नाग टिब्बा
+    accessed: 2026-10-11
+    supports: [name_local]
+  - url: https://tehri.nic.in/nagtibba/
+    title: Nagtibba (Tehri Garhwal district)
+    accessed: 2026-10-11
+    supports: [highest_point, getting_there, highlights]
+  - url: https://uttarakhandtourism.gov.in/destination/new-tehri
+    title: New Tehri, Devalsari Village entry (Uttarakhand Tourism)
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://en.wikivoyage.org/wiki/Dehradun
+    title: Dehradun (Wikivoyage), Trekking and Get in sections
+    accessed: 2026-10-11
+    supports: [days, distance_km, start, end, getting_there, highest_point, itinerary.day1, itinerary.day2]
+  - url: https://www.openstreetmap.org/node/775963633
+    title: Nag Tibba peak (OSM node, ele 3022)
+    accessed: 2026-10-11
+    supports: [highest_point]
+  - url: https://www.openstreetmap.org/node/342116199
+    title: Pantwari village (OSM node)
+    accessed: 2026-10-11
+    supports: [start, end]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

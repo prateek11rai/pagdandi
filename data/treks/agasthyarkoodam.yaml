@@ -1,0 +1,128 @@
+slug: agasthyarkoodam
+name: Agasthyarkoodam
+name_local: {text: അഗസ്ത്യാർകൂടം, lang: ml}
+state: Kerala
+region: western-ghats-south
+area: Agasthyamala Biosphere Reserve, Thiruvananthapuram district, on the Kerala-Tamil Nadu border
+# moderate, not easy: under 3,000 m, but a three-day trek whose summit day climbs roughly
+# 3,600 ft over rough ground from the Athirumala camp (en.wikipedia).
+# weak source: the 3,600 ft figure is unreferenced on Wikipedia; it only informs this grading note.
+difficulty: moderate
+days: 3   # conflict: keralatourism.org says three days; en.wikipedia says it "requires two days". Official used.
+# conflict: two keralatourism.org pages give close to 50 km over three days (2020 article; event
+# page: 20 km to base camp, 10 km to the peak and back, then the 20 km return); en.wikipedia gives
+# 20 km Bonacaud-peak one way (14 km to camp + 6 km), ~40 km return. Official value used.
+distance_km: 50
+highest_point:
+  name: Agasthyarkoodam summit
+  # conflict: keralatourism.org destination page says 1890 m. UNESCO's MAB page for the Agasthyamala
+  # Biosphere Reserve says its peaks reach 1,868 m (Agasthyarkoodam is the reserve's highest point);
+  # the keralatourism.org event page, en.wikipedia text and the OSM summit node also say 1868
+  # (en.wikipedia infobox 1869). No Survey of India height is cited on Wikipedia. 1868 used as
+  # the best-supported value; Kerala Tourism contradicts itself across its own pages.
+  altitude_m: 1868
+start:
+  name: Bonacaud
+  lat: 8.6818
+  lon: 77.1674
+  altitude_m: null
+  coords_source: osm
+end:
+  name: Bonacaud
+  lat: 8.6818
+  lon: 77.1674
+  altitude_m: null
+  coords_source: osm
+getting_there:
+  railhead: {name: Thiruvananthapuram, distance_km: 50}   # en.wikipedia: Bonacaud is about 50 km from Thiruvananthapuram (city)
+  airport: {name: Thiruvananthapuram International, iata: TRV, distance_km: null}
+  road_head: Bonacaud
+  notes: >-
+    Vehicles go only as far as Bonacaud, where the walk starts at the forest
+    picket station; KSRTC buses run there from Thiruvananthapuram. The
+    Neyyar-Agasthyarkoodam route is not open to the public.
+# conflict: keralatourism.org (2020) says the season runs from Makaravilakku (mid-January) to
+# Shivaratri (after mid-February); en.wikipedia says January to mid-March. Official window used.
+season_months: [1, 2]
+permits: >-
+  Entry is only on a seasonal Kerala Forest Department pass. The government's
+  Service Plus portal lists "Online Reservation for Agasthyarkoodam Trekking 2026"
+  under the Kerala Forest Department, handled by the Wildlife Warden in
+  Thiruvananthapuram. It needs registration but no documents, and it gives no
+  fee or dates; the 2027 season was not yet listed on 11 October 2026. Kerala
+  Tourism (March 2020) says passes are booked online, only 100 are issued a day,
+  the season runs from about mid-January to Shivaratri, and the department feeds
+  and beds trekkers at the Athirumala base camp. An undated Kerala Tourism event
+  page gives Rs 350 per person and asks for two ID copies, but it also repeats
+  the old ban on women, so treat its details as dated. Women have been allowed
+  on the trek since a 2018 court ruling (en.wikipedia).
+last_mobile_signal: null
+budget_inr: {min: 2000, max: 4000, basis: "Pagdandi rough estimate: KSRTC bus Thiruvananthapuram-Bonacaud and back, the Forest Department trek pass, and food coupons and dormitory space at the Athirumala base camp for two nights."}
+itinerary:
+  - day: 1
+    from: Bonacaud
+    to: Athirumala base camp
+    camp_altitude_m: null
+    max_altitude_m: null
+    # weak source: undated event page that also carries outdated rules; en.wikipedia says 14 km,
+    # but that traces to agasthyamala.com, whose ownership no government page confirms.
+    distance_km: 20   # keralatourism.org event page
+  - day: 2
+    from: Athirumala base camp
+    to: Athirumala base camp
+    camp_altitude_m: null
+    max_altitude_m: 1868
+    distance_km: 10   # keralatourism.org event page: to the peak and back; en.wikipedia (unreferenced) says 6 km each way
+  - day: 3
+    from: Athirumala base camp
+    to: Bonacaud
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: 20   # same route as day 1
+highlights:
+  - Over three days the route moves from shaded evergreen forest to open grassland and bare rock, crossing streams and small falls.
+  - The last climb crosses into Tamil Nadu to a summit with a small stone figure of the sage Agastya.
+  - The range shelters thousands of plant species, including many medicinal herbs, orchids, mosses and ferns.
+  - Birders look for rarities such as the broad-tailed grassbird and Nilgiri wood pigeon.
+  - The Thamirabarani, Karamana and Neyyar rivers all rise on this mountain.
+audio_script: null
+photo: null
+sources:
+  - url: https://www.keralatourism.org/destination/agasthyakoodam-western-ghats/245/
+    title: Agasthyakoodam and the trekking | Kerala Tourism
+    accessed: 2026-10-11
+    supports: [highest_point, area, permits, highlights]
+  - url: https://www.keralatourism.org/kerala-article/2020/agasthyakoodam-trekking/989
+    title: Trek to Agasthyakoodam | Kerala Tourism (Issue 319, March 2020)
+    accessed: 2026-10-11
+    supports: [days, distance_km, start, season_months, permits, highlights, itinerary.day1, itinerary.day2, itinerary.day3]
+  - url: https://www.keralatourism.org/event/agasthyarkoodam-trekking/121/
+    title: Agasthyarkoodam Trekking | Kerala Tourism (event page, undated)
+    accessed: 2026-10-11
+    supports: [highest_point, distance_km, permits, itinerary.day1, itinerary.day2, itinerary.day3]
+  - url: https://www.unesco.org/en/mab/agasthyamala
+    title: Agasthyamala - UNESCO Man and the Biosphere Programme
+    accessed: 2026-10-11
+    supports: [highest_point, area]
+  - url: https://serviceonline.gov.in/getServiceDesc.html?serviceId=2780010&StateID=32&backButtonUrl=viewAllServiceList.html
+    title: Online Reservation for Agasthyarkoodam Trekking 2026 - Kerala Forest (Service Plus)
+    accessed: 2026-10-11
+    supports: [permits]
+  - url: https://en.wikipedia.org/wiki/Agastya_Mala
+    title: Agastya Mala (Agasthyarkoodam)
+    accessed: 2026-10-11
+    supports: [name_local, highest_point, area, getting_there, permits, season_months, highlights]
+  - url: https://www.openstreetmap.org/node/3345997426
+    title: Agasthyarkoodam (OSM summit node, ele 1868)
+    accessed: 2026-10-11
+    supports: [highest_point]
+  - url: https://www.openstreetmap.org/node/9461391771
+    title: Bonacaud (OSM hamlet node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://en.wikipedia.org/wiki/Thiruvananthapuram_International_Airport
+    title: Thiruvananthapuram International Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

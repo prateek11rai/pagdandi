@@ -1,0 +1,108 @@
+slug: triund
+name: Triund
+name_local: null
+state: Himachal Pradesh
+region: himachal
+area: Southern slopes of the Dhauladhar range above McLeod Ganj, Kangra district
+# easy per rubric: top is under 3,000 m and the trail has no technical sections
+# (Himachal Tourism itself labels it a "moderate" trek because of the steep final zigzags).
+difficulty: easy
+days: 1   # Wikipedia calls it a day hike; the forest rest house and tents allow an optional overnight
+# 11 km each way per the Kangra district page, walked out and back.
+# conflict: hpkangra.nic.in says 11 km from McLeod Ganj; Wikipedia (Dharamkot) says 9 km in its
+# lead and 11 km in its Triund section; the HP Forest route list gives 18 km return from Gallu to Triund-Laka.
+distance_km: 22
+highest_point:
+  name: Triund ridge
+  # conflict: himachaltourism.gov.in and Wikivoyage say 2875 m, Wikipedia (Triund) says 2850 m,
+  # Wikipedia (Dharamkot, Indrahar Pass) says 2825-2827 m. Official page preferred.
+  altitude_m: 2875
+start:
+  name: McLeod Ganj
+  lat: 32.2353
+  lon: 76.3262
+  altitude_m: 2082
+  coords_source: osm
+end:
+  name: McLeod Ganj
+  lat: 32.2353
+  lon: 76.3262
+  altitude_m: 2082
+  coords_source: osm
+getting_there:
+  railhead: {name: Pathankot Cantt (Chakki Bank), distance_km: 91}   # to McLeod Ganj, per Kangra district page
+  airport: {name: Kangra (Gaggal), iata: DHM, distance_km: 15}   # to McLeod Ganj, per Wikivoyage
+  road_head: McLeod Ganj
+  notes: >-
+    You can walk or drive from McLeod Ganj past Dharamkot to the Galu Devi
+    temple, where the footpath starts; driving up cuts the walk to roughly
+    6 km each way. Kangra Mandir on the narrow-gauge Kangra Valley line is a
+    slower rail alternative to Pathankot.
+# weak source: these are the official months for the Indrahar Pass route that runs through Triund
+# (himachaltourism.gov.in: April to October; trekking.hp.gov.in: 15 Apr to 15 Oct, 2022 listing),
+# not months stated for Triund itself. Himachal Tourism calls Triund a summer trek, and Wikivoyage
+# says Dec-Jan snow draws winter trekkers too.
+season_months: [4, 5, 6, 7, 8, 9, 10]
+permits: >-
+  None of the open sources checked mention a permit or entry fee. Himachal
+  Pradesh's online Trekking Management System lists the McLeod Ganj to
+  Indrahar Pass route through Triund, so you can file your plan with the
+  authorities before you go. Wikipedia's Dharamkot article says (without a
+  citation) that hikers sign in at the Galu Devi temple. A forest rest house
+  at the top takes overnight guests.
+last_mobile_signal: null
+budget_inr: {min: 1500, max: 5000, basis: "Pagdandi rough estimate: bus or shared taxi from Pathankot or Kangra airport to McLeod Ganj and back, local taxi to Galu temple, meals and tea stalls; upper end adds a local guide and an optional night in a hired tent."}
+itinerary:
+  - day: 1
+    from: McLeod Ganj
+    to: McLeod Ganj
+    camp_altitude_m: null
+    max_altitude_m: 2875
+    distance_km: 22
+highlights:
+  - The wall of the Dhauladhar rises straight behind the meadow, while the Kangra valley spreads out far below to the south.
+  - The path climbs through mixed forest of oak, deodar and rhododendron, with small tea stalls along the way.
+  - The last kilometre is the hard part, a run of about 22 switchbacks up to the open grassy ridge.
+  - The slopes hold monal pheasants and many other birds, and black bears and leopards live in the forests.
+  - The British used the ridge as a base camp for climbs towards Indrahar Pass and the Dhauladhar peaks.
+audio_script: null
+photo: null
+sources:
+  - url: https://himachaltourism.gov.in/destination/dharamshala/
+    title: Dharamshala - Himachal Tourism Official Website
+    accessed: 2026-10-11
+    supports: [highest_point, start, end, getting_there, season_months, highlights, itinerary.day1]
+  - url: https://hpkangra.nic.in/tourist-place/triund/
+    title: Triund - District Kangra, Government of Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [distance_km, getting_there, highlights, itinerary.day1]
+  - url: https://en.wikipedia.org/wiki/Triund
+    title: Triund
+    accessed: 2026-10-11
+    supports: [area, days, getting_there, highlights, itinerary.day1]
+  - url: https://en.wikipedia.org/wiki/Indrahar_Pass
+    title: Indrahar Pass
+    accessed: 2026-10-11
+    supports: [season_months]
+  - url: https://trekking.hp.gov.in/trekdetail/61
+    title: Mcleodganj - Inderhara Pass - Trekking Management System, Government of Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [season_months, permits]
+  - url: https://trekking.hp.gov.in/
+    title: Trekking Management System - Government of Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [permits]
+  - url: https://en.wikipedia.org/wiki/Dharamkot,_Himachal_Pradesh
+    title: Dharamkot, Himachal Pradesh
+    accessed: 2026-10-11
+    supports: [permits]
+  - url: https://en.wikivoyage.org/wiki/Dharamsala
+    title: Dharamsala - Wikivoyage
+    accessed: 2026-10-11
+    supports: [highest_point, getting_there, permits]
+  - url: https://www.openstreetmap.org/node/342118182
+    title: McLeod Ganj (OSM suburb node)
+    accessed: 2026-10-11
+    supports: [start, end]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

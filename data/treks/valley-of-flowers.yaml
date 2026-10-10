@@ -1,0 +1,106 @@
+slug: valley-of-flowers
+name: Valley of Flowers
+name_local: {text: फूलों की घाटी, lang: hi}
+state: Uttarakhand
+region: uttarakhand
+area: Valley of Flowers National Park, Chamoli district (Nanda Devi Biosphere Reserve)
+difficulty: moderate   # main route only; the optional Hemkund side trip goes above 4,000 m
+days: 3              # walk in to Ghangaria, valley day trip (no overnight stay allowed in the park), walk out
+distance_km: null    # only one-way figures are published: 16 km (state tourism) or about 17 km (Wikipedia) from Govindghat to the valley
+highest_point:
+  name: Valley of Flowers
+  altitude_m: 3600
+  # conflict: state tourism says around 3,600 m, Wikipedia gives a 3,352-3,658 m range, Wikivoyage 3,300-3,800 m; kept the official figure
+start:
+  name: Govindghat
+  lat: 30.6192
+  lon: 79.5620
+  altitude_m: 1828   # conflict: Wikipedia infobox says 1828 m, Wikivoyage says 1,800 m; kept Wikipedia
+  coords_source: osm
+end:
+  name: Govindghat
+  lat: 30.6192
+  lon: 79.5620
+  altitude_m: 1828
+  coords_source: osm
+getting_there:
+  railhead: {name: Rishikesh, distance_km: 273}   # conflict: state tourism says 273 km to Govindghat, Wikivoyage says 276 km; kept official
+  airport: {name: Dehradun (Jolly Grant), iata: DED, distance_km: null}
+  road_head: Govindghat
+  notes: >-
+    Roads end at Govindghat on the Rishikesh-Badrinath highway. The first 4 km
+    of the trail to Ghangaria is a road served by shared taxis, after which it
+    is a footpath; mules and porters can be hired. Hemkund lake and gurdwara are
+    an optional extra day from Ghangaria, much higher than the valley (Wikipedia
+    gives 4572 m for the gurdwara, Wikivoyage 4,160 m for the lake) and closed
+    from October through April.
+season_months: [5, 6, 7, 8, 9, 10]   # conflict: state tourism says May to October (peak bloom July to September), Wikipedia says the park opens only June to October; kept official
+permits: >-
+  The Forest Department office in Ghangaria issues the entry permit, which covers
+  three days. Wikivoyage listed the fee in 2023 as Rs 150 for Indians and Rs 600 for
+  foreigners. The park is open to day visitors only: nobody may camp or sleep inside
+  it, and everyone has to be back in Ghangaria by 5 pm.
+last_mobile_signal: Lower end of the Valley of Flowers   # Wikivoyage reports LTE at Govindghat, Ghangaria, Hemkund and the start of the valley
+budget_inr: {min: 7000, max: 13000, basis: "Pagdandi rough estimate: bus or shared taxi Rishikesh-Govindghat-Rishikesh, two nights of lodge stay in Ghangaria, a local guide share, food, the park permit, and an optional mule or porter for luggage."}
+itinerary:
+  - day: 1
+    from: Govindghat
+    to: Ghangaria
+    camp_altitude_m: 3049   # conflict: Wikipedia says 3049 m, state tourism 3,050 m, Wikivoyage 3,100 m; kept Wikipedia
+    max_altitude_m: 3049
+    distance_km: 13         # Wikivoyage and state tourism: 13 km, of which the first 4 km is road (Wikivoyage)
+  - day: 2
+    from: Ghangaria
+    to: Ghangaria (day trip into the Valley of Flowers)
+    camp_altitude_m: 3049
+    max_altitude_m: 3600
+    distance_km: null
+  - day: 3
+    from: Ghangaria
+    to: Govindghat
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: 13
+highlights:
+  - Alpine meadows with more than 600 kinds of flowering plants, at their fullest from July to September.
+  - A UNESCO World Heritage Site, paired with Nanda Devi National Park next door.
+  - Rare animals such as the snow leopard, musk deer and Asiatic black bear, and the Himalayan monal.
+  - Waterfalls and streams along the trail, and the memorial to botanist Joan Margaret Legge inside the valley.
+  - An optional steep climb from Ghangaria to the glacial lake and gurdwara at Hemkund.
+audio_script: null
+photo: null
+sources:
+  - url: https://uttarakhandtourism.gov.in/destination/valley-of-flowers
+    title: Valley of Flowers (Uttarakhand Tourism)
+    accessed: 2026-10-11
+    supports: [name_local, area, highest_point, season_months, permits, getting_there, days, highlights, itinerary.day1, itinerary.day2]
+  - url: https://en.wikipedia.org/wiki/Valley_of_Flowers_National_Park
+    title: Valley of Flowers National Park
+    accessed: 2026-10-11
+    supports: [area, highest_point, season_months, permits, getting_there, days, highlights]
+  - url: https://en.wikipedia.org/wiki/Govindghat
+    title: Govindghat
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://en.wikipedia.org/wiki/Ghangaria
+    title: Ghangaria
+    accessed: 2026-10-11
+    supports: [itinerary.day1, itinerary.day2]
+  - url: https://en.wikipedia.org/wiki/Gurdwara_Hemkund_Sahib
+    title: Gurdwara Hemkund Sahib
+    accessed: 2026-10-11
+    supports: [getting_there, highlights]
+  - url: https://en.wikivoyage.org/wiki/Ghangaria
+    title: Ghangaria (Wikivoyage)
+    accessed: 2026-10-11
+    supports: [permits, last_mobile_signal, getting_there, start, highest_point, days, itinerary.day1, itinerary.day3]
+  - url: https://en.wikivoyage.org/wiki/Dehradun
+    title: Dehradun (Wikivoyage), Get in by plane
+    accessed: 2026-10-11
+    supports: [getting_there]
+  - url: https://www.openstreetmap.org/node/440867595
+    title: Govindghat (OSM node)
+    accessed: 2026-10-11
+    supports: [start, end]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11

@@ -1,0 +1,145 @@
+slug: goecha-la
+name: Goecha La
+name_local: null   # no Nepali or Sikkimese name found in an open source (only a Hindi transliteration on hi.wikipedia)
+state: Sikkim
+region: sikkim-darjeeling
+area: Khangchendzonga National Park, Gyalshing district (Yuksom to Goecha La via Dzongri)
+# difficult per rubric: high point above 4,000 m, a high pass, and moraine and boulder ground near the top
+difficulty: difficult
+days: 8   # Wikipedia's basic itinerary has 8 walking days Yuksom to Yuksom; Wikivoyage (Yuksom) also gives 8 days
+distance_km: null   # Wikipedia's per-day legs add up to 84 km, but the Dzongri acclimatisation day has no distance, so no full total is sourced
+highest_point:
+  name: Goecha La
+  # conflict: Wikipedia and the OSM saddle node (ele) say 4940 m; Wikivoyage (Yuksom) gives 4940 m in one listing and 5002 m in another. Wikipedia preferred.
+  altitude_m: 4940
+start:
+  name: Yuksom
+  lat: 27.3692
+  lon: 88.2185
+  altitude_m: 1780   # Wikipedia (Yuksom)
+  coords_source: osm
+end:
+  name: Yuksom
+  lat: 27.3692
+  lon: 88.2185
+  altitude_m: 1780   # Wikipedia (Yuksom)
+  coords_source: osm
+getting_there:
+  railhead: {name: New Jalpaiguri (NJP), distance_km: 150}   # Wikivoyage (Yuksom): about 150 km
+  airport: {name: Bagdogra, iata: IXB, distance_km: 170}     # Wikivoyage (Yuksom): about 170 km
+  road_head: Yuksom
+  notes: >-
+    The drive from New Jalpaiguri runs by way of Jorethang and takes about six
+    to seven hours; the road to Yuksom is poorly lit, so plan to arrive before
+    dark. No buses go to Yuksom, but shared or private jeeps run from Jorethang
+    and Geyzing (passing Pelling), and taxis can be hired in those towns.
+# conflict: sikkim.gov.in gives mid-March to mid-June and October to December; Wikipedia (Yuksom) gives March-May and September-November. Official page preferred.
+season_months: [3, 4, 5, 6, 10, 11, 12]
+permits: >-
+  The whole route lies in the Khangchendzonga National Park axis, which Sikkim
+  lists as a Protected Area: both Indian and foreign trekkers need a Protected
+  Area Permit, issued for trekking by the Tourism and Civil Aviation
+  Department's Adventure Cell or district tourism offices in Gangtok and
+  Pelling. Indians must show a passport, voter ID, driving licence or other
+  government photo ID (Aadhaar is not accepted as proof of nationality) plus
+  two photos. Foreigners also need a Restricted Area Permit to enter Sikkim at
+  all, and get a trekking PAP only as a group of two or more with the trek
+  arranged through a registered travel agency. The state's adventure page adds
+  that a special park pass is needed, issued to Indian visitors by Sikkim's
+  Home Department. Fees were not listed on the official pages checked.
+last_mobile_signal: null
+budget_inr: {min: 16000, max: 30000, basis: "Pagdandi rough estimate: shared jeeps NJP or Bagdogra to Yuksom and back, eight trekking days with a local guide, cook and porter or yak share, tents, food, plus PAP and park fees."}
+itinerary:
+  - day: 1
+    from: Yuksom
+    to: Sachen
+    camp_altitude_m: null   # no open source gives a height; the OSM Sachen hut and camp nodes have no ele tag
+    max_altitude_m: null
+    distance_km: 10
+  - day: 2
+    from: Sachen
+    to: Tshoka
+    camp_altitude_m: 3000   # Wikivoyage (Yuksom)
+    max_altitude_m: null
+    distance_km: 7
+  - day: 3
+    from: Tshoka
+    to: Dzongri
+    camp_altitude_m: null   # Wikivoyage gives both 4030 m and 4320 m for Dzongri on the same page; the OSM Dzongri nodes have no ele tag
+    max_altitude_m: null
+    distance_km: 10
+  - day: 4   # rest day at Dzongri with a hike to Dzongri La
+    from: Dzongri
+    to: Dzongri
+    camp_altitude_m: null
+    # conflict: Wikipedia says Dzongri La is 4417 m, the OSM pass node (https://www.openstreetmap.org/node/618548993) says 4380 m. Wikipedia preferred.
+    max_altitude_m: 4417
+    distance_km: null
+  - day: 5
+    from: Dzongri
+    to: Thansing
+    camp_altitude_m: null   # Wikivoyage gives both 3800 m and 3930 m for Thansing; the OSM Thansing node has no ele tag
+    max_altitude_m: null
+    distance_km: 10
+  - day: 6   # out to Goecha La and back to Thansing
+    from: Thansing
+    to: Thansing
+    camp_altitude_m: null
+    max_altitude_m: 4940
+    distance_km: 14
+  - day: 7
+    from: Thansing
+    to: Tshoka
+    camp_altitude_m: 3000   # Wikivoyage (Yuksom)
+    max_altitude_m: null
+    distance_km: 16
+  - day: 8
+    from: Tshoka
+    to: Yuksom
+    camp_altitude_m: null
+    max_altitude_m: null
+    distance_km: 17
+highlights:
+  - The pass looks straight at the southeast face of Kangchenjunga, the third highest mountain on Earth.
+  - Dzongri and its viewpoint take in a long line of big peaks, among them Kabru, Rathong, Koktang and Pandim.
+  - The lower trail climbs through magnolia and rhododendron forest above the Rathong river before opening onto high meadows.
+  - Sikkim's tourism department calls this the state's most popular trek, known for mountain views, summer flowers and birdlife.
+  - Yuksom, the starting village, was the first capital of the old Kingdom of Sikkim.
+audio_script: null
+photo: null
+sources:
+  # weak source: the itinerary list on this article is uncited, the page carries a refimprove tag and an inline link to a trekking operator; its distances are used only because no cleaner open source lays out the stages
+  - url: https://en.wikipedia.org/wiki/Goecha_La
+    title: Goecha La
+    accessed: 2026-10-11
+    supports: [highest_point, area, days, highlights, itinerary.day1, itinerary.day2, itinerary.day3, itinerary.day4, itinerary.day5, itinerary.day6, itinerary.day7, itinerary.day8]
+  - url: https://www.openstreetmap.org/node/11694774373
+    title: Goecha La (OSM saddle node, ele 4940)
+    accessed: 2026-10-11
+    supports: [highest_point, itinerary.day6]
+  - url: https://www.openstreetmap.org/node/496992033
+    title: Yuksom (OSM village node)
+    accessed: 2026-10-11
+    supports: [start, end]
+  - url: https://en.wikipedia.org/wiki/Yuksom
+    title: Yuksom
+    accessed: 2026-10-11
+    supports: [start, end, highlights]
+  - url: https://en.wikivoyage.org/wiki/Yuksom
+    title: Yuksom - Wikivoyage
+    accessed: 2026-10-11
+    supports: [days, getting_there, highlights, itinerary.day2, itinerary.day7]
+  - url: https://www.sikkim.gov.in/department/departmentmenudetails?url=Menu%3Dtourism-civil-aviation-department%2Fadventure-tourism
+    title: Adventure Tourism - Tourism and Civil Aviation Department, Government of Sikkim
+    accessed: 2026-10-11
+    supports: [season_months, permits, highlights]
+  - url: https://www.sikkim.gov.in/department/departmentmenudetails?url=Menu%3Dtourism-civil-aviation-department%2Fgeneral-info
+    title: General Info (Inner Line, RAP and PAP guidelines) - Tourism and Civil Aviation Department, Government of Sikkim
+    accessed: 2026-10-11
+    supports: [permits]
+  - url: https://en.wikipedia.org/wiki/Bagdogra_Airport
+    title: Bagdogra Airport
+    accessed: 2026-10-11
+    supports: [getting_there]
+facts_checked_by: "Pagdandi fact-check pass (AI-assisted)"
+last_reviewed: 2026-10-11
