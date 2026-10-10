@@ -15,7 +15,8 @@ Decisions, dead ends, surprises and real numbers, in the order they happened. Ti
 - **High-point forecast:** we have coordinates for the road head, but not reliable ones for every high point. We ask Open-Meteo for the road head's coordinates with `elevation` set to the high point's altitude, which corrects the temperatures for height. The page labels this as an estimate.
 - **Local Postgres on 127.0.0.1:54329, TCP only, data in `.data/pg`,** so it can't collide with any other Postgres on the machine.
 - **TypeScript 6.0.3, not 7.0.** typescript-eslint requires `typescript <6.1.0`.
-- **ESLint 9.39.5, not 10.** `eslint-plugin-react`, `-import` and `-jsx-a11y` declare `eslint ≤9` as a peer.
+- **ESLint 10 without `eslint-config-next`.** We first took ESLint 9.39.5, because `eslint-config-next` pulls in react, import and jsx-a11y plugins that cap ESLint at 9. But ESLint 9 is end-of-life, and its deprecation notice put an `eslint.org` URL in the lockfile, which the leak check rejected. So we use ESLint 10 with typescript-eslint, `@next/eslint-plugin-next` and react-hooks, and lose the jsx-a11y rules.
+- **Both dependency build scripts are denied** (`allowBuilds: false`). esbuild and unrs-resolver work from their prebuilt optional packages; `tsx`, `vite` and the import resolver were checked.
 
 ### Surprises
 - The DevRelay manifest is at 0.1.20, and the three maintenance bullets are no longer in its agent rules, so "drop the last three bullets" would have removed real rules. `pnpm devrelay:setup` now drops them by title.
@@ -49,3 +50,25 @@ What is still thin:
 - Kheerganga and Nongriat have no sourced altitude.
 - Nag Tibba and Brahmatal have no sourced season.
 - 28 `# weak source` comments mark facts that rest on Wikivoyage passages that read like operator copy, or on Wikipedia lines that cite operators.
+
+### Search quality: five test queries
+`pnpm search:eval` runs these against the 20 treks (local Postgres, EmbeddingGemma 300m). It takes 12–20 ms per query once the model is warm, plus about 100 ms for the first query.
+
+| Query | Top 5 now | First try |
+|---|---|---|
+| snow trek for beginners in December | dayara-bugyal, goecha-la, sandakphu, chembra-peak, nag-tibba | dayara-bugyal, sandakphu, goecha-la, brahmatal, kumara-parvatha |
+| easy one day hike near Mumbai | harishchandragad, chembra-peak, triund, kudremukh, kalsubai | chembra-peak, harishchandragad, triund, nongriat-root-bridges, kalsubai |
+| high altitude lakes in Kashmir | kashmir-great-lakes, brahmatal, kedarkantha, hampta-pass, chembra-peak | the same |
+| living root bridges in the rain | nongriat-root-bridges, agasthyarkoodam, triund, chembra-peak, valley-of-flowers | nongriat-root-bridges first |
+| short trek near Delhi for a long weekend | nag-tibba, harishchandragad, kedarkantha, dzukou-valley, valley-of-flowers | nag-tibba first, then dzukou-valley second |
+
+Dead ends on the way:
+- **`websearch_to_tsquery`** ANDs every word, so most natural questions matched nothing. We switched to OR-ing the query's lexemes.
+- **OR-ing every lexeme matched 19–20 of 20 treks,** because every document says "trek" and "day". `ts_rank_cd` has no IDF, so common words drowned out rare ones. Now the full-text side drops any query word found in more than half the documents, using `ts_stat`. Tiger's BM25 (`pg_textsearch`) would do this properly, but it isn't available on local Postgres.
+- **Textbook RRF (k = 60, 40 candidates per side) let noise win.** With 20 treks, every trek appears somewhere in the vector list, so a trek that also matched a stray word ("near", "long") got a fusion bonus. "Short trek near Delhi" put Dzükou (Nagaland) first. Fusing only each side's top 8, with k = 20, put Nag Tibba first.
+- **"Mumbai" wasn't in any document.** The documents now include the sourced road head, railhead and airport names.
+
+### Chat: Gemma 4 e4b on the laptop
+- With thinking on, Gemma spent its 300-token budget reasoning and never finished the answer. With `reasoning_effort: "none"` on Ollama's `/v1`, it called the tool and answered in 2.8 s. The open Ollama issue about empty replies after a tool result, with thinking off, did not reproduce on 0.35.1.
+- Your group prompt ("5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi") takes 15–16 s for the full turn locally: search, recommend, then the answer. A cold model adds about 20 s.
+- At first Gemma read "first-timers" as `difficulty: easy`, which ruled out every moderate beginner trek. The tool now takes `maxDifficulty`, and when nothing fits every constraint it returns the closest matches with a note saying so.

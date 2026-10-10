@@ -21,6 +21,12 @@ export function trekDocument(t: Trek): { title: string; body: string } {
     t.season_months.length > 0 ? `Season: ${t.season_months.map((m) => MONTH_NAMES[m - 1]).join(", ")}.` : null;
   const places = [...new Set(t.itinerary.flatMap((d) => [d.from, d.to]))];
   const route = places.length > 0 ? `Route: ${places.join(", ")}.` : null;
+  const g = t.getting_there;
+  const access = [
+    g.road_head && `Road head: ${g.road_head}.`,
+    g.railhead && `Nearest railhead: ${g.railhead.name}.`,
+    g.airport && `Nearest airport: ${g.airport.name}.`,
+  ].filter(Boolean);
   const body = [
     t.area,
     DIFFICULTY_WORDS[t.difficulty] + ".",
@@ -29,6 +35,7 @@ export function trekDocument(t: Trek): { title: string; body: string } {
     season,
     `Starts at ${t.start.name}.`,
     route,
+    ...access,
     ...t.highlights,
   ]
     .filter(Boolean)
