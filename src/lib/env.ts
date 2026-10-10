@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Which parts of the app need which variables. Each entry point validates only what it uses.
-export type EnvScope = "web" | "digest" | "db" | "audio";
+export type EnvScope = "web" | "digest" | "db" | "audio" | "model";
 
 const postgresUrl = z.string().regex(/^postgres(ql)?:\/\/.+/, "must be a postgres:// URL");
 const httpUrl = z.url({ protocol: /^https?$/ });
@@ -32,6 +32,7 @@ const NEEDS: Record<EnvScope, (keyof Env)[]> = {
   web: ["DATABASE_URL", "ADMIN_EMAIL"],
   digest: ["DATABASE_URL", "ADMIN_EMAIL"],
   audio: ["ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID"],
+  model: [], // local Gemma only; Ollama settings have defaults
 };
 
 const HINTS: Partial<Record<keyof Env, string>> = {
