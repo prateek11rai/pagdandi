@@ -79,3 +79,10 @@ Dead ends on the way:
 - **Surprise:** Gemma's one-line summaries dropped the "SAMPLE:" prefix from the fixture headlines, so recorded sample news read like real reports in the email. Fixture news is now flagged in the payload, and both the email and the trek page say "SAMPLE DATA" above it. A unit test makes sure it stays that way.
 - **Unsubscribe tokens:** we store only hashes, so a daily email can't reuse the token from sign-up. Each email gets its own random token (`unsubscribe_tokens`, migration 0002), and any email's link works until the subscription is deleted.
 - **SerpApi budget:** the free plan allows 250 searches a month, and we cap at 200 a month and 25 a day. A daily run uses one search per followed trek (today that's one trek: the admin's). The Sunday sweep uses one per trek (20). That comes to roughly 20 × 4.3 + 30 ≈ 120 a month.
+
+### Audio scripts, tests, CI
+- **Audio scripts:** Gemma drafted all 20 audio scripts, at 127–158 words and 9–13 s each on the laptop. Every number was checked against that trek's data, and no draft needed a retry. The first version rewrote whole YAML files through the `yaml` library (respacing flow maps and unfolding text). Now only the `audio_script` block changes, about 10 lines per file.
+- **ElevenLabs:** all 20 intros come to 17,003 characters (`pnpm audio --estimate`). The free plan's 10,000 a month won't cover them, so it's Starter or the Hacktoberfest credit. The free plan would also require "elevenlabs.io" in each title.
+- **Integration suite:** 11 tests against real Postgres and Ollama in 28 s on the laptop: hybrid search, a real Gemma recommendation through the chat route, SQL stores and caps, and the digest dry run.
+- **Fresh clone:** in a temporary clone, `pnpm install --frozen-lockfile` used `registry.npmjs.org` only; validation and all 59 unit tests passed.
+- **CI:** Actions are pinned by commit SHA, with the same 7-day cooldown (setup-node v7.1.0 was 3 days old, so we use v7.0.0). Images are pinned by digest. Integration runs in CI on `gemma4:e2b`, with the models cached.
