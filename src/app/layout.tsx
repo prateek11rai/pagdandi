@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Mukta, Tiro_Devanagari_Hindi } from "next/font/google";
 import { headers } from "next/headers";
+import { InlineScript } from "@/components/inline-script";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
@@ -40,7 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${fraunces.variable} ${mukta.variable} ${tiro.variable}`}
     >
       <head>
-        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <InlineScript nonce={nonce} html={THEME_SCRIPT} />
       </head>
       <body className="flex min-h-dvh flex-col bg-paper text-ink antialiased">
         <a

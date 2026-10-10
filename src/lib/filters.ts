@@ -12,6 +12,10 @@ export const filtersSchema = z.object({
   days: z.enum(Object.keys(DAY_BANDS) as [DayBand, ...DayBand[]]).optional().catch(undefined),
   difficulty: z.enum(DIFFICULTIES).optional().catch(undefined),
   budget: z.enum(Object.keys(BUDGET_BANDS) as [BudgetBand, ...BudgetBand[]]).optional().catch(undefined),
+  // Used by the trek guide: the group's hard limits.
+  maxDays: z.coerce.number().int().min(1).max(30).optional().catch(undefined),
+  maxDifficulty: z.enum(DIFFICULTIES).optional().catch(undefined),
+  maxBudgetInr: z.coerce.number().int().min(0).optional().catch(undefined),
 });
 export type TrekFilters = z.infer<typeof filtersSchema>;
 

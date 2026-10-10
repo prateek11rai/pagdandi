@@ -7,29 +7,44 @@ export interface AltPoint {
 }
 
 export interface AltitudeSeries {
-  // Where you sleep each night (plus start and finish). null breaks the line.
+  // Where you sleep each night, plus start and finish. Index = day; null = not sourced.
   line: (AltPoint | null)[];
-  // The day's high point, when it is above both ends of that day.
+  // A day's high point, when it is above both ends of that day.
   highs: AltPoint[];
   days: number;
+  // False when our sources don't lay out the daily stages at all.
+  stagesKnown: boolean;
+  // Nights whose camp altitude isn't sourced.
+  unknownCampDays: number[];
 }
 
-type TrekShape = Pick<Trek, "start" | "end" | "itinerary" | "highest_point">;
+type TrekShape = Pick<Trek, "start" | "end" | "itinerary" | "highest_point" | "days">;
 
 export function altitudeSeries(t: TrekShape): AltitudeSeries {
   const at = (day: number, altitude: number | null, label: string): AltPoint | null =>
     altitude === null ? null : { day, altitude, label };
 
   if (t.itinerary.length === 0) {
-    const line = [at(0, t.start.altitude_m, t.start.name), at(1, t.end.altitude_m, t.end.name)];
+    const days = t.days ?? 1;
     const top = t.highest_point.altitude_m;
-    return { line, highs: top === null ? [] : [{ day: 0.5, altitude: top, label: t.highest_point.name }], days: 1 };
+    const line: (AltPoint | null)[] = Array.from({ length: days + 1 }, () => null);
+    line[0] = at(0, t.start.altitude_m, t.start.name);
+    line[days] = at(days, t.end.altitude_m, t.end.name);
+    return {
+      line,
+      highs: top === null ? [] : [{ day: days / 2, altitude: top, label: t.highest_point.name }],
+      days,
+      stagesKnown: false,
+      unknownCampDays: Array.from({ length: Math.max(0, days - 1) }, (_, i) => i + 1),
+    };
   }
 
   const n = t.itinerary.length;
   const line: (AltPoint | null)[] = [at(0, t.start.altitude_m, t.start.name)];
+  const unknownCampDays: number[] = [];
   t.itinerary.forEach((d, i) => {
     const last = i === n - 1;
+    if (!last && d.camp_altitude_m === null) unknownCampDays.push(d.day);
     const alt = d.camp_altitude_m ?? (last ? t.end.altitude_m : null);
     line.push(at(d.day, alt, last && d.camp_altitude_m === null ? t.end.name : d.to));
   });
@@ -45,7 +60,30 @@ export function altitudeSeries(t: TrekShape): AltitudeSeries {
     }
   });
 
-  return { line, highs, days: n };
+  return { line, highs, days: n, stagesKnown: true, unknownCampDays };
+}
+
+// Line segments to draw: only between two known points of the same day, passing through
+// that day's high point if it has one. Nothing is drawn across an unknown camp.
+export function profileSegments(s: AltitudeSeries): AltPoint[][] {
+  if (!s.stagesKnown) return [];
+  const out: AltPoint[][] = [];
+  for (let day = 1; day <= s.days; day++) {
+    const a = s.line[day - 1];
+    const b = s.line[day];
+    if (!a || !b) continue;
+    const high = s.highs.find((h) => h.day === day - 0.5);
+    out.push(high ? [a, high, b] : [a, b]);
+  }
+  return out;
+}
+
+export function altitudeNote(s: AltitudeSeries): string | null {
+  if (!s.stagesKnown) return "Camp altitude not known: our sources don't give the daily stages.";
+  const d = s.unknownCampDays;
+  if (d.length === 0) return null;
+  const list = d.length === 1 ? `${d[0]}` : `${d.slice(0, -1).join(", ")} and ${d.at(-1)}`;
+  return `Camp altitude not known for day${d.length === 1 ? "" : "s"} ${list}.`;
 }
 
 export function knownPoints(s: AltitudeSeries): number {

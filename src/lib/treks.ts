@@ -17,6 +17,7 @@ export interface TrekCard {
   budgetMinInr: number;
   budgetMaxInr: number;
   audioUrl: string | null;
+  start: [number, number]; // lat, lon of the road head
 }
 
 interface CardRow {
@@ -30,6 +31,8 @@ interface CardRow {
   season_months: number[];
   budget_min_inr: number;
   budget_max_inr: number;
+  start_lat: number;
+  start_lon: number;
 }
 
 export function audioUrl(slug: string, lang = "en"): string | null {
@@ -50,6 +53,7 @@ function toCard(r: CardRow): TrekCard {
     budgetMinInr: r.budget_min_inr,
     budgetMaxInr: r.budget_max_inr,
     audioUrl: audioUrl(r.slug),
+    start: [r.start_lat, r.start_lon],
   };
 }
 
@@ -62,23 +66,29 @@ const BUDGET_RANGES: Record<string, [number, number]> = {
   "over-15k": [15000, 10_000_000],
 };
 
+const DIFFICULTY_ORDER = ["easy", "moderate", "difficult"] as const;
+
 export function filterClause(f: TrekFilters) {
   const db = sql();
   const days = f.days ? DAY_RANGES[f.days] : undefined;
   const budget = f.budget ? BUDGET_RANGES[f.budget] : undefined;
+  const upTo = f.maxDifficulty ? DIFFICULTY_ORDER.slice(0, DIFFICULTY_ORDER.indexOf(f.maxDifficulty) + 1) : null;
   return db`
     ${f.region ? db`and t.region = ${f.region}` : db``}
     ${f.month ? db`and ${f.month}::int = any(t.season_months)` : db``}
     ${f.difficulty ? db`and t.difficulty = ${f.difficulty}` : db``}
     ${days ? db`and t.days between ${days[0]} and ${days[1]}` : db``}
     ${budget ? db`and (t.budget_min_inr + t.budget_max_inr) / 2 between ${budget[0]} and ${budget[1]}` : db``}
+    ${f.maxDays ? db`and (t.days is null or t.days <= ${f.maxDays})` : db``}
+    ${upTo ? db`and t.difficulty = any(${upTo as unknown as string[]})` : db``}
+    ${f.maxBudgetInr !== undefined ? db`and t.budget_min_inr <= ${f.maxBudgetInr}` : db``}
   `;
 }
 
 export async function listTreks(f: TrekFilters = {}): Promise<TrekCard[]> {
   const db = sql();
   const rows = await db<CardRow[]>`
-    select slug, name, state, region, difficulty, days, highest_altitude_m, season_months, budget_min_inr, budget_max_inr
+    select slug, name, state, region, difficulty, days, highest_altitude_m, season_months, budget_min_inr, budget_max_inr, start_lat, start_lon
     from treks t
     where true ${filterClause(f)}
     order by name
@@ -90,7 +100,7 @@ export async function getCards(slugs: string[]): Promise<TrekCard[]> {
   if (slugs.length === 0) return [];
   const db = sql();
   const rows = await db<CardRow[]>`
-    select slug, name, state, region, difficulty, days, highest_altitude_m, season_months, budget_min_inr, budget_max_inr
+    select slug, name, state, region, difficulty, days, highest_altitude_m, season_months, budget_min_inr, budget_max_inr, start_lat, start_lon
     from treks t where slug = any(${slugs})
   `;
   const bySlug = new Map(rows.map((r) => [r.slug, toCard(r)]));

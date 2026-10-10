@@ -18,6 +18,7 @@ describe("trek card", () => {
           budgetMinInr: 8000,
           budgetMaxInr: 14000,
           audioUrl: null,
+          start: [30.1, 78.1],
         }}
         reason="Gentle forest trail, big views."
       />,

@@ -1,11 +1,10 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
+import { cityCoords, rankByOrigin } from "@/lib/cities";
 import { formatSeason } from "@/lib/format";
 import { searchTreks } from "@/lib/search";
 import { DIFFICULTIES, REGIONS, type Region } from "@/lib/trek-schema";
 import type { TrekCard } from "@/lib/treks";
-
-const RANK = { easy: 0, moderate: 1, difficult: 2 } as const;
 
 const summary = (c: TrekCard) => ({
   slug: c.slug,
@@ -29,19 +28,17 @@ export const searchTreksTool = createTool({
     maxDifficulty: z.enum(DIFFICULTIES).optional().describe("moderate when some of the group are first-timers"),
     maxDays: z.coerce.number().int().min(1).max(30).optional(),
     maxBudgetInr: z.coerce.number().int().min(0).optional().describe("Per person, for the trek itself"),
+    from: z.string().max(60).optional().describe("The city the group starts from, e.g. Delhi"),
   }),
-  execute: async ({ query, region, month, maxDifficulty, maxDays, maxBudgetInr }) => {
-    const { cards } = await searchTreks(query, { region }, 20);
-    const fits = (c: TrekCard) =>
-      (month === undefined || c.seasonMonths.includes(month)) &&
-      (maxDifficulty === undefined || RANK[c.difficulty as keyof typeof RANK] <= RANK[maxDifficulty]) &&
-      (maxDays === undefined || c.days === null || c.days <= maxDays) &&
-      (maxBudgetInr === undefined || c.budgetMinInr <= maxBudgetInr);
-    const fit = cards.filter(fits);
-    if (fit.length > 0) return { treks: fit.slice(0, 5).map(summary) };
-    // Nothing fits every constraint: offer the closest matches and say so.
+  execute: async ({ query, region, month, maxDifficulty, maxDays, maxBudgetInr, from }) => {
+    const origin = cityCoords(from);
+    // Hard limits are SQL filters, so both sides of the hybrid search rank only treks that fit.
+    const { cards } = await searchTreks(query, { region, month, maxDifficulty, maxDays, maxBudgetInr }, 10);
+    if (cards.length > 0) return { treks: rankByOrigin(cards, origin).slice(0, 5).map(summary) };
+    // Nothing fits every limit: offer the closest matches and say so.
+    const loose = await searchTreks(query, { region }, 10);
     return {
-      treks: cards.slice(0, 3).map(summary),
+      treks: rankByOrigin(loose.cards, origin).slice(0, 3).map(summary),
       relaxed: "No trek fits every constraint. These are the closest matches; say which constraint they miss.",
     };
   },

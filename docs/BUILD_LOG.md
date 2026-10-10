@@ -87,3 +87,25 @@ Dead ends on the way:
 - **Fresh clone:** in a temporary clone, `pnpm install --frozen-lockfile` used `registry.npmjs.org` only; validation and all 59 unit tests passed.
 - **CI:** Actions are pinned by commit SHA, with the same 7-day cooldown (setup-node v7.1.0 was 3 days old, so we use v7.0.0). Images are pinned by digest. Integration runs in CI on `gemma4:e2b`, with the models cached.
 - **The Ask page in a real browser:** the group prompt gave one card, Kudremukh in Karnataka, for a group in Delhi. I had told Gemma to keep the group's city out of the search query, which threw away the signal the vector side handles well ("near Delhi" put Nag Tibba first in the eval). Now the query adds "near <city>". Two runs in a row gave Dayara Bugyal (Uttarakhand), Harishchandragad and Kumara Parvatha in 15–18 s, with every number checked. The answer can't include the Uttarakhand winter treks, because no open source gives their winter months.
+
+### Sunday, later: UI fixes, the Delhi group, a data spot-check
+- **Altitude figure:** it used to draw a straight line between any two known points, so Kedarkantha (no sourced stages) showed a flat 3-day line at road-head height, and every day hike showed a flat line under its summit. Now a line joins two known points only within a day, and passes through that day's high point. Day hikes go up and back down. Nothing is drawn across an unknown camp, and the figure says "Camp altitude not known…".
+- **The Delhi group, properly this time.** "Near Delhi" in the query wasn't enough. Two problems:
+  - The search tool applied the group's limits (month, days, difficulty, budget) **after** hybrid search, which now passes only each side's top 8 candidates. Often one trek survived: Sandakphu for Delhi, Nongriat (Meghalaya) for Bengaluru.
+  - Distance from the group's city was left to the model's wording.
+
+  Now the limits are SQL filters on both sides of the search. The tool takes a `from` city and re-ranks by relevance plus straight-line distance (each 250 km costs one place), using approximate city coordinates that are never shown.
+
+  Re-test, with the same prompts as before:
+
+  | Prompt | Runs | First card |
+  |---|---|---|
+  | Delhi group (December, 4 days, ₹12k) | 3 | Dayara Bugyal (Uttarakhand) every time, then Sandakphu; Kudremukh never appears |
+  | Mumbai, one-day hike in November | 1 | Kalsubai |
+  | Bengaluru, 2 days in January | 1 | Kudremukh |
+
+  Each answer took 14–18 s with no fact-check replacements. An integration test now pins the Delhi and Bengaluru rankings.
+- **Spot-check of 5 files against their cited sources** (Valley of Flowers, Triund, Kashmir Great Lakes, Nongriat, Kudremukh):
+  - 30 facts checked, all coordinates against OSM. Nothing was wrong.
+  - One open question: Valley of Flowers' season is May–Oct from Uttarakhand Tourism, but that page renders with JavaScript and couldn't be re-read, while Wikipedia says "open only during summer from June to October".
+  - Softest number: Triund's 22 km. The district page says "11 km from McLeod Ganj", Wikivoyage 6 km each way from Dharamkot, and the forest department 18 km return.

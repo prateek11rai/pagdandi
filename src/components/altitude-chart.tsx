@@ -1,4 +1,4 @@
-import { altitudeSeries, knownPoints, niceRange, type AltPoint } from "@/lib/altitude";
+import { altitudeNote, altitudeSeries, knownPoints, niceRange, profileSegments, type AltPoint } from "@/lib/altitude";
 import { ALTITUDE_SAFETY_THRESHOLD_M, type Trek } from "@/lib/trek-schema";
 import { formatAltitude } from "@/lib/format";
 
@@ -21,13 +21,12 @@ export function AltitudeChart({ trek, figure = 1 }: { trek: Trek; figure?: numbe
   const x = (day: number) => M.left + (day / s.days) * (W - M.left - M.right);
   const y = (alt: number) => M.top + (1 - (alt - lo) / (hi - lo)) * (H - M.top - M.bottom);
 
-  // Line segments only between consecutive known camps.
-  const segments: string[] = [];
-  for (let i = 1; i < s.line.length; i++) {
-    const a = s.line[i - 1];
-    const b = s.line[i];
-    if (a && b) segments.push(`M${x(a.day)},${y(a.altitude)}L${x(b.day)},${y(b.altitude)}`);
-  }
+  // Drawn only where both ends of a day are known, through that day's high point if any.
+  const segments = profileSegments(s).map(
+    (seg) => `M${seg.map((p) => `${x(p.day)},${y(p.altitude)}`).join("L")}`,
+  );
+  const note = altitudeNote(s);
+  const dayLabel = (d: number) => (d === 0 ? "Start" : !s.stagesKnown ? (d === s.days ? "Finish" : null) : String(d));
   const ticks: number[] = [];
   for (let v = lo; v <= hi; v += step) ticks.push(v);
   const showSafety = ALTITUDE_SAFETY_THRESHOLD_M > lo && ALTITUDE_SAFETY_THRESHOLD_M < hi;
@@ -35,7 +34,7 @@ export function AltitudeChart({ trek, figure = 1 }: { trek: Trek; figure?: numbe
   const description = `${s.line
     .filter((p): p is AltPoint => p !== null)
     .map((p) => `${p.day === 0 ? "Start" : `Day ${p.day}`}: ${p.label}, ${formatAltitude(p.altitude)}`)
-    .join(". ")}. Highest point ${formatAltitude(top)}.`;
+    .join(". ")}. Highest point ${formatAltitude(top)}.${note ? ` ${note}` : ""}`;
   const titleId = `alt-title-${trek.slug}`;
   const descId = `alt-desc-${trek.slug}`;
 
@@ -80,11 +79,14 @@ export function AltitudeChart({ trek, figure = 1 }: { trek: Trek; figure?: numbe
           </g>
         )}
 
-        {Array.from({ length: s.days + 1 }, (_, d) => (
-          <text key={d} x={x(d)} y={H - M.bottom + 18} textAnchor="middle" className="fill-ink-muted text-[13px]">
-            {d === 0 ? "Start" : d}
-          </text>
-        ))}
+        {Array.from({ length: s.days + 1 }, (_, d) => dayLabel(d)).map(
+          (label, d) =>
+            label && (
+              <text key={d} x={x(d)} y={H - M.bottom + 18} textAnchor="middle" className="fill-ink-muted text-[13px]">
+                {label}
+              </text>
+            ),
+        )}
         <text x={W - M.right} y={H - 6} textAnchor="end" className="fill-ink-muted text-[11px] font-semibold tracking-[0.12em]">
           DAY
         </text>
@@ -112,7 +114,8 @@ export function AltitudeChart({ trek, figure = 1 }: { trek: Trek; figure?: numbe
       </svg>
       </div>
       <figcaption className="figure-caption mt-1">
-        Fig. {figure}. Altitude by day. The line joins where you sleep; triangles mark each day&apos;s high point.
+        Fig. {figure}. Altitude by day. The line joins known altitudes, through each day&apos;s high point (triangles).
+        {note && <span className="mt-1 block not-italic">{note}</span>}
       </figcaption>
     </figure>
   );

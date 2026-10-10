@@ -23,3 +23,27 @@ describe("hybrid search on real Postgres + EmbeddingGemma", () => {
     expect(r.matched.fullText).toBeGreaterThan(0);
   });
 });
+
+describe("the guide's search tool", () => {
+  it("ranks a Delhi group's options by distance among treks that fit", async () => {
+    const { searchTreksTool } = await import("@/mastra/tools/search-treks");
+    const out = (await searchTreksTool.execute!(
+      { query: "beginner friendly trek", from: "Delhi", month: 12, maxDays: 4, maxDifficulty: "moderate", maxBudgetInr: 12000 },
+      {} as never,
+    )) as { treks: { slug: string }[]; relaxed?: string };
+    expect(out.relaxed).toBeUndefined();
+    expect(out.treks[0]!.slug).toBe("dayara-bugyal");
+    expect(out.treks.map((t) => t.slug).indexOf("kudremukh")).not.toBe(0);
+  });
+
+  it("applies the group's limits before ranking", async () => {
+    const { searchTreksTool } = await import("@/mastra/tools/search-treks");
+    const out = (await searchTreksTool.execute!(
+      { query: "easy trek", from: "Bangalore", month: 1, maxDays: 2, maxDifficulty: "moderate" },
+      {} as never,
+    )) as { treks: { slug: string; days: number | null }[] };
+    expect(out.treks.length).toBeGreaterThan(1);
+    expect(out.treks[0]!.slug).toBe("kudremukh");
+    expect(out.treks.every((t) => t.days === null || t.days <= 2)).toBe(true);
+  });
+});
