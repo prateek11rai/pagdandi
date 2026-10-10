@@ -1,0 +1,25 @@
+{
+  "_note": "SAMPLE DATA for development and tests. Shaped like SerpApi google_news results; titles and links are placeholders, not real news.",
+  "kedarkantha": [
+    {
+      "title": "SAMPLE: Fresh snowfall reported on upper slopes near Sankri",
+      "link": "https://example.com/sample/kedarkantha-snowfall",
+      "iso_date": "2026-10-10T04:30:00Z",
+      "source": { "name": "Sample News" }
+    },
+    {
+      "title": "SAMPLE: Forest department reminds trekkers to register before entering the park",
+      "link": "https://example.com/sample/govind-permits",
+      "iso_date": "2026-10-08T09:00:00Z",
+      "source": { "name": "Sample Daily" }
+    }
+  ],
+  "hampta-pass": [
+    {
+      "title": "SAMPLE: Road to Jobri briefly closed after a small landslide, now reopened",
+      "link": "https://example.com/sample/jobri-road",
+      "iso_date": "2026-10-09T11:15:00Z",
+      "source": { "name": "Sample Times" }
+    }
+  ]
+}

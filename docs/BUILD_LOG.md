@@ -72,3 +72,10 @@ Dead ends on the way:
 - With thinking on, Gemma spent its 300-token budget reasoning and never finished the answer. With `reasoning_effort: "none"` on Ollama's `/v1`, it called the tool and answered in 2.8 s. The open Ollama issue about empty replies after a tool result, with thinking off, did not reproduce on 0.35.1.
 - Your group prompt ("5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi") takes 15–16 s for the full turn locally: search, recommend, then the answer. A cold model adds about 20 s.
 - At first Gemma read "first-timers" as `difficulty: easy`, which ruled out every moderate beginner trek. The tool now takes `maxDifficulty`, and when nothing fits every constraint it returns the closest matches with a note saying so.
+
+### Conditions and daily updates
+- **Local end-to-end run:** sign-up from a non-admin address (preview, nothing stored), sign-up as admin, confirmation link, then `pnpm digest --dry-run`, then one-click unsubscribe (POST answers 200; the row is deleted).
+- **Real numbers:** today is Sunday (IST), so the run was also the weekly sweep. It covered 20 treks, with two Open-Meteo calls each plus a Gemma news summary where fixture news existed, and took 29 s on the laptop.
+- **Surprise:** Gemma's one-line summaries dropped the "SAMPLE:" prefix from the fixture headlines, so recorded sample news read like real reports in the email. Fixture news is now flagged in the payload, and both the email and the trek page say "SAMPLE DATA" above it. A unit test makes sure it stays that way.
+- **Unsubscribe tokens:** we store only hashes, so a daily email can't reuse the token from sign-up. Each email gets its own random token (`unsubscribe_tokens`, migration 0002), and any email's link works until the subscription is deleted.
+- **SerpApi budget:** the free plan allows 250 searches a month, and we cap at 200 a month and 25 a day. A daily run uses one search per followed trek (today that's one trek: the admin's). The Sunday sweep uses one per trek (20). That comes to roughly 20 × 4.3 + 30 ≈ 120 a month.

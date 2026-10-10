@@ -13,7 +13,7 @@ export default defineConfig({
   },
   test: {
     projects: [
-      { extends: true, test: { name: "unit", include: ["tests/unit/**/*.test.ts"] } },
+      { extends: true, test: { name: "unit", include: ["tests/unit/**/*.test.{ts,tsx}"] } },
       {
         extends: true,
         test: {

@@ -36,7 +36,7 @@ export async function ConditionsPanel({ trek }: { trek: Trek }) {
         <div>
           <p className="label">News · checked {IST.format(c.news.fetchedAt)} IST</p>
           {c.news.payload.fixture && (
-            <p className="mt-1 text-sm text-clay-ink">Sample data for development, not live news.</p>
+            <p className="mt-1 text-sm font-semibold text-clay-ink">SAMPLE DATA for development: these are not real news reports.</p>
           )}
           {c.news.summary && c.news.summary.bullets.length > 0 ? (
             <ul className="mt-2 list-disc space-y-1 pl-5">
