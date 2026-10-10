@@ -1,5 +1,5 @@
 // Render Cron, 07:00 IST. `pnpm digest --dry-run` prints the emails (recipient masked, tokens redacted)
-// instead of sending them; `--sweep` refreshes every trek (the weekly run does this on Sundays).
+// instead of sending them; `--sweep` refreshes every trek (the weekly run does this on Sundays), `--no-sweep` skips that.
 import { sqlBudgetStore } from "@/lib/budget-sql";
 import { fetchForecast } from "@/lib/conditions/open-meteo";
 import { fixtureNews, serpApiNews } from "@/lib/conditions/news";
@@ -18,7 +18,9 @@ import { runDigest } from "./digest-core";
 const e = loadEnv("digest");
 const dryRun = process.argv.includes("--dry-run");
 const now = new Date();
-const sweep = process.argv.includes("--sweep") || new Date(now.getTime() + 5.5 * 3600_000).getUTCDay() === 0;
+// Sundays (IST) refresh every trek; --no-sweep turns that off for a one-off manual run.
+const sunday = new Date(now.getTime() + 5.5 * 3600_000).getUTCDay() === 0;
+const sweep = process.argv.includes("--sweep") || (sunday && !process.argv.includes("--no-sweep"));
 
 const printMailer: Mailer = {
   async send(m) {

@@ -8,9 +8,10 @@ area: Southern slopes of the Dhauladhar range above McLeod Ganj, Kangra district
 # (Himachal Tourism itself labels it a "moderate" trek because of the steep final zigzags).
 difficulty: easy
 days: 1   # Wikipedia calls it a day hike; the forest rest house and tents allow an optional overnight
-# 11 km each way per the Kangra district page, walked out and back.
-# conflict: hpkangra.nic.in says 11 km from McLeod Ganj; Wikipedia (Dharamkot) says 9 km in its
-# lead and 11 km in its Triund section; the HP Forest route list gives 18 km return from Gallu to Triund-Laka.
+# 11 km each way per the Kangra district page ("McleodGanj (11 km from Triund)"), walked out and back.
+# conflict: the HP Forest Department route list gives 18 km return (Gallu to Triund-Laka); Wikivoyage
+# (Dharamsala) gives 6 km each way from Dharamkot or Bhagsu; Wikipedia (Dharamkot) says 9 km in its lead
+# and 11 km in its Triund section. Kept the district figure.
 distance_km: 22
 highest_point:
   name: Triund ridge
@@ -66,15 +67,15 @@ highlights:
   - The slopes hold monal pheasants and many other birds, and black bears and leopards live in the forests.
   - The British used the ridge as a base camp for climbs towards Indrahar Pass and the Dhauladhar peaks.
 audio_script: >-
-  Imagine setting out from McLeod Ganj for a day hike into the beautiful hills. This trek takes
-  you up to the Triund ridge, offering you a truly special experience in the southern slopes of
-  the Dhauladhar range. As you walk, you’ll pass through a lovely mix of oak, deodar, and
-  rhododendron forest, with little tea stalls popping up along the way. You'll get to see the
-  magnificent wall of the Dhauladhar rising right behind a meadow, and from there, the vast Kangra
-  valley stretches out below to the south. While the final stretch is a bit of a climb, winding up
-  through switchbacks to the open grassy ridge, you'll also be hiking through places where monal
-  pheasants and many other birds call home, and where black bears and leopards roam the forests.
-  The day-by-day plan and permits are on the Pagdandi page.
+  The wall of the Dhauladhar rises straight behind the meadow, while the Kangra valley spreads out
+  far below to the south. This day hike through the southern slopes of the Dhauladhar range offers
+  a powerful connection with the mountains. As you walk, the path takes you through a mix of oak,
+  deodar, and rhododendron forest, with small tea stalls appearing along the way to offer a rest.
+  The final stretch brings you up a series of switchbacks to reach the open grassy ridge at
+  Triund. From this point, you gain a view that speaks to the area's past, as the ridge once
+  served as a base camp for climbs towards the Dhauladhar peaks. The slopes are home to monal
+  pheasants and various birds, and you will also encounter the forests where black bears and
+  leopards live. The day-by-day plan and permits are on the Pagdandi page.
 photo: null
 sources:
   - url: https://himachaltourism.gov.in/destination/dharamshala/

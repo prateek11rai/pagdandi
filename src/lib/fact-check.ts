@@ -69,7 +69,7 @@ function treksFor(sentence: string, ctx: FactContext): TrekFacts[] {
 
 export function checkSentence(sentence: string, ctx: FactContext): { text: string; replaced: number } {
   const treks = treksFor(sentence, ctx);
-  const spans: { start: number; end: number }[] = [];
+  const spans: { start: number; end: number; ok: boolean }[] = [];
   for (const [kind, re] of PATTERNS) {
     for (const m of sentence.matchAll(re)) {
       const start = m.index!;
@@ -80,11 +80,10 @@ export function checkSentence(sentence: string, ctx: FactContext): { text: strin
         ctx.userNumbers.includes(value) ||
         (kind === "altitude" && ALLOWED_ALTITUDES.includes(value)) ||
         treks.some((t) => matches(kind, value, t));
-      if (!ok) spans.push({ start, end });
-      else spans.push({ start: end, end }); // zero-width marker: keeps later patterns off this span
+      spans.push({ start, end, ok });
     }
   }
-  const bad = spans.filter((s) => s.end > s.start).sort((a, b) => b.start - a.start);
+  const bad = spans.filter((s) => !s.ok).sort((a, b) => b.start - a.start);
   let text = sentence;
   for (const s of bad) text = text.slice(0, s.start) + REPLACEMENT + text.slice(s.end);
   return { text, replaced: bad.length };

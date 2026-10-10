@@ -64,6 +64,12 @@ describe("prose fact-check", () => {
     expect(checkSentence("Above 3,500 m, go slowly.", ctx).replaced).toBe(0);
   });
 
+  it("judges each number once, even when two patterns match it", () => {
+    // "₹10,000 rupees" matches both cost patterns; the first verdict stands and nothing is doubled.
+    expect(checkSentence("Kedarkantha costs ₹10,000 rupees.", ctx)).toEqual({ text: "Kedarkantha costs ₹10,000 rupees.", replaced: 0 });
+    expect(checkSentence("Kedarkantha costs ₹90,000 rupees.", ctx).replaced).toBe(1);
+  });
+
   it("ignores numbers without units", () => {
     expect(checkSentence("Day 2 is the summit push for 5 friends.", ctx).replaced).toBe(0);
   });

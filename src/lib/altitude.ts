@@ -29,7 +29,8 @@ export function altitudeSeries(t: TrekShape): AltitudeSeries {
     const top = t.highest_point.altitude_m;
     const line: (AltPoint | null)[] = Array.from({ length: days + 1 }, () => null);
     line[0] = at(0, t.start.altitude_m, t.start.name);
-    line[days] = at(days, t.end.altitude_m, t.end.name);
+    // A loop ends where it started; a second point at the same altitude would only repeat the start.
+    if (t.end.name !== t.start.name) line[days] = at(days, t.end.altitude_m, t.end.name);
     return {
       line,
       highs: top === null ? [] : [{ day: days / 2, altitude: top, label: t.highest_point.name }],
@@ -79,7 +80,7 @@ export function profileSegments(s: AltitudeSeries): AltPoint[][] {
 }
 
 export function altitudeNote(s: AltitudeSeries): string | null {
-  if (!s.stagesKnown) return "Camp altitude not known: our sources don't give the daily stages.";
+  if (!s.stagesKnown) return "Camp altitudes not known: our sources don't give the daily stages.";
   const d = s.unknownCampDays;
   if (d.length === 0) return null;
   const list = d.length === 1 ? `${d[0]}` : `${d.slice(0, -1).join(", ")} and ${d.at(-1)}`;

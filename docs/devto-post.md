@@ -21,8 +21,12 @@ Then it gets out of the way. Each trek has a short audio introduction to listen 
 
 The screen is the shortest part of the experience: a few minutes to choose, ten seconds of email a day, then the actual walking.
 
-<!-- screenshot: home page, desktop light (docs/img/home-desktop-light.png) -->
-<!-- screenshot: trek page on a phone, dark (docs/img/trek-mobile-dark.png) -->
+<!-- Paths are relative to the repo; replace them with the DEV-uploaded image URLs before publishing (see docs/RUNBOOK.md, step 5). -->
+![The Pagdandi home page: a search box that takes plain descriptions, filters, and guidebook-style trek cards](docs/img/home-desktop-light.png)
+*The Treks page. Describe the trek you want, filter by region, month, days, difficulty and budget, and every card shows facts from the database.*
+
+![The Kedarkantha trek page on a phone, in the dark theme](docs/img/trek-mobile-dark.png)
+*Kedarkantha on a phone at night. The facts strip, an altitude-safety note for anything above 3,500 m, and an altitude figure that says "Camp altitudes not known" instead of drawing a line it can't source.*
 
 ### Taking it outside
 
@@ -63,7 +67,26 @@ The open pieces are the core of how it works, not a layer on top.
 
 **SerpApi** finds fresh Google News results for each trek, only from the daily job. It never runs from the chat, and every search first reserves budget against hard per-day and per-month caps. **ElevenLabs** voices each trek's intro once into an MP3 the site serves itself, so it works offline once downloaded.
 
-<!-- A short code excerpt might help here: the fact-check of one sentence, or the RRF query. -->
+Here's the heart of the prose check, from `src/lib/fact-check.ts`. Each pattern (altitude, feet, distance, days, nights, rupees) finds a number with its unit. The number has to match the database for the trek the sentence is about, or be a number the user typed; anything else gets replaced:
+
+```ts
+for (const [kind, re] of PATTERNS) {
+  for (const m of sentence.matchAll(re)) {
+    const start = m.index!;
+    const end = start + m[0].length;
+    if (spans.some((s) => start < s.end && end > s.start)) continue; // already judged by an earlier pattern
+    const value = toNumber(m[1]!, m[2]);
+    const ok =
+      ctx.userNumbers.includes(value) ||
+      (kind === "altitude" && ALLOWED_ALTITUDES.includes(value)) ||
+      treks.some((t) => matches(kind, value, t));
+    spans.push({ start, end, ok });
+  }
+}
+const bad = spans.filter((s) => !s.ok).sort((a, b) => b.start - a.start);
+```
+
+So "Kedarkantha reaches 4,200 m" streams out as "Kedarkantha reaches (see the card)". The answer arrives sentence by sentence, because the server holds each sentence back until it ends and has been checked.
 
 ## Why Does Open Innovation Matter?
 

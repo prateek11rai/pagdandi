@@ -34,7 +34,9 @@ getting_there:
     an optional extra day from Ghangaria, much higher than the valley (Wikipedia
     gives 4572 m for the gurdwara, Wikivoyage 4,160 m for the lake) and closed
     from October through April.
-season_months: [5, 6, 7, 8, 9, 10]   # conflict: state tourism says May to October (peak bloom July to September), Wikipedia says the park opens only June to October; kept official
+# Wikipedia: "The park is open only during summer from June to October." Uttarakhand Tourism (May to
+# October, peak bloom July to September) couldn't be re-read on 2026-10-11: its page renders with JavaScript.
+season_months: [6, 7, 8, 9, 10]
 permits: >-
   The Forest Department office in Ghangaria issues the entry permit, which covers
   three days. Wikivoyage listed the fee in 2023 as Rs 150 for Indians and Rs 600 for
@@ -68,22 +70,21 @@ highlights:
   - Waterfalls and streams along the trail, and the memorial to botanist Joan Margaret Legge inside the valley.
   - An optional steep climb from Ghangaria to the glacial lake and gurdwara at Hemkund.
 audio_script: >-
-  Are you ready to experience something truly special? Imagine yourself walking through a
-  landscape so vibrant, it feels like stepping into another world. This journey takes you into the
-  Valley of Flowers, a breathtaking part of Uttarakhand. For three glorious days, you’ll be
-  immersed in a place that is a UNESCO World Heritage Site. As you trek, you’ll wander through
-  stunning alpine meadows, especially vibrant between July and September, bursting with over six
-  hundred types of flowers. You’ll be surrounded by the sound of rushing streams and waterfalls,
-  and you’ll even come across the memorial to botanist Joan Margaret Legge. Keep your eyes peeled,
-  because you might spot rare wildlife like the snow leopard or the Himalayan monal. And if you
-  feel adventurous, there’s an option to climb up to a glacial lake and a gurdwara. The day-by-day
-  plan and permits are on the Pagdandi page.
+  Alpine meadows with more than 600 kinds of flowering plants, at their fullest from July to
+  September. This trek through the Valley of Flowers offers a truly special journey. You will
+  wander through a UNESCO World Heritage Site, situated right next to Nanda Devi National Park.
+  Along your path, you will discover vibrant waterfalls and clear streams. You will also encounter
+  the memorial to botanist Joan Margaret Legge within the valley itself. Keep an eye out for rare
+  wildlife as you trek, perhaps spotting the snow leopard, musk deer, or the Himalayan monal. The
+  trail also offers the option for a steep climb from Ghangaria toward the glacial lake and
+  gurdwara at Hemkund. This three-day adventure takes you up to the Valley of Flowers at 3600
+  metres. The day-by-day plan and permits are on the Pagdandi page.
 photo: null
 sources:
   - url: https://uttarakhandtourism.gov.in/destination/valley-of-flowers
     title: Valley of Flowers (Uttarakhand Tourism)
     accessed: 2026-10-11
-    supports: [name_local, area, highest_point, season_months, permits, getting_there, days, highlights, itinerary.day1, itinerary.day2]
+    supports: [name_local, area, highest_point, permits, getting_there, days, highlights, itinerary.day1, itinerary.day2]
   - url: https://en.wikipedia.org/wiki/Valley_of_Flowers_National_Park
     title: Valley of Flowers National Park
     accessed: 2026-10-11

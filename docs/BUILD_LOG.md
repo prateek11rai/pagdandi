@@ -109,3 +109,23 @@ Dead ends on the way:
   - 30 facts checked, all coordinates against OSM. Nothing was wrong.
   - One open question: Valley of Flowers' season is May–Oct from Uttarakhand Tourism, but that page renders with JavaScript and couldn't be re-read, while Wikipedia says "open only during summer from June to October".
   - Softest number: Triund's 22 km. The district page says "11 km from McLeod Ganj", Wikivoyage 6 km each way from Dharamkot, and the forest department 18 km return.
+
+### Review answers applied
+- **Valley of Flowers:** season changed to June–October, following Wikipedia ("open only during summer from June to October"). Uttarakhand Tourism's May–October couldn't be re-read because its page renders with JavaScript; a YAML comment says so.
+- **Triund:** the 22 km round trip stays (the district page's 11 km from McLeod Ganj, doubled). The conflicts are now in a comment: the forest department's 18 km return, and Wikivoyage's 6 km each way from Dharamkot.
+- **Agasthyarkoodam:** the permit text is cut from about 125 words to 77, keeping the facts. The detail (2027 season not listed yet, the portal giving no fee or dates, the dated page's old ban on women) moved to a comment.
+- **Kedarkantha's altitude figure:** the first fix still plotted a "Finish" point at Sankri, which only repeated the start. When the stages aren't sourced and a trek ends where it started, the figure shows just the start, the summit and "Camp altitudes not known".
+- **A latent bug in the prose fact-check:** an accepted number was recorded as a zero-width span, so it couldn't stop a later pattern from judging the same text again, even though the comment claimed it did. It didn't affect any answer with today's patterns. Every judged span is now kept with an `ok` flag, and a test pins the behaviour. Found while copying the code into the post.
+- **`pnpm digest --no-sweep`:** for the one manual test email. Today is Sunday in IST, so without the flag the run would sweep all 20 treks and spend 20 SerpApi searches instead of one.
+- **Audio scripts redrafted with varied openings.** At least two of the first drafts began "Are you ready for an adventure", which sounds canned when you play several intros in a row. Now each script's first sentence comes from that trek's own signature highlight, and code rejects drafts that:
+  - contain a question;
+  - begin with a stock phrase ("Imagine", "Are you ready", "Welcome"…);
+  - share their first three content words with another trek;
+  - run under 120 words, or drop the closing line;
+  - fail the number check. Bare numbers ("600 kinds") must appear in the trek's data; numbers quoted in the trek's own highlights count as sourced.
+
+  Two dead ends on the way:
+  - Listing the openings already used in the prompt ("start differently from…") made Gemma copy them.
+  - Without a minimum length, drafts shrank to about 100 words.
+
+  Result: 20 scripts, 122–155 words, no repeated openings, every number traceable to the YAML. That's 16,638 characters for ElevenLabs.

@@ -19,8 +19,18 @@ describe("altitude figure", () => {
     t.itinerary = [];
     const s = altitudeSeries(t);
     expect(profileSegments(s)).toEqual([]);
-    expect(altitudeNote(s)).toMatch(/^Camp altitude not known/);
+    expect(altitudeNote(s)).toBe("Camp altitudes not known: our sources don't give the daily stages.");
     expect(s.highs).toHaveLength(1);
+    // A loop (start = end) shows only the start and the summit.
+    expect(s.line.filter(Boolean).map((p) => p!.label)).toEqual(["Base"]);
+  });
+
+  it("keeps the finish when a trek with unknown stages ends somewhere else", () => {
+    const t = sampleTrek();
+    t.days = 3;
+    t.itinerary = [];
+    t.end = { ...t.end, name: "Other village", altitude_m: 1800 };
+    expect(altitudeSeries(t).line.filter(Boolean).map((p) => p!.label)).toEqual(["Base", "Other village"]);
   });
 
   it("never draws across an unknown camp, and lists those days", () => {

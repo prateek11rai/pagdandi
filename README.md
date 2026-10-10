@@ -88,7 +88,7 @@ Other commands:
 |---|---|
 | `pnpm treks:validate` | Validate every trek file against the schema and the sourcing rule. |
 | `pnpm search:eval` | Run the five benchmark searches. |
-| `pnpm digest --dry-run` | Run the daily job and print the emails instead of sending them. |
+| `pnpm digest --dry-run` | Run the daily job and print the emails instead of sending them. Add `--no-sweep` to skip the Sunday refresh of every trek. |
 | `pnpm audio:draft` | Have Gemma draft audio scripts into the YAML. |
 | `pnpm audio --estimate` / `pnpm audio` | Count ElevenLabs characters, then generate the MP3s. |
 
@@ -106,7 +106,7 @@ Other commands:
 | `scripts/` | Data pipeline, audio, dev stack, DevRelay setup. |
 | `ops/ollama/` | The Ollama image for Render's private service. |
 | `tests/` | `unit/` (no services) and `integration/` (needs `pnpm dev:up`). |
-| `docs/` | Build log, DevRelay setup, screenshots. |
+| `docs/` | Build log, runbook for deploying, DevRelay setup, post draft, screenshots. |
 
 ## Data
 

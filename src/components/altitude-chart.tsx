@@ -26,7 +26,8 @@ export function AltitudeChart({ trek, figure = 1 }: { trek: Trek; figure?: numbe
     (seg) => `M${seg.map((p) => `${x(p.day)},${y(p.altitude)}`).join("L")}`,
   );
   const note = altitudeNote(s);
-  const dayLabel = (d: number) => (d === 0 ? "Start" : !s.stagesKnown ? (d === s.days ? "Finish" : null) : String(d));
+  const dayLabel = (d: number) =>
+    d === 0 ? "Start" : !s.stagesKnown ? (d === s.days && s.line[d] ? "Finish" : null) : String(d);
   const ticks: number[] = [];
   for (let v = lo; v <= hi; v += step) ticks.push(v);
   const showSafety = ALTITUDE_SAFETY_THRESHOLD_M > lo && ALTITUDE_SAFETY_THRESHOLD_M < hi;
@@ -87,9 +88,11 @@ export function AltitudeChart({ trek, figure = 1 }: { trek: Trek; figure?: numbe
               </text>
             ),
         )}
-        <text x={W - M.right} y={H - 6} textAnchor="end" className="fill-ink-muted text-[11px] font-semibold tracking-[0.12em]">
-          DAY
-        </text>
+        {s.stagesKnown && (
+          <text x={W - M.right} y={H - 6} textAnchor="end" className="fill-ink-muted text-[11px] font-semibold tracking-[0.12em]">
+            DAY
+          </text>
+        )}
 
         <path d={segments.join("")} fill="none" stroke="var(--moss)" strokeWidth={2.25} strokeLinejoin="round" />
         {s.line.map(
