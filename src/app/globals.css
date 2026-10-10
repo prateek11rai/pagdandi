@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/* Field guide palette. Contrast (WCAG): ink/paper 13:1, moss/paper 5.4:1, clay-ink/paper 5.4:1.
+   Clay itself (3.6:1 on paper) is for rules, icons and large type only. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --paper: #f6f1e7;
+  --paper-raised: #fbf8f1;
+  --ink: #1f2a24;
+  --ink-muted: #5a635c;
+  --moss: #3f6b4f;
+  --moss-strong: #2f533c;
+  --clay: #c2643b;
+  --clay-ink: #9e4a26;
+  --saffron: #e8a33d;
+  --rule: color-mix(in oklab, var(--ink) 18%, transparent);
+  --topo: color-mix(in oklab, var(--moss) 16%, transparent);
+  --focus: var(--ink);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --paper: #141c17;
+  --paper-raised: #1b2620;
+  --ink: #ede6d6;
+  --ink-muted: #a9a898;
+  --moss: #7fb08e;
+  --moss-strong: #a3cbb0;
+  --clay: #e08a5f;
+  --clay-ink: #e8a07a;
+  --saffron: #e8a33d;
+  --rule: color-mix(in oklab, var(--ink) 16%, transparent);
+  --topo: color-mix(in oklab, var(--moss) 14%, transparent);
+  --focus: var(--ink);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-moss: var(--moss);
+  --color-moss-strong: var(--moss-strong);
+  --color-clay: var(--clay);
+  --color-clay-ink: var(--clay-ink);
+  --color-saffron: var(--saffron);
+  --color-rule: var(--rule);
+  --color-topo: var(--topo);
+
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-mukta), system-ui, sans-serif;
+  --font-devanagari: var(--font-tiro), var(--font-mukta), serif;
+}
+
+@layer base {
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a { color: var(--moss); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  a:hover { color: var(--moss-strong); }
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  hr { border: 0; border-top: 1px solid var(--rule); }
+  ::selection { background: color-mix(in oklab, var(--saffron) 45%, transparent); }
+}
+
+@layer components {
+  /* Small-caps fact labels: DAYS · MAX ALT · SEASON */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .hairline { border-color: var(--rule); }
+  /* Fraunces at its display optical size, for big headings. */
+  .display { font-variation-settings: "opsz" 144; }
+  .topo-mask {
+    background-color: var(--topo);
+    mask: url(/brand/topo.svg) center / cover no-repeat;
+    -webkit-mask: url(/brand/topo.svg) center / cover no-repeat;
+  }
+  .figure-caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* "Take it on the trail": one printed page, ink on white, no chrome. */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  :root, [data-theme="dark"] {
+    --paper: #fff; --paper-raised: #fff; --ink: #000; --ink-muted: #333;
+    --moss: #000; --clay: #000; --clay-ink: #000; --rule: #999; --topo: transparent;
+  }
+  body { font-size: 10.5pt; line-height: 1.4; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  a { color: #000; text-decoration: none; }
+  section, figure, li { break-inside: avoid; }
+}
+.print-only { display: none; }

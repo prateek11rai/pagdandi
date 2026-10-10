@@ -1,0 +1,13 @@
+# Settings for this single-package repo (no workspaces yet).
+# Only adopt versions that have been public for at least 7 days.
+minimumReleaseAge: 10080
+
+# Exact versions in package.json (no ^ or ~).
+savePrefix: ''
+
+# Dependency build scripts are blocked unless listed here. Each entry was reviewed:
+# - esbuild: postinstall only verifies or fetches its binary; the @esbuild/<platform> optional package already ships it.
+# - unrs-resolver: postinstall is a fallback that fetches the native binding when the optional platform package is missing.
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false
