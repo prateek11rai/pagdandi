@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagdandi prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;600;700&family=Anek+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e7; --panel:#efe8da; --panel2:#e5dccb; --ink:#1f2a24; --muted:#5a635c; --line:#d8cfbe;
+  --green:#3f6b4f; --geru:#c2643b; --buransh:#9e4a26; --marigold:#e8a33d; --card:#fbf8f1;
+  --fh:"Eczar",serif; --fb:"Anek Devanagari",sans-serif; --r:12px;
+}
+*{box-sizing:border-box} html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 12px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:9px;padding:6px 10px 20px}
+.brand img{width:24px;height:24px;display:block}
+.brand .n{font-family:var(--fh);font-weight:700;font-size:23px;color:var(--green)}
+.brand .d{font-family:var(--fh);font-size:18px;color:var(--geru);margin-top:3px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-weight:500;cursor:pointer;color:var(--ink)}
+.nav a:hover{background:var(--panel2)}
+.nav a.on{background:var(--panel2);color:var(--green)}
+.nav svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;color:var(--muted);flex:none;margin-top:-1px}
+.nav a.on svg{color:var(--green)}
+.soon{margin-left:auto;display:inline-flex;align-items:center;height:18px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:var(--marigold);border-radius:4px;padding:0 6px;color:var(--ink);white-space:nowrap}
+.side .bottom{margin-top:auto;border-top:1px solid var(--line);padding-top:10px}
+.side .bottom small{display:block;color:var(--muted);font-size:12px;padding:8px 10px 0;line-height:1.4}
+.main{position:relative;overflow:hidden}
+.topo{position:absolute;inset:0;pointer-events:none;opacity:.10;background:url(topo-moss.svg) center / cover no-repeat;-webkit-mask-image:linear-gradient(#000 0%,#000 50%,transparent 100%);mask-image:linear-gradient(#000 0%,#000 50%,transparent 100%)}
+.view{position:relative;animation:fade .3s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hide{display:none}
+h1{font-family:var(--fh);font-weight:600;font-size:40px;line-height:1.1;margin:0 0 20px}
+h2{font-family:var(--fh);font-weight:600;font-size:24px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.muted{color:var(--muted)}
+/* home */
+.home{max-width:800px;margin:0 auto;padding:150px 24px 0;transition:padding .4s ease}
+.home.thread{padding-top:36px;padding-bottom:170px}
+.ask{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 12px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.ask textarea{width:100%;border:0;background:transparent;font:inherit;font-size:17px;color:var(--ink);resize:none;outline:none;min-height:54px}
+.ask textarea::placeholder{color:#9A907F}
+.ask .row{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.ask .meta{font-size:13px;color:var(--muted)}
+.send{width:38px;height:38px;border:0;border-radius:9px;background:var(--green);display:grid;place-items:center;color:#fff;cursor:pointer}
+.send svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:14px;cursor:pointer}
+.chip:hover{border-color:var(--green)}
+.lbl{display:flex;justify-content:space-between;align-items:baseline;color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-top:84px;padding-top:22px;border-top:1px solid var(--line)}
+.lbl a{color:var(--green);letter-spacing:0;text-transform:none;font-size:14px;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer}
+.card:hover{border-color:var(--green)}
+.card .t{font-family:var(--fh);font-weight:600;font-size:19px}
+.card .m{color:var(--muted);font-size:13px;margin:2px 0 10px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.facts{display:flex;gap:18px;font-size:13px}
+.facts span{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.facts b{font-weight:600}
+.tag{display:inline-flex;align-items:center;height:20px;border:1px solid color-mix(in oklab, var(--ink) 25%, transparent);border-radius:4px;padding:0 6px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);line-height:1;vertical-align:middle}
+.tag.m{background:var(--marigold);border-color:var(--marigold);color:var(--ink)}
+/* thread */
+.msgs{display:flex;flex-direction:column;gap:18px}
+.you{align-self:flex-end;max-width:72%;background:var(--panel2);border-radius:14px 14px 4px 14px;padding:10px 14px}
+.guide{animation:fade .4s ease both}
+.guide p{margin:0 0 12px}
+.typing{color:var(--muted);font-size:14px}
+.typing i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--muted);margin-right:3px;animation:blink 1s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.note{border-left:3px solid var(--geru);background:var(--panel);padding:10px 14px;font-size:14px;border-radius:0 8px 8px 0;margin:6px 0 14px}
+.cta{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:var(--card);border-radius:9px;padding:8px 12px;font-size:14px;margin:0 8px 8px 0;cursor:pointer}
+.cta.p{background:var(--green);color:#fff;border-color:var(--green)}
+.cta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.dock{position:fixed;left:272px;right:0;bottom:0;padding:16px 24px 22px;background:linear-gradient(transparent,var(--bg) 40%);z-index:5}
+.dock .ask{max-width:800px;margin:0 auto}
+/* pages */
+.page{max-width:1120px;margin:0 auto;padding:44px 48px}
+.filters{display:flex;gap:10px;margin:14px 0 20px}
+.f{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:8px 12px;font-size:14px;color:var(--muted)}
+.f.q{flex:1;color:#9A907F}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap} td.n{white-space:normal}
+tr.r{cursor:pointer} tr.r:hover td{background:var(--card)}
+td.n{font-family:var(--fh);font-weight:600;font-size:17px}
+td .s{color:var(--muted);font-size:12px;font-family:var(--fb);font-weight:400}
+.player{display:inline-flex;align-items:center;gap:8px;min-width:150px}
+.player .pb{width:28px;height:28px;border-radius:50%;border:1px solid var(--green);background:var(--card);display:grid;place-items:center;color:var(--green);cursor:pointer;flex:none}
+.player .pb svg{width:12px;height:12px;fill:currentColor}
+.player .bar{flex:1;height:3px;background:color-mix(in oklab, var(--ink) 15%, transparent);border-radius:2px;position:relative}
+.player .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--green);border-radius:2px}
+.player .tm{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.player.on .bar i{width:38%} .player.on .tm.r{color:var(--ink)}
+.player.big{width:100%;max-width:460px;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.player.big .pb{width:40px;height:40px} .player.big .pb svg{width:14px;height:14px} .player.big .tm{font-size:13px}
+.fab{position:fixed;right:28px;bottom:24px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:14px;display:flex;gap:8px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.08);cursor:pointer}
+.fab svg{width:16px;height:16px;stroke:var(--green);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+/* trek page */
+.strip{display:flex;gap:28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin:14px 0 18px}
+.strip div span{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.strip div b{font-family:var(--fh);font-size:19px;font-weight:600}
+.warn{border-left:3px solid var(--buransh);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;font-size:14px;margin:0 0 10px}
+.weak{font-size:12px;color:var(--geru);white-space:nowrap}
+.days > div{display:grid;grid-template-columns:90px 1fr;padding:8px 0;border-bottom:1px solid var(--line)}
+.days > div > span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+/* forms */
+.form{max-width:560px}
+label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:14px 0 4px}
+.in{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:10px 12px;font-size:15px;color:#9A907F}
+.btn{display:inline-block;background:var(--green);color:#fff;border-radius:9px;padding:9px 14px;font-size:14px;margin-top:16px}
+.notice{border-left:3px solid var(--marigold);background:var(--panel);padding:10px 14px;border-radius:0 8px 8px 0;font-size:14px;margin:18px 0}
+.about p{max-width:560px}
+.about ul{max-width:560px;padding-left:20px}
+.about h2{margin-top:22px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" fill="none">
+  <symbol id="i-foot" viewBox="0 0 24 24"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v6"/><path d="M9 10h6"/></symbol>
+  <symbol id="i-mtn" viewBox="0 0 24 24"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3h12v6"/><rect width="12" height="8" x="6" y="14"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol>
+  <symbol id="i-open" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="side">
+    <a class="brand" href="#home"><img src="logo.svg" alt="" width="24" height="24"><span class="n">Pagdandi</span><span class="d">पगडंडी</span></a>
+    <nav class="nav">
+      <a href="#home" data-v="home"><svg><use href="#i-chat"/></svg>New plan</a>
+      <a href="#treks" data-v="treks"><svg><use href="#i-mtn"/></svg>Treks</a>
+      <a href="#updates" data-v="updates"><svg><use href="#i-mail"/></svg>Daily updates<span class="soon">coming soon</span></a>
+    </nav>
+    <div class="bottom nav">
+      <a href="#about" data-v="about"><svg><use href="#i-info"/></svg>About and data</a>
+      <small>Runs on Gemma 4, hosted by us. Chats aren't stored.</small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topo"></div>
+
+    <!-- HOME / CHAT -->
+    <section id="v-home" class="view">
+      <div class="home" id="home">
+        <div id="intro">
+          <h1>Which trek can your group actually do?</h1>
+          <div class="ask">
+            <textarea id="q" placeholder="Tell the guide about your group: how many of you, who has trekked before, budget each, how many days, which month, and where you're starting from."></textarea>
+            <div class="row"><span class="meta">Answers come from 20 sourced Indian treks.</span><button class="send" onclick="send()"><svg><use href="#i-up"/></svg></button></div>
+          </div>
+          <div class="chips">
+            <span class="chip" onclick="send('5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi')">5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi</span>
+            <span class="chip" onclick="send('A day hike near Mumbai this weekend')">A day hike near Mumbai this weekend</span>
+            <span class="chip" onclick="send('Lakes high in the mountains with wildflowers')">Lakes high in the mountains with wildflowers</span>
+          </div>
+          <div class="lbl"><span>Check out some treks</span><a href="#treks">All 20 treks →</a></div>
+          <div class="grid">
+            <a class="card" href="#trek"><div class="t">Kedarkantha</div><div class="m"><span>Uttarakhand</span><span class="tag">moderate</span></div><div class="facts"><div><span>Days</span><b>3</b></div><div><span>Max alt</span><b>3,810 m</b></div><div><span>Season</span><b>Apr–Jun, Sep–Nov</b></div></div></a>
+            <a class="card" href="#trek"><div class="t">Kalsubai</div><div class="m"><span>Maharashtra · Sahyadris</span><span class="tag">moderate</span></div><div class="facts"><div><span>Days</span><b>Day hike</b></div><div><span>Max alt</span><b>1,646 m</b></div><div><span>Season</span><b>Sep–Feb</b></div></div></a>
+            <a class="card" href="#trek"><div class="t">Sandakphu</div><div class="m"><span>West Bengal</span><span class="tag">moderate</span></div><div class="facts"><div><span>Days</span><b>4</b></div><div><span>Max alt</span><b>3,636 m</b></div><div><span>Season</span><b>Apr–May, Oct–Dec</b></div></div></a>
+          </div>
+        </div>
+        <div id="msgs" class="msgs hide"></div>
+      </div>
+    </section>
+
+    <!-- TREKS -->
+    <section id="v-treks" class="view page hide">
+      <h1 style="font-size:32px;margin-bottom:4px">Treks</h1>
+      <p class="muted" style="margin:0">20 treks, every fact sourced. Filter the list, or open a trek for the day-by-day, permits, last signal and a printable plan.</p>
+      <div class="filters"><div class="f q">Trek name</div><div class="f">Region ▾</div><div class="f">Month ▾</div><div class="f">Days ▾</div><div class="f">Difficulty ▾</div><div class="f">Budget ▾</div></div>
+      <table>
+<tr><th>Trek</th><th>State</th><th>Days</th><th>Max alt</th><th>Difficulty</th><th>Season</th><th>Budget (est.)</th><th>Intro</th></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Agasthyarkoodam</td><td>Kerala</td><td>3</td><td>1,868 m</td><td><span class="tag">moderate</span></td><td>Jan–Feb</td><td>₹2,000–4,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Brahmatal</td><td>Uttarakhand</td><td>5</td><td>3,718 m</td><td><span class="tag">moderate</span></td><td>not known yet</td><td>₹8,000–15,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Chembra Peak</td><td>Kerala</td><td>Day hike</td><td>2,100 m</td><td><span class="tag">moderate</span></td><td>Jan–Mar, Sep–Dec</td><td>₹500–2,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Dayara Bugyal</td><td>Uttarakhand</td><td>3</td><td>3,500 m</td><td><span class="tag">moderate</span></td><td>Jan–Dec <span class="weak">· weak source</span></td><td>₹5,000–10,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Dzükou Valley</td><td>Nagaland</td><td>2</td><td>2,438 m</td><td><span class="tag">moderate</span></td><td>May–Jun, Oct <span class="weak">· weak source</span></td><td>₹3,000–7,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Goecha La</td><td>Sikkim</td><td>8</td><td>4,940 m</td><td><span class="tag">difficult</span></td><td>Mar–Jun, Oct–Dec <span class="weak">· weak source</span></td><td>₹16,000–30,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Hampta Pass</td><td>Himachal Pradesh</td><td>4</td><td>4,270 m</td><td><span class="tag">difficult</span></td><td>May–Oct <span class="weak">· weak source</span></td><td>₹12,000–22,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Har Ki Dun</td><td>Uttarakhand</td><td>4</td><td>3,660 m</td><td><span class="tag">moderate</span></td><td>Apr–Jun, Sep–Nov <span class="weak">· weak source</span></td><td>₹8,000–16,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Harishchandragad</td><td>Maharashtra</td><td>2</td><td>1,422 m</td><td><span class="tag">moderate</span></td><td>Jan–Feb, Oct–Dec</td><td>₹1,000–2,500</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Kalsubai</td><td>Maharashtra</td><td>Day hike</td><td>1,646 m</td><td><span class="tag">moderate</span></td><td>Jan–Feb, Sep–Dec</td><td>₹500–1,500</td><td><span class="player on"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></span><span class="bar"><i></i></span><span class="tm r">0:36 / 1:35</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Kashmir Great Lakes</td><td>Jammu and Kashmir</td><td>6</td><td>4,190 m</td><td><span class="tag">difficult</span></td><td>Jun–Sep</td><td>₹16,000–30,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Kedarkantha</td><td>Uttarakhand</td><td>3</td><td>3,810 m</td><td><span class="tag">moderate</span></td><td>Apr–Jun, Sep–Nov <span class="weak">· weak source</span></td><td>₹6,000–12,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Kheerganga</td><td>Himachal Pradesh</td><td>null</td><td><span class="muted">not known yet</span></td><td><span class="tag">moderate</span></td><td>not known yet</td><td>₹3,000–8,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Kudremukh</td><td>Karnataka</td><td>Day hike</td><td>1,894 m</td><td><span class="tag">moderate</span></td><td>Jan–Feb, Oct–Dec</td><td>₹1,500–4,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Kumara Parvatha</td><td>Karnataka</td><td>2</td><td>1,710 m</td><td><span class="tag">moderate</span></td><td>Jan–May, Oct–Dec</td><td>₹1,000–3,500</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Nag Tibba</td><td>Uttarakhand</td><td>2</td><td>3,022 m</td><td><span class="tag">moderate</span></td><td>not known yet <span class="weak">· weak source</span></td><td>₹3,000–6,500</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Nongriat and the Double-Decker Root Bridge</td><td>Meghalaya</td><td>Day hike</td><td><span class="muted">not known yet</span></td><td><span class="tag">easy</span></td><td>Jan–Feb, Nov–Dec</td><td>₹2,000–5,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Sandakphu (Singalila Ridge)</td><td>West Bengal</td><td>4</td><td>3,636 m</td><td><span class="tag">moderate</span></td><td>Apr–May, Oct–Dec</td><td>₹6,000–14,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Triund</td><td>Himachal Pradesh</td><td>Day hike</td><td>2,875 m</td><td><span class="tag">easy</span></td><td>Apr–Oct <span class="weak">· weak source</span></td><td>₹1,500–5,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+<tr class="r" onclick="go('trek')"><td class="n">Valley of Flowers</td><td>Uttarakhand</td><td>3</td><td>3,600 m</td><td><span class="tag">moderate</span></td><td>Jun–Oct</td><td>₹7,000–13,000</td><td><span class="player"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">1:40</span></span></td></tr>
+</table>
+<p class="muted" style="font-size:13px;display:flex;justify-content:space-between"><span>Showing 20 of 20 treks</span><span><span class="weak">weak source</span> marks a fact whose only source we couldn't fully trust; the trek page says why.</span></p>
+      <div class="fab" onclick="go('home')"><svg><use href="#i-chat"/></svg>Ask the guide about these</div>
+    </section>
+
+    <!-- TREK PAGE -->
+    <section id="v-trek" class="view page hide">
+      <div class="muted" style="font-size:12px;letter-spacing:.12em;text-transform:uppercase"><a href="#treks">Treks</a> / Uttarakhand</div>
+      <h1 style="margin:4px 0 2px">Kedarkantha <span style="color:var(--muted);font-weight:400">केदारकांठा</span></h1>
+      <div class="muted">Uttarakhand · Govind Wildlife Sanctuary, Mori tehsil, Uttarkashi district</div>
+      <div class="strip"><div><span>Days</span><b>3</b></div><div><span>Max alt</span><b>3,810 m</b></div><div><span>Season</span><b>Apr–Jun, Sep–Nov</b></div><div><span>Difficulty</span><b>Moderate</b></div><div><span>Budget (est.)</span><b>₹6,000–12,000</b></div><div><span>Distance</span><b>20 km <span class="weak">weak source</span></b></div></div>
+      <div class="warn"><b>This trek goes to 3,810 m.</b> Above about 3,500 m, altitude sickness becomes more likely. Climb gradually, drink water, and turn back if headache, nausea or breathlessness get worse. Not medical advice, and not a substitute for a licensed local guide.</div>
+      <span class="cta p"><svg><use href="#i-mail"/></svg>Get daily updates</span><span class="cta"><svg><use href="#i-print"/></svg>Print the one-page plan</span><span class="cta"><svg><use href="#i-down"/></svg>Download the audio intro</span>
+      <div class="two">
+        <div>
+          <h2>Listen</h2><p class="muted" style="margin:0 0 10px">Why this trek matters and what you'll see, in about a minute and a half.</p><span class="player big"><span class="pb"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span><span class="bar"><i></i></span><span class="tm">0:00 / 1:40</span></span><p class="muted" style="font-size:12px;margin:8px 0 0">Narrated from the trek's sourced facts. Download it for the drive: it plays offline.</p>
+          <h2>Day by day</h2>
+          <div class="days"><div><span>Day 1</span><div>Sankri → Juda Ka Talab</div></div><div><span>Day 2</span><div>Juda Ka Talab → Kedarkantha base camp</div></div><div><span>Day 3</span><div>Base camp → summit → Sankri <div class="muted" style="font-size:12px">high point 3,810 m</div></div></div></div>
+          <p class="muted" style="font-size:13px">Camp altitudes not known: no open source gives them, so we don't guess.</p>
+          <h2>What you'll see</h2>
+          <ul><li>A full-circle summit panorama: Swargarohini, Bandarpunch and Black Peak.</li><li>Juda Ka Talab, a small high lake used as a campsite.</li><li>Pine, deodar, oak and rhododendron forest.</li></ul>
+        </div>
+        <div>
+          <h2>Getting there</h2>
+          <div class="days"><div><span>Road head</span><div>Sankri</div></div><div><span>Railhead</span><div>Dehradun, 200 km by road</div></div><div><span>Airport</span><div>Dehradun (Jolly Grant), DED</div></div><div><span>Last signal</span><div>Sankri</div></div></div>
+          <h2>Permits</h2><p>Inside Govind Pashu Vihar National Park. Register online first, then collect the paper permit at the park office in Purola.</p>
+          <h2>Today's conditions</h2><p class="muted">Checked every morning for treks people are heading to. Forecast at Sankri and at the summit, plus any news with links.</p>
+          <h2>Sources</h2><p class="muted" style="font-size:13px">8 sources: Wikipedia (English and Hindi), Wikivoyage, Uttarakhand Tourism, OpenStreetMap. Last reviewed 11 Oct 2026. Text is CC BY-SA 4.0. <a href="#" style="color:var(--green)">Spotted a mistake?</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- UPDATES -->
+    <section id="v-updates" class="view page hide">
+      <h1 style="font-size:32px;margin-bottom:4px">Daily updates <span class="tag m">coming soon</span></h1>
+      <p class="muted" style="max-width:640px">One short email every morning at 7:00 IST until the day you leave: the forecast at the road head and the high point, any news since yesterday (closures, landslides, snowfall, permits), and one thing to do outside today to get ready.</p>
+      <div class="notice"><b>Emails don't go out yet.</b> Pagdandi has no domain of its own, so only the site admin receives them for now. If you sign up with another address, nothing is stored. We'll switch this on once the domain exists.</div>
+      <div class="two" style="align-items:start"><div class="form">
+        <label>Trek</label><div class="in">Choose a trek ▾</div>
+        <label>First day of travel</label><div class="in">dd/mm/yyyy</div>
+        <label>Email</label><div class="in">you@example.com</div>
+        <span class="btn">Get daily updates</span>
+      </div>
+      <div>
+        <div class="muted" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:14px 0 6px">What the morning email looks like</div>
+        <div class="card" style="cursor:default">
+          <div style="font-size:12px;color:var(--muted)">From Pagdandi · 7:00 IST</div>
+          <div class="t" style="font-size:17px;margin:4px 0 10px">Kedarkantha · 12 days to go · clear at Sankri, snow above 3,000 m</div>
+          <div class="facts" style="margin-bottom:10px"><div><span>Sankri</span><b>4° to 14°, dry</b></div><div><span>Summit (est.)</span><b>−6° to 2°, light snow</b></div></div>
+          <div style="font-size:14px;margin-bottom:10px"><b>News since yesterday:</b> nothing new.</div>
+          <div class="note" style="margin:0">One thing to do outside today: a 5 km walk in the boots you'll trek in.</div>
+        </div>
+        <h2 style="font-size:19px;margin-top:22px">Meanwhile</h2>
+        <p class="muted" style="margin:0">The same forecast and news appear on each trek's page under "Today's conditions". Print the one-page plan and download the audio, so the phone stays in your pocket on the trail.</p>
+      </div></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="v-about" class="view page about hide">
+      <h1 style="font-size:32px">About and data</h1>
+      <div class="two">
+      <div>
+      <h2>What Pagdandi is</h2>
+      <p>An open database of Indian treks, with a guide you can ask. Tell it about your group and it recommends treks it can back with sources. Then it gets out of the way: an audio intro for the drive, a one-page plan for the trail.</p>
+      <h2>How the guide works</h2>
+      <p>The guide is Gemma 4, an open-weight model we host ourselves. It only recommends treks from this database, every number on a card comes from the database, and plain code checks the numbers in its sentences before you see them. Chats aren't stored.</p>
+      </div><div><h2 style="margin-top:0">Where the data comes from</h2>
+      <ul><li>20 treks, one file each, written from Wikipedia, Wikivoyage, OpenStreetMap, UNESCO and government pages. No trekking companies.</li><li>Every fact names its source. If we couldn't find one, the fact is blank and the page says "not known yet". A fact we could only source weakly is marked.</li><li>Trek text is CC BY-SA 4.0. Map data © OpenStreetMap contributors. Forecasts from Open-Meteo. Anyone can fix a trek or add one on GitHub.</li></ul>
+      <h2>Not advice</h2>
+      <p>Pagdandi is not medical advice and not a substitute for a licensed local guide. Read the official advisories before you go.</p>
+      <h2>Credits</h2><p>Code is MIT. Fonts: Eczar and Anek Devanagari (OFL). Icons: Lucide (ISC). Built for the DEV Hacktoberfest Open-Source AI Challenge, Week 1.</p>
+      </div></div>
+    </section>
+  
+      <div class="dock hide" id="dock"><div class="ask"><textarea id="q2" placeholder="Ask a follow-up, for example: what if one of us can only do 3 days?"></textarea><div class="row"><span class="meta">The guide only recommends treks from the database.</span><button class="send" onclick="send(null,'q2')"><svg><use href="#i-up"/></svg></button></div></div></div>
+  </main>
+</div>
+
+<script>
+const views=['home','treks','trek','updates','about'];
+if(new URLSearchParams(location.search).get('static')==='1'){const st=document.createElement('style');st.textContent='.view,.guide{animation:none!important}';document.head.appendChild(st)}
+function go(v){location.hash='#'+v}
+function route(){
+  const v=(location.hash||'#home').slice(1);
+  for(const x of views){document.getElementById('v-'+x).classList.toggle('hide',x!==v)}
+  document.querySelectorAll('.nav a[data-v]').forEach(a=>a.classList.toggle('on',a.dataset.v===(v==='trek'?'treks':v)));
+  if(v!=='home'){document.getElementById('dock').classList.add('hide')}
+  else if(!document.getElementById('msgs').classList.contains('hide')){document.getElementById('dock').classList.remove('hide')}
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route); route();
+if(new URLSearchParams(location.search).get('demo')==='thread'){setTimeout(()=>send('5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi'),300)}
+
+const answer=`<p>Three fit, and all three are reachable from Delhi by an overnight bus or train. Dayara Bugyal is the easiest start for two first-timers. Kedarkantha is the classic winter trek, but its season on record ends in November, so check conditions before you book.</p>
+<div class="grid" style="margin:0 0 14px">
+ <a class="card" href="#trek"><div class="t">Dayara Bugyal</div><div class="m">Uttarakhand · <span class="tag">easy–moderate</span></div><div class="facts"><div><span>Days</span><b>4</b></div><div><span>Max alt</span><b>3,408 m</b></div><div><span>Budget</span><b>₹6–10k</b></div></div></a>
+ <a class="card" href="#trek"><div class="t">Nag Tibba</div><div class="m">Uttarakhand · <span class="tag">easy</span></div><div class="facts"><div><span>Days</span><b>2</b></div><div><span>Max alt</span><b>3,022 m</b></div><div><span>Budget</span><b>₹3–6k</b></div></div></a>
+ <a class="card" href="#trek"><div class="t">Kedarkantha</div><div class="m">Uttarakhand · <span class="tag">moderate</span></div><div class="facts"><div><span>Days</span><b>3</b></div><div><span>Max alt</span><b>3,810 m</b></div><div><span>Budget</span><b>₹6–12k</b></div></div></a>
+</div>
+<div class="note">Dayara Bugyal and Kedarkantha go above 3,500 m: climb gradually, drink water, and turn back if headache or breathlessness gets worse. Not medical advice; read the official advisory before you go.</div>
+<span class="cta p"><svg><use href="#i-mail"/></svg>Get daily updates for Dayara Bugyal</span><span class="cta" onclick="go('trek')"><svg><use href="#i-open"/></svg>Open the trek page</span><span class="cta"><svg><use href="#i-print"/></svg>Print the one-page plan</span>`;
+const follow=`<p>If one of you only has 3 days, Nag Tibba fits easily (2 days on the trail) and Kedarkantha fits exactly (3). Dayara Bugyal needs 4, so it drops out. Nag Tibba is the gentler of the two for first-timers.</p>`;
+let turns=0;
+function send(text,box){
+  const ta=document.getElementById(box||'q'); const t=text||ta.value.trim(); if(!t) return; ta.value='';
+  const home=document.getElementById('home'), intro=document.getElementById('intro'), msgs=document.getElementById('msgs');
+  if(turns===0){
+    intro.style.transition='opacity .3s ease, transform .3s ease'; intro.style.opacity='0'; intro.style.transform='translateY(-10px)';
+    setTimeout(()=>{intro.classList.add('hide'); home.classList.add('thread'); msgs.classList.remove('hide'); document.getElementById('dock').classList.remove('hide'); push(t)},320);
+  } else push(t);
+}
+function push(t){
+  const msgs=document.getElementById('msgs');
+  const u=document.createElement('div'); u.className='you'; u.textContent=t; msgs.appendChild(u);
+  const g=document.createElement('div'); g.className='guide'; g.innerHTML='<div class="typing"><i></i><i></i><i></i> The guide is searching the treks…</div>'; msgs.appendChild(g);
+  window.scrollTo(0,document.body.scrollHeight);
+  setTimeout(()=>{g.innerHTML=(turns===0)?answer:follow; turns++; window.scrollTo(0,document.body.scrollHeight)},1400);
+}
+</script>
+</body>
+</html>

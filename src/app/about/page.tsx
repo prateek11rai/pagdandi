@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TopoBackdrop } from "@/components/topo-pattern";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -8,12 +7,11 @@ export default function AboutPage() {
   return (
     <>
       <section className="relative isolate overflow-hidden border-b hairline">
-        <TopoBackdrop />
         <div className="mx-auto max-w-3xl px-4 pb-6 pt-10 sm:px-6">
           <p className="label">About</p>
-          <h1 className="display mt-2 text-4xl font-semibold sm:text-5xl">
+          <h1 className="mt-2 text-4xl font-semibold sm:text-5xl">
             About Pagdandi{" "}
-            <span lang="hi" className="font-devanagari text-3xl font-normal text-ink-muted">
+            <span lang="hi" className="text-3xl font-normal text-ink-muted">
               पगडंडी
             </span>
           </h1>
@@ -116,8 +114,7 @@ export default function AboutPage() {
 
         <Section id="credits" title="Credits">
           <p>
-            Built for the DEV Hacktoberfest Open-Source AI Challenge (Week 1: Touch Grass). Typefaces: Fraunces, Mukta and
-            Tiro Devanagari Hindi. Found a mistake?{" "}
+            Built for the DEV Hacktoberfest Open-Source AI Challenge (Week 1: Touch Grass). Typefaces: Eczar and Anek Devanagari (SIL Open Font License). Found a mistake?{" "}
             <a href="https://github.com/prateek11rai/pagdandi">Open an issue or a pull request</a>.
           </p>
         </Section>

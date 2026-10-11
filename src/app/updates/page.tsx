@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TopoBackdrop } from "@/components/topo-pattern";
 
 export const metadata: Metadata = { title: "Daily updates" };
 
@@ -18,10 +17,9 @@ export default async function UpdatesPage({ searchParams }: { searchParams: Para
   return (
     <>
       <section className="relative isolate overflow-hidden border-b hairline">
-        <TopoBackdrop />
         <div className="mx-auto max-w-3xl px-4 pb-6 pt-10 sm:px-6">
           <p className="label">Updates</p>
-          <h1 className="display mt-2 text-4xl font-semibold sm:text-5xl">Daily updates until you leave</h1>
+          <h1 className="mt-2 text-4xl font-semibold sm:text-5xl">Daily updates until you leave</h1>
         </div>
       </section>
       <div className="mx-auto grid max-w-3xl gap-6 px-4 py-8 sm:px-6">

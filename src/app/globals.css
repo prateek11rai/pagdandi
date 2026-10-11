@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
-/* Field guide palette. Contrast (WCAG): ink/paper 13:1, moss/paper 5.4:1, clay-ink/paper 5.4:1.
-   Clay itself (3.6:1 on paper) is for rules, icons and large type only. */
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
-
+/* Field guide palette, one theme. Contrast (WCAG): ink/paper 13:1, moss/paper 5.4:1, clay-ink/paper 5.4:1.
+   Clay itself (3.6:1 on paper) is for rules, icons, the logotype and large type only. */
 :root {
   --paper: #f6f1e7;
   --paper-raised: #fbf8f1;
+  /* A shade below paper: user bubbles and notices. */
+  --paper-deep: #ebe4d6;
   --ink: #1f2a24;
   --ink-muted: #5a635c;
+  --ink-faint: #736b5e; /* placeholders: 4.9:1 on paper-raised */
   --moss: #3f6b4f;
   --moss-strong: #2f533c;
   --clay: #c2643b;
@@ -20,27 +21,18 @@
   color-scheme: light;
 }
 
-[data-theme="dark"] {
-  --paper: #141c17;
-  --paper-raised: #1b2620;
-  --ink: #ede6d6;
-  --ink-muted: #a9a898;
-  --moss: #7fb08e;
-  --moss-strong: #a3cbb0;
-  --clay: #e08a5f;
-  --clay-ink: #e8a07a;
-  --saffron: #e8a33d;
-  --rule: color-mix(in oklab, var(--ink) 16%, transparent);
-  --topo: color-mix(in oklab, var(--moss) 14%, transparent);
-  --focus: var(--ink);
-  color-scheme: dark;
+@theme {
+  /* The sidebar shell starts here; below it, a bottom tab bar. */
+  --breakpoint-shell: 56.25rem;
 }
 
 @theme inline {
   --color-paper: var(--paper);
   --color-paper-raised: var(--paper-raised);
+  --color-paper-deep: var(--paper-deep);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
   --color-moss: var(--moss);
   --color-moss-strong: var(--moss-strong);
   --color-clay: var(--clay);
@@ -49,9 +41,8 @@
   --color-rule: var(--rule);
   --color-topo: var(--topo);
 
-  --font-serif: var(--font-fraunces), Georgia, serif;
-  --font-sans: var(--font-mukta), system-ui, sans-serif;
-  --font-devanagari: var(--font-tiro), var(--font-mukta), serif;
+  --font-serif: var(--font-eczar), Georgia, serif;
+  --font-sans: var(--font-anek), system-ui, sans-serif;
 }
 
 @layer base {
@@ -62,15 +53,14 @@
   }
   body {
     font-family: var(--font-sans);
-    font-size: 1.0625rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.5;
     text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-serif);
-    font-optical-sizing: auto;
+    font-weight: 600;
     line-height: 1.15;
-    letter-spacing: -0.01em;
     text-wrap: balance;
   }
   p { text-wrap: pretty; }
@@ -89,27 +79,43 @@
   /* Small-caps fact labels: DAYS · MAX ALT · SEASON */
   .label {
     font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.6875rem;
+    font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-muted);
   }
   .hairline { border-color: var(--rule); }
-  /* Fraunces at its display optical size, for big headings. */
-  .display { font-variation-settings: "opsz" 144; }
+  /* Contour lines over the whole main area, fading out about 60% of the way down. */
+  .topo-fade {
+    mask-image: linear-gradient(#000 0%, #000 25%, transparent 60%);
+    -webkit-mask-image: linear-gradient(#000 0%, #000 25%, transparent 60%);
+  }
   .topo-mask {
     background-color: var(--topo);
-    mask: url(/brand/topo.svg) center / cover no-repeat;
-    -webkit-mask: url(/brand/topo.svg) center / cover no-repeat;
+    mask: url(/brand/topo.svg) center top / cover no-repeat;
+    -webkit-mask: url(/brand/topo.svg) center top / cover no-repeat;
   }
   .figure-caption {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--ink-muted);
   }
+  /* "The guide is searching the treks…" */
+  .typing-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--ink-muted);
+    animation: blink 1s infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  .fade-in { animation: fade-in 0.4s ease both; }
 }
+
+@keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+@keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -120,11 +126,11 @@
   }
 }
 
-/* "Take it on the trail": one printed page, ink on white, no chrome. */
+/* The one-page plan: ink on white, no chrome. */
 @media print {
   @page { size: A4; margin: 12mm; }
-  :root, [data-theme="dark"] {
-    --paper: #fff; --paper-raised: #fff; --ink: #000; --ink-muted: #333;
+  :root {
+    --paper: #fff; --paper-raised: #fff; --paper-deep: #fff; --ink: #000; --ink-muted: #333;
     --moss: #000; --clay: #000; --clay-ink: #000; --rule: #999; --topo: transparent;
   }
   body { font-size: 10.5pt; line-height: 1.4; }

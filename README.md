@@ -169,7 +169,7 @@ If the local stack is down, integration tests fail with "run `pnpm dev:up` first
 - Gemma 4: [Apache 2.0](https://ai.google.dev/gemma/apache_2). EmbeddingGemma is provided under and subject to the [Gemma Terms of Use](https://ai.google.dev/gemma/terms), and the site's terms carry the [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy).
 - Logo: the Lucide "footprints" icon, ISC ([notice](public/brand/logo-LICENSE.txt)).
 - Audio: voiced with [ElevenLabs](https://elevenlabs.io), under its terms for the plan used.
-- Fonts: Fraunces, Mukta and Tiro Devanagari Hindi (SIL Open Font License).
+- Fonts: Eczar and Anek Devanagari (SIL Open Font License), self-hosted at build time.
 
 ## After the deadline
 

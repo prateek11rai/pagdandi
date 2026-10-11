@@ -7,7 +7,6 @@ import { AudioPlayer } from "@/components/audio-player";
 import { SeasonStrip } from "@/components/season-strip";
 import { SubscribeForm } from "@/components/subscribe-form";
 import { TakeItOnTheTrail } from "@/components/take-it-on-the-trail";
-import { TopoBackdrop } from "@/components/topo-pattern";
 import { ConditionsPanel } from "@/components/conditions-panel";
 import { formatAltitude, formatBudget, formatDays, formatKm, formatSeason } from "@/lib/format";
 import { ALTITUDE_SAFETY_THRESHOLD_M, REGIONS, type Trek } from "@/lib/trek-schema";
@@ -37,7 +36,6 @@ export default async function TrekPage({ params }: Props) {
   return (
     <article>
       <header className="relative isolate overflow-hidden border-b hairline">
-        <TopoBackdrop />
         <div className="mx-auto max-w-4xl px-4 pb-6 pt-8 sm:px-6 sm:pt-12">
           <p className="label no-print">
             <Link href="/" className="no-underline">
@@ -45,12 +43,12 @@ export default async function TrekPage({ params }: Props) {
             </Link>{" "}
             / {REGIONS[trek.region]}
           </p>
-          <h1 className="display mt-2 text-4xl font-semibold sm:text-5xl">
+          <h1 className="mt-2 text-4xl font-semibold sm:text-5xl">
             {trek.name}
             {trek.name_local && (
               <span
                 lang={trek.name_local.lang}
-                className={`ml-3 align-middle text-2xl font-normal text-ink-muted sm:text-3xl ${trek.name_local.lang === "hi" ? "font-devanagari" : ""}`}
+                className={`ml-3 align-middle text-2xl font-normal text-ink-muted sm:text-3xl `}
               >
                 {trek.name_local.text}
               </span>

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { TopoBackdrop } from "@/components/topo-pattern";
 import { TrekCard } from "@/components/trek-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,10 +22,9 @@ export default async function TreksPage({ searchParams }: { searchParams: Params
   return (
     <>
       <section className="relative isolate overflow-hidden border-b hairline">
-        <TopoBackdrop />
         <div className="mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 sm:pb-12 sm:pt-16">
           <p className="label">India&apos;s open trek database</p>
-          <h1 className="display mt-2 max-w-3xl text-4xl font-semibold sm:text-6xl">
+          <h1 className="mt-2 max-w-3xl text-4xl font-semibold sm:text-6xl">
             Find a trek your whole group can actually do.
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-ink-muted">
