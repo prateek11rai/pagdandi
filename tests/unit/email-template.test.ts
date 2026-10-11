@@ -15,7 +15,10 @@ const digest: DigestContent = {
     { label: "High point (estimate)", place: "Valley of Flowers, 3,658 m", days: ["Sun, 11 Oct: Snow, -2 to 5 °C, 4 cm snow"] },
   ],
   forecastSample: false,
-  news: [{ text: 'Bridge <script>alert("x")</script> & road reopen', source: "Times & <b>Co</b>", date: "Sat, 10 Oct" }],
+  news: [
+    { text: 'Bridge <script>alert("x")</script> & road reopen', source: "Times & <b>Co</b>", date: "Sat, 10 Oct", url: "https://news.example/story?id=1&ref=feed" },
+    { text: "A link that isn't https", source: null, date: null, url: "javascript:alert(1)" },
+  ],
   newsNote: null,
   newsSample: false,
   prep: "Walk 8 km today with a day pack carrying 4 to 5 kg.",
@@ -47,20 +50,29 @@ function textMatchesHtml(m: Email) {
   }
 }
 
-// No <style> block, images, web fonts or tracking; every URL is on the site.
+// No <style> block, images, web fonts or tracking; every URL is on the site, or is a news article's own link.
 function selfContained(m: Email) {
-  expect(m.html).not.toMatch(/<style|<img|<link|<script|url\(|data:|@import|@font-face/i);
-  for (const url of m.html.match(/https?:\/\/[^"'\s<)]+/g) ?? []) expect(url.startsWith(SITE), url).toBe(true);
+  expect(m.html).not.toMatch(/<style|<img|<link|<script|url\(|data:|@import|@font-face|javascript:/i);
+  for (const url of m.html.match(/https?:\/\/[^"'\s<)]+/g) ?? []) expect(url.startsWith(SITE) || url.startsWith("https://news.example/"), url).toBe(true);
   expect(m.html).toContain("max-width:600px");
 }
 
 describe("email template", () => {
   it("escapes headlines and sources in the HTML, and keeps them readable in the text", () => {
     const m = digestEmail(digest);
-    expect(m.html).toContain("Bridge &lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt; &amp; road reopen");
+    expect(m.html).toContain(
+      '<a href="https://news.example/story?id=1&amp;ref=feed" rel="noopener noreferrer" style="color:#1f2a24;text-decoration:underline">Bridge &lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt; &amp; road reopen</a>',
+    );
     expect(m.html).toContain("Times &amp; &lt;b&gt;Co&lt;/b&gt; · Sat, 10 Oct");
     expect(m.html).not.toMatch(/<script|<b>Co/);
-    expect(m.text).toContain('- Bridge <script>alert("x")</script> & road reopen\n  Times & <b>Co</b> · Sat, 10 Oct');
+    expect(m.text).toContain('- Bridge <script>alert("x")</script> & road reopen\n  Times & <b>Co</b> · Sat, 10 Oct\n  https://news.example/story?id=1&ref=feed');
+  });
+
+  it("links each headline to its article only when the link is https", () => {
+    const m = digestEmail(digest);
+    expect(m.html).toContain(">A link that isn&#39;t https</p>");
+    expect(m.text).not.toContain("javascript:");
+    expect(m.html.match(/rel="noopener noreferrer"/g)).toHaveLength(1);
   });
 
   it("has a text part with the same content as the HTML", () => {

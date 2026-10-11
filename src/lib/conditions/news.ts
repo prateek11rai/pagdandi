@@ -5,7 +5,17 @@ import type { Trek } from "../trek-schema";
 import type { NewsItem, NewsPayload } from "./types";
 
 export interface NewsSource {
-  fetch(t: Trek): Promise<NewsPayload>;
+  // `query` replaces the trek's own search text; only `pnpm news:check --query` uses it, to diagnose SerpApi.
+  fetch(t: Trek, query?: string): Promise<NewsPayload>;
+}
+
+// The shape of a SerpApi reply, for diagnosis: its top-level keys, its own error string and status. Never the
+// request, which carries the key.
+export interface ReplyShape {
+  keys: string[];
+  error: string | null;
+  status: string | null;
+  newsResults: number | null; // null when the key is absent
 }
 
 export function newsQuery(t: Trek): string {
@@ -13,11 +23,11 @@ export function newsQuery(t: Trek): string {
 }
 
 // Live Google News results through SerpApi. Every call reserves budget first; a full budget throws.
-export function serpApiNews(opts: { apiKey: string; budget: BudgetStore; caps: Caps }): NewsSource {
+export function serpApiNews(opts: { apiKey: string; budget: BudgetStore; caps: Caps; inspect?: (r: ReplyShape) => void }): NewsSource {
   return {
-    async fetch(t) {
+    async fetch(t, query) {
       await reserve(opts.budget, "serpapi", opts.caps);
-      const q = newsQuery(t);
+      const q = query ?? newsQuery(t);
       const url = new URL("https://serpapi.com/search.json");
       url.searchParams.set("engine", "google_news");
       url.searchParams.set("q", q);
@@ -27,9 +37,20 @@ export function serpApiNews(opts: { apiKey: string; budget: BudgetStore; caps: C
       const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
       // Never include the URL in errors: it carries the API key.
       if (!res.ok) throw new Error(`SerpApi returned HTTP ${res.status}`);
-      const body = (await res.json()) as { news_results?: RawItem[] };
+      const body = (await res.json()) as { news_results?: RawItem[]; error?: unknown; search_metadata?: { status?: unknown } };
+      opts.inspect?.(replyShape(body));
       return { query: q, items: normalise(body.news_results ?? []) };
     },
+  };
+}
+
+export function replyShape(body: Record<string, unknown>): ReplyShape {
+  const meta = body.search_metadata as { status?: unknown } | undefined;
+  return {
+    keys: Object.keys(body),
+    error: typeof body.error === "string" ? body.error : null,
+    status: typeof meta?.status === "string" ? meta.status : null,
+    newsResults: Array.isArray(body.news_results) ? body.news_results.length : null,
   };
 }
 

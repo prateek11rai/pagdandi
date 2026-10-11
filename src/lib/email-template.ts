@@ -1,6 +1,6 @@
 // Pagdandi's emails in the site's design language: table-based HTML with inline styles only (no <style> block, web
-// fonts, images or tracking), and a plain-text part with the same content. Every interpolated string is escaped, and
-// every link goes to the site.
+// fonts, images or tracking), and a plain-text part with the same content. Every interpolated string is escaped.
+// Links go to the site, except each news headline, which links to its article (https only).
 
 export function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -47,6 +47,7 @@ export interface NewsLine {
   text: string;
   source: string | null;
   date: string | null; // already formatted
+  url: string | null; // the article; linked only if it's https
 }
 
 export interface DigestContent {
@@ -106,7 +107,11 @@ export function digestEmail(d: DigestContent): Email {
     "",
     "NEWS SINCE YESTERDAY",
     ...(d.newsSample ? [`[${SAMPLE_NEWS}]`] : []),
-    ...(newsLines === null ? [d.newsNote!] : newsLines.length === 0 ? ["Nothing new."] : newsLines.flatMap((n) => [`- ${n.text}`, ...(byline(n) ? [`  ${byline(n)}`] : [])])),
+    ...(newsLines === null
+      ? [d.newsNote!]
+      : newsLines.length === 0
+        ? ["Nothing new."]
+        : newsLines.flatMap((n) => [`- ${n.text}`, ...(byline(n) ? [`  ${byline(n)}`] : []), ...(articleUrl(n) ? [`  ${articleUrl(n)}`] : [])])),
     "",
     "ONE THING TO DO OUTSIDE TODAY",
     d.prep,
@@ -137,7 +142,9 @@ export function digestEmail(d: DigestContent): Email {
         ? para("Nothing new.")
         : newsLines
             .map(
-              (n) => `<p style="margin:0 0 10px;font-family:${BODY};font-size:15px;line-height:1.45;color:${P.ink}">${e(n.text)}${
+              (n) => `<p style="margin:0 0 10px;font-family:${BODY};font-size:15px;line-height:1.45;color:${P.ink}">${
+                articleUrl(n) ? `<a href="${e(articleUrl(n)!)}" rel="noopener noreferrer" style="color:${P.ink};text-decoration:underline">${e(n.text)}</a>` : e(n.text)
+              }${
                 byline(n) ? `<br><span style="font-size:13px;color:${P.muted}">${e(byline(n)!)}</span>` : ""
               }</p>`,
             )
@@ -201,6 +208,7 @@ ${para(NOT_YOU, 14, "16px 0 0", P.muted)}`;
 }
 
 const byline = (n: NewsLine) => [n.source, n.date].filter(Boolean).join(" · ") || null;
+const articleUrl = (n: NewsLine) => (n.url && /^https:\/\/[^\s"'<>]+$/.test(n.url) ? n.url : null);
 
 function para(text: string, size = 15, margin = "0", color = P.ink): string {
   return `<p style="margin:${margin};font-family:${BODY};font-size:${size}px;line-height:1.55;color:${color}">${e(text)}</p>`;

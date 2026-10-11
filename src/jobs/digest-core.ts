@@ -153,7 +153,7 @@ export function composeDigest(
     status: statusLine(c),
     forecast: c.forecast ? c.forecast.places.map(forecastRow) : null,
     forecastSample: c.forecast?.fixture === true,
-    news: (c.news?.bullets ?? []).map((b) => ({ text: b.text, source: b.source ?? null, date: b.date ? formatShortDate(b.date) : null })),
+    news: (c.news?.bullets ?? []).map((b) => ({ text: b.text, source: b.source ?? null, date: b.date ? formatShortDate(b.date) : null, url: b.url })),
     newsNote: c.newsNote,
     newsSample: c.newsIsSample,
     prep: prepFor(n),

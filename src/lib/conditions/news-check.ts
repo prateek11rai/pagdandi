@@ -3,15 +3,23 @@ import type { Trek } from "../trek-schema";
 import type { NewsSource } from "./news";
 import type { NewsItem, NewsPayload, NewsSummary } from "./types";
 
-export const NEWS_CHECK_USAGE = "Usage: pnpm news:check --trek <slug>";
+export const NEWS_CHECK_USAGE = 'Usage: pnpm news:check --trek <slug> [--query "<diagnostic search text>"]';
 
-// `--trek <slug>` and nothing else, so a typo can never become a search for something else.
-export function parseNewsCheckArgs(argv: string[]): { slug: string } | { error: string } {
+// `--trek <slug>`, and for diagnosis `--query "<text>"`, and nothing else, so a typo can never become a search for
+// something else. The query replaces the trek's own search text; the trek still names the summary's context.
+export function parseNewsCheckArgs(argv: string[]): { slug: string; query?: string } | { error: string } {
   const args = argv.filter((a) => a !== "--");
-  if (args.length !== 2 || args[0] !== "--trek") return { error: NEWS_CHECK_USAGE };
-  const slug = args[1]!;
+  const at = (flag: string) => args.indexOf(flag);
+  const flags = args.filter((_, i) => i % 2 === 0);
+  if (![2, 4].includes(args.length) || at("--trek") % 2 !== 0 || flags.some((f) => f !== "--trek" && f !== "--query") || new Set(flags).size !== flags.length) {
+    return { error: NEWS_CHECK_USAGE };
+  }
+  const slug = args[at("--trek") + 1]!;
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) return { error: `"${slug}" isn't a trek slug. ${NEWS_CHECK_USAGE}` };
-  return { slug };
+  if (at("--query") === -1) return { slug };
+  const query = args[at("--query") + 1]!.trim();
+  if (query.length < 3 || query.length > 200) return { error: `--query needs 3 to 200 characters. ${NEWS_CHECK_USAGE}` };
+  return { slug, query };
 }
 
 export interface Usage {
@@ -39,7 +47,7 @@ export interface NewsCheckDeps {
 
 // Exactly one live search for one trek. Refuses before searching when either cap is already reached, and never
 // retries: a failed search is reported, not repeated. Saves nothing but the budget counters.
-export async function newsCheck(slug: string, deps: NewsCheckDeps): Promise<NewsCheck> {
+export async function newsCheck(slug: string, deps: NewsCheckDeps, query?: string): Promise<NewsCheck> {
   const trek = await deps.getTrek(slug);
   if (!trek) return { ok: false, reason: `No trek called "${slug}" in the database; nothing was searched.`, usage: null };
   const now = deps.now ?? new Date();
@@ -53,7 +61,7 @@ export async function newsCheck(slug: string, deps: NewsCheckDeps): Promise<News
 
   let news: NewsPayload;
   try {
-    news = await deps.news.fetch(trek);
+    news = await deps.news.fetch(trek, query);
   } catch (e) {
     const reason = e instanceof BudgetExceededError ? `${e.message}; nothing was searched.` : `The search failed (${(e as Error).message}); not retrying.`;
     return { ok: false, reason, usage: await serpApiUsage(deps.budget, now) };
