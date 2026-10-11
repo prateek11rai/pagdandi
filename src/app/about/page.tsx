@@ -38,8 +38,9 @@ export default function AboutPage() {
                 </li>
                 <li>No analytics, no ads and no third-party scripts. Fonts are served from this site.</li>
                 <li>
-                  Hosted services see some data: SerpApi gets trek names, ElevenLabs the audio scripts, Resend the
-                  admin&apos;s emails, and Open-Meteo trek coordinates.
+                  Hosted services see some data: SerpApi gets trek names, ElevenLabs the audio scripts, Open-Meteo trek
+                  coordinates, and Tiger Data, if it hosts the database, the guide&apos;s search queries and the
+                  admin&apos;s subscription. Emails go out over SMTP from the admin&apos;s own mailbox, to the admin.
                 </li>
               </ul>
             </Section>

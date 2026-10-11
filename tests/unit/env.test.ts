@@ -20,9 +20,20 @@ describe("env validation", () => {
     }
   });
 
-  it("requires the Resend key only when sending for real", () => {
-    expect(() => parseEnv("web", { ...base, EMAIL_MODE: "resend" })).toThrow(/RESEND_API_KEY is missing/);
-    expect(() => parseEnv("web", { ...base, EMAIL_MODE: "resend", RESEND_API_KEY: "x" })).not.toThrow();
+  it("names each missing SMTP setting only when sending for real", () => {
+    expect(() => parseEnv("web", base)).not.toThrow();
+    try {
+      parseEnv("digest", { ...base, EMAIL_MODE: "smtp" });
+      expect.unreachable();
+    } catch (e) {
+      for (const k of ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"]) expect((e as Error).message).toContain(`${k} is missing`);
+    }
+    const smtp = { ...base, EMAIL_MODE: "smtp", SMTP_HOST: "smtp.example.com", SMTP_USER: "admin@example.com", SMTP_PASS: "x" };
+    expect(parseEnv("web", smtp).SMTP_PORT).toBe(587);
+    expect(parseEnv("web", { ...smtp, SMTP_PORT: "465" }).SMTP_PORT).toBe(465);
+    expect(() => parseEnv("web", { ...smtp, SMTP_USER: "mailbox-login" })).toThrow(/EMAIL_FROM is missing/);
+    expect(() => parseEnv("web", { ...smtp, SMTP_USER: "mailbox-login", EMAIL_FROM: "Pagdandi <admin@example.com>" })).not.toThrow();
+    expect(() => parseEnv("web", { ...base, EMAIL_MODE: "resend" })).toThrow(/EMAIL_MODE is invalid/);
   });
 
   it("requires the SerpApi key only for live news in the digest", () => {

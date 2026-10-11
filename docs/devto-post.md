@@ -109,7 +109,7 @@ So "Kedarkantha reaches 4,200 m" streams out as "Kedarkantha reaches (see the ca
 - **We could shape the model's job.** With open weights and a local runtime, I could turn Gemma's thinking off when it was wasting the whole token budget, use the smaller `e2b` on CI's CPU runner, and test everything on the laptop that runs it.
 - **The data is open too.** CC BY-SA trek files that anyone can correct or extend by pull request, with CI validating every source. A closed API couldn't give us that.
 
-What isn't local, so you know: **SerpApi** (news), **ElevenLabs** (the recorded audio), **Resend** (email) and **Open-Meteo** (forecasts) are hosted services. They see trek names, audio scripts, the admin's emails and trek coordinates, never the chat.
+What isn't local, so you know: **SerpApi** (news), **ElevenLabs** (the recorded audio), **Open-Meteo** (forecasts) and **Tiger Data** (the database) are hosted services. They see trek names, audio scripts, trek coordinates, and the guide's search queries and the admin's subscription, never the chat itself. Email goes out over SMTP from the admin's own mailbox, to the admin.
 
 ## What I Got Wrong
 

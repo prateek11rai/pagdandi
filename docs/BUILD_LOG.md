@@ -227,3 +227,8 @@ Things that bit along the way:
   - Two safety defaults replace what the hosting assumed:
     - `OLLAMA_BASE_URL` must be a loopback address unless `OLLAMA_ALLOW_REMOTE=true`, so chats can't be sent off the machine by a typo.
     - The rate limit no longer trusts `X-Forwarded-For` unless `TRUST_PROXY=true`. Without Render's proxy, any client could set that header to dodge the limit, so by default all visitors share one budget, which on a laptop protects its CPU.
+- **Later the same day: no Resend either.** It isn't a challenge partner, and we're local-only now. Email goes out over SMTP from Prateek's own mailbox, to himself:
+  - `nodemailer` 10.0.14 replaces `resend`. It has no dependencies, ships its own types, and has no install scripts.
+  - `EMAIL_MODE=dry-run|smtp`, with `SMTP_HOST`, `SMTP_PORT` (587 with STARTTLS by default, 465 with TLS), `SMTP_USER` and `SMTP_PASS`. The From address is `SMTP_USER` unless `EMAIL_FROM` is set.
+  - The SMTP mailer refuses any recipient but `ADMIN_EMAIL`, as a second lock behind the sign-up rule. Its errors carry only a code (`EAUTH`, `ESOCKET`…), never the server, the login or an address.
+  - Confirm and unsubscribe, the admin-only sign-up and the "coming soon" copy are unchanged.

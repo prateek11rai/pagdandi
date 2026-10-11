@@ -18,9 +18,13 @@ const schema = z.object({
   EMBED_MODEL: z.string().min(1).default("embeddinggemma:300m"),
   SITE_URL: httpUrl.default("http://localhost:3000"),
   ADMIN_EMAIL: z.email(),
-  EMAIL_MODE: z.enum(["dry-run", "resend"]).default("dry-run"),
-  EMAIL_FROM: z.string().min(3).default("Pagdandi <onboarding@resend.dev>"),
-  RESEND_API_KEY: z.string().min(1).optional(),
+  EMAIL_MODE: z.enum(["dry-run", "smtp"]).default("dry-run"),
+  // SMTP from the admin's own mailbox: 587 with STARTTLS by default, or 465 with implicit TLS.
+  SMTP_HOST: z.string().min(1).optional(),
+  SMTP_PORT: z.coerce.number().int().min(1).max(65535).default(587),
+  SMTP_USER: z.string().min(1).optional(),
+  SMTP_PASS: z.string().min(1).optional(),
+  EMAIL_FROM: z.string().min(3).optional(), // defaults to SMTP_USER
   FORECAST_MODE: z.enum(["open-meteo", "fixtures"]).default("open-meteo"),
   NEWS_MODE: z.enum(["fixtures", "serpapi"]).default("fixtures"),
   SERPAPI_API_KEY: z.string().min(1).optional(),
@@ -43,7 +47,9 @@ const NEEDS: Record<EnvScope, (keyof Env)[]> = {
 const HINTS: Partial<Record<keyof Env, string>> = {
   DATABASE_URL: "Postgres URL. Locally `pnpm dev:up` prints it; with Tiger Data, use its service URL.",
   ADMIN_EMAIL: "the site admin's email; the only address daily emails go to until we have a domain.",
-  RESEND_API_KEY: "needed when EMAIL_MODE=resend. Create one at resend.com.",
+  SMTP_HOST: "needed when EMAIL_MODE=smtp: your mailbox's SMTP server, e.g. smtp.gmail.com.",
+  SMTP_USER: "needed when EMAIL_MODE=smtp: the mailbox's login, usually its email address.",
+  SMTP_PASS: "needed when EMAIL_MODE=smtp: the mailbox's password; for Gmail, an app password.",
   SERPAPI_API_KEY: "needed when NEWS_MODE=serpapi. Find it in your SerpApi dashboard.",
   ELEVENLABS_API_KEY: "needed by `pnpm audio`. Create one in ElevenLabs settings.",
   ELEVENLABS_VOICE_ID: "needed by `pnpm audio`. Pick a voice in the ElevenLabs voice library.",
@@ -55,7 +61,8 @@ export function parseEnv(scope: EnvScope, source: Record<string, string | undefi
   // Empty strings in .env mean "not set".
   const cleaned = Object.fromEntries(Object.entries(source).filter(([, v]) => v !== undefined && v !== ""));
   const required = new Set<keyof Env>(NEEDS[scope]);
-  if (scope !== "audio" && cleaned.EMAIL_MODE === "resend") required.add("RESEND_API_KEY");
+  const smtp = (scope === "web" || scope === "digest") && cleaned.EMAIL_MODE === "smtp";
+  if (smtp) for (const k of ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"] as const) required.add(k);
   if (scope === "digest" && cleaned.NEWS_MODE === "serpapi") required.add("SERPAPI_API_KEY");
 
   const problems: string[] = [];
@@ -67,6 +74,9 @@ export function parseEnv(scope: EnvScope, source: Record<string, string | undefi
   if (!result.success) {
     for (const i of result.error.issues) problems.push(`${i.path.join(".")} is invalid: ${i.message}`);
   }
+  if (smtp && result.success && result.data.SMTP_USER && !z.email().safeParse(addressIn(result.data.EMAIL_FROM ?? result.data.SMTP_USER)).success) {
+    problems.push("EMAIL_FROM is missing: SMTP_USER isn't an email address, so set EMAIL_FROM to the address emails come from.");
+  }
   if (result.success && result.data.OLLAMA_ALLOW_REMOTE !== "true" && !isLoopback(result.data.OLLAMA_BASE_URL)) {
     problems.push(
       "OLLAMA_BASE_URL is invalid: it must point at this machine (127.0.0.1, ::1 or localhost), because chats are sent to it. Set OLLAMA_ALLOW_REMOTE=true to use another host on purpose.",
@@ -76,6 +86,11 @@ export function parseEnv(scope: EnvScope, source: Record<string, string | undefi
     throw new EnvError(`Environment is not ready (${scope}):\n  - ${problems.join("\n  - ")}\nSee .env.example.`);
   }
   return result.data as Env;
+}
+
+// "Name <a@b.c>" or "a@b.c" -> "a@b.c"
+export function addressIn(from: string): string {
+  return /<([^>]+)>\s*$/.exec(from)?.[1]?.trim() ?? from.trim();
 }
 
 export function isLoopback(url: string): boolean {
