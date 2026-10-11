@@ -1,4 +1,4 @@
-// Render Cron, 07:00 IST. `pnpm digest --dry-run` prints the emails (recipient masked, tokens redacted)
+// Run from the laptop at 07:00 IST (cron or launchd; see the README). `pnpm digest --dry-run` prints the emails (recipient masked, tokens redacted)
 // instead of sending them; `--sweep` refreshes every trek (the weekly run does this on Sundays), `--no-sweep` skips that.
 import { sqlBudgetStore } from "@/lib/budget-sql";
 import { fixtureForecast, openMeteoForecast } from "@/lib/conditions/open-meteo";

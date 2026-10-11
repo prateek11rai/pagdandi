@@ -1,3 +1,4 @@
+import { env } from "./env";
 // In-memory sliding-window limits per client key. One web instance, so memory is enough.
 const hits = new Map<string, number[]>();
 
@@ -19,8 +20,10 @@ export function allow(key: string, limits: Limit[], now = Date.now()): boolean {
   return true;
 }
 
-// Render puts the client address first in X-Forwarded-For.
-export function clientKey(req: Request): string {
+// Without a reverse proxy, X-Forwarded-For is whatever the client sends, so it's ignored and every visitor
+// shares one budget (on a laptop, the limit protects its CPU). Behind a proxy, set TRUST_PROXY=true.
+export function clientKey(req: Request, trustProxy = env().TRUST_PROXY === "true"): string {
+  if (!trustProxy) return "local";
   return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
 }
 

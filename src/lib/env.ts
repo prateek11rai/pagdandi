@@ -10,6 +10,10 @@ const positiveInt = z.coerce.number().int().positive();
 const schema = z.object({
   DATABASE_URL: postgresUrl,
   OLLAMA_BASE_URL: httpUrl.default("http://127.0.0.1:11434"),
+  // Chats go to Ollama, so it must be on this machine unless someone opts in on purpose.
+  OLLAMA_ALLOW_REMOTE: z.enum(["true", "false"]).default("false"),
+  // Only behind a reverse proxy that sets X-Forwarded-For; otherwise any client could pick its own address.
+  TRUST_PROXY: z.enum(["true", "false"]).default("false"),
   CHAT_MODEL: z.string().min(1).default("gemma4:e4b"),
   EMBED_MODEL: z.string().min(1).default("embeddinggemma:300m"),
   SITE_URL: httpUrl.default("http://localhost:3000"),
@@ -37,7 +41,7 @@ const NEEDS: Record<EnvScope, (keyof Env)[]> = {
 };
 
 const HINTS: Partial<Record<keyof Env, string>> = {
-  DATABASE_URL: "Postgres URL. Locally `pnpm dev:up` prints it; in production use the Tiger Data service URL.",
+  DATABASE_URL: "Postgres URL. Locally `pnpm dev:up` prints it; with Tiger Data, use its service URL.",
   ADMIN_EMAIL: "the site admin's email; the only address daily emails go to until we have a domain.",
   RESEND_API_KEY: "needed when EMAIL_MODE=resend. Create one at resend.com.",
   SERPAPI_API_KEY: "needed when NEWS_MODE=serpapi. Find it in your SerpApi dashboard.",
@@ -50,8 +54,6 @@ export class EnvError extends Error {}
 export function parseEnv(scope: EnvScope, source: Record<string, string | undefined> = process.env): Env {
   // Empty strings in .env mean "not set".
   const cleaned = Object.fromEntries(Object.entries(source).filter(([, v]) => v !== undefined && v !== ""));
-  // Render Blueprints can only pass the private service's host:port.
-  if (!cleaned.OLLAMA_BASE_URL && cleaned.OLLAMA_HOSTPORT) cleaned.OLLAMA_BASE_URL = `http://${cleaned.OLLAMA_HOSTPORT}`;
   const required = new Set<keyof Env>(NEEDS[scope]);
   if (scope !== "audio" && cleaned.EMAIL_MODE === "resend") required.add("RESEND_API_KEY");
   if (scope === "digest" && cleaned.NEWS_MODE === "serpapi") required.add("SERPAPI_API_KEY");
@@ -65,10 +67,20 @@ export function parseEnv(scope: EnvScope, source: Record<string, string | undefi
   if (!result.success) {
     for (const i of result.error.issues) problems.push(`${i.path.join(".")} is invalid: ${i.message}`);
   }
+  if (result.success && result.data.OLLAMA_ALLOW_REMOTE !== "true" && !isLoopback(result.data.OLLAMA_BASE_URL)) {
+    problems.push(
+      "OLLAMA_BASE_URL is invalid: it must point at this machine (127.0.0.1, ::1 or localhost), because chats are sent to it. Set OLLAMA_ALLOW_REMOTE=true to use another host on purpose.",
+    );
+  }
   if (problems.length > 0) {
     throw new EnvError(`Environment is not ready (${scope}):\n  - ${problems.join("\n  - ")}\nSee .env.example.`);
   }
   return result.data as Env;
+}
+
+export function isLoopback(url: string): boolean {
+  const host = new URL(url).hostname.replace(/^\[|\]$/g, "");
+  return host === "localhost" || host === "::1" || /^127(\.\d{1,3}){3}$/.test(host);
 }
 
 const cache = new Map<EnvScope, Env>();

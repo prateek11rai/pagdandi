@@ -5,3 +5,5 @@ process.env.ADMIN_EMAIL = "admin@example.com";
 process.env.EMAIL_MODE = "dry-run";
 process.env.NEWS_MODE = "fixtures";
 process.env.MASTRA_TELEMETRY_DISABLED = "1";
+// The tests stand in for a proxy: each request carries its own address, so they don't share one rate limit.
+process.env.TRUST_PROXY = "true";

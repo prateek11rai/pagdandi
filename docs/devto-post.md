@@ -44,7 +44,18 @@ The screen is the shortest part of the experience: a few minutes to choose, ten 
 ## Demo
 
 <!-- {% embed <unlisted video URL> %} -->
-Live site: <!-- Render URL -->
+
+**Run it in 10 minutes**, plus the model download (a few GB). Pagdandi runs on a laptop; there's no hosted copy, and anyone can run their own. On a Mac with Homebrew:
+
+```sh
+brew install ollama postgresql@17 pgvector node@24 pnpm
+git clone https://github.com/prateek11rai/pagdandi && cd pagdandi
+pnpm install && cp .env.example .env    # set ADMIN_EMAIL; the rest has working defaults
+pnpm dev:up                              # starts Postgres and Ollama if they aren't running
+ollama pull gemma4:e4b && ollama pull embeddinggemma:300m
+pnpm treks:load && pnpm treks:embed
+pnpm dev                                 # http://localhost:3000
+```
 
 ## Code
 
@@ -54,7 +65,7 @@ Live site: <!-- Render URL -->
 
 The open pieces are the core of how it works, not a layer on top.
 
-**Gemma, on a server we run.** The trek guide is Gemma 4 (`gemma4:e4b`), served by Ollama as a **private service on Render**: our own model on our own CPU, reachable only on Render's private network. Locally it's the same model through Ollama on my laptop. **EmbeddingGemma** (300M parameters, 768 dimensions) turns every trek and every query into vectors for search. Gemma also summarises the morning's news into at most three lines, and drafted each trek's audio script from its data.
+**Gemma, on the laptop that serves the site.** The trek guide is Gemma 4 (`gemma4:e4b`), served by Ollama on the same machine as the site. There's no server and no per-chat bill, and the app refuses to send chats to an Ollama anywhere else unless you opt in. **EmbeddingGemma** (300M parameters, 768 dimensions) turns every trek and every query into vectors for search. Gemma also summarises the morning's news into at most three lines, and drafted each trek's audio script from its data.
 
 **Mastra drives the agent.** The guide is a Mastra agent with four read-only tools: `searchTreks`, `getTrek`, `getConditions` and `recommendTreks`. It streams to the AI SDK's `useChat` through `@mastra/ai-sdk`. The route builds the agent's options itself from text-only, length-capped messages, so a browser can't swap the instructions or raise the limits.
 
@@ -93,9 +104,9 @@ So "Kedarkantha reaches 4,200 m" streams out as "Kedarkantha reaches (see the ca
 
 ## Why Does Open Innovation Matter?
 
-- **Plans stay with us.** When five friends type their budgets, dates and who's never trekked, that goes to a model we run on our own server, not to a model company. Chats aren't stored or logged.
-- **No per-chat bill.** The guide costs what the server costs, not a fee per message. That matters for a free, open site.
-- **We could shape the model's job.** With open weights and a local runtime, I could turn Gemma's thinking off when it was wasting the whole token budget, pick the smaller `e2b` for CPU, and test everything on my laptop before deploying.
+- **Plans stay on the machine.** When five friends type their budgets, dates and who's never trekked, that goes to a model on the laptop that serves the site, not to a model company. Chats aren't stored or logged.
+- **No server, no per-chat bill.** Pagdandi runs on a laptop, so a chat costs nothing beyond the electricity. Anyone can host their own copy for their own friends.
+- **We could shape the model's job.** With open weights and a local runtime, I could turn Gemma's thinking off when it was wasting the whole token budget, use the smaller `e2b` on CI's CPU runner, and test everything on the laptop that runs it.
 - **The data is open too.** CC BY-SA trek files that anyone can correct or extend by pull request, with CI validating every source. A closed API couldn't give us that.
 
 What isn't local, so you know: **SerpApi** (news), **ElevenLabs** (the recorded audio), **Resend** (email) and **Open-Meteo** (forecasts) are hosted services. They see trek names, audio scripts, the admin's emails and trek coordinates, never the chat.
@@ -117,8 +128,7 @@ What isn't local, so you know: **SerpApi** (news), **ElevenLabs** (the recorded 
 
 ## Prize Categories
 
-- **Best Use of Gemma:** Gemma 4 runs the trek guide, the news summaries and the audio-script drafts, and EmbeddingGemma powers search. Both are self-hosted through Ollama, locally and on Render.
-- **Best Use of Render:** one Blueprint with the web app, a private Ollama service (Render as the AI runtime, models on a persistent disk) and the 07:00 IST cron job.
+- **Best Use of Gemma:** Gemma 4 runs the trek guide, the news summaries and the audio-script drafts, and EmbeddingGemma powers search. Both run through Ollama on the laptop that serves the site.
 - **Best Use of Tiger Data:** pgvector embeddings and hybrid full-text plus vector search for the agent, with conditions, subscriptions and API budget counters in the same Postgres.
 - **Best Use of SerpApi:** fresh Google News results ground each trek's daily update and the agent's `getConditions` tool, behind hard daily and monthly caps.
 - **Best Use of ElevenLabs:** narration for every trek, generated once from Gemma-drafted scripts and served as MP3s for the trail.

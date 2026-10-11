@@ -13,7 +13,7 @@ const anek = Anek_Devanagari({ subsets: ["latin", "devanagari"], variable: "--fo
 export const metadata: Metadata = {
   title: { default: "Pagdandi · India's open trek database", template: "%s · Pagdandi" },
   description:
-    "Tell the guide about your group and pick an Indian trek you can actually do. Every fact is sourced, and the guide runs on Gemma, hosted by us.",
+    "Tell the guide about your group and pick an Indian trek you can actually do. Every fact is sourced, and the guide runs on Gemma on the machine serving the site.",
   icons: { icon: "/brand/logo.svg" },
 };
 

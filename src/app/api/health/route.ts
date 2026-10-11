@@ -2,7 +2,7 @@ import { sql } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// Render's health check. The web app is healthy if it can reach Postgres; the model service is reported, not required.
+// A health check for `curl` or a monitor: healthy if the app can reach Postgres.
 export async function GET() {
   let db = false;
   try {

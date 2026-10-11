@@ -36,6 +36,16 @@ describe("env validation", () => {
     expect(() => parseEnv("digest", { ...base, FORECAST_MODE: "live" })).toThrow(/FORECAST_MODE is invalid/);
   });
 
+  it("keeps Ollama on this machine unless a remote host is allowed on purpose", () => {
+    expect(parseEnv("web", base).OLLAMA_BASE_URL).toBe("http://127.0.0.1:11434");
+    for (const url of ["http://localhost:11434", "http://127.0.0.2:11434", "http://[::1]:11434"]) {
+      expect(() => parseEnv("web", { ...base, OLLAMA_BASE_URL: url })).not.toThrow();
+    }
+    expect(() => parseEnv("web", { ...base, OLLAMA_BASE_URL: "http://10.0.0.5:11434" })).toThrow(/must point at this machine/);
+    expect(() => parseEnv("web", { ...base, OLLAMA_BASE_URL: "http://127.0.0.1.example.com:11434" })).toThrow(/must point at this machine/);
+    expect(() => parseEnv("web", { ...base, OLLAMA_BASE_URL: "http://10.0.0.5:11434", OLLAMA_ALLOW_REMOTE: "true" })).not.toThrow();
+  });
+
   it("treats empty strings as unset", () => {
     expect(() => parseEnv("web", { ...base, ADMIN_EMAIL: "" })).toThrow(/ADMIN_EMAIL is missing/);
   });

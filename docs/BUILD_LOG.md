@@ -137,9 +137,9 @@ Dead ends on the way:
 - **The fix:**
   - A failed forecast is now counted on its own, not as an error. That email says "forecast unavailable", the log says how many treks failed and why (with Node's network error code, e.g. `fetch failed (UND_ERR_CONNECT_TIMEOUT)`), and the run exits 0. A failed email, a failed save or a full search budget still exits 1.
   - `FORECAST_MODE=fixtures` serves a recorded Open-Meteo sample (Kedarkantha's road head and summit, recorded on 11 Oct), re-dated from today. The email marks it SAMPLE DATA in the subject and above the forecast, and it is never stored, so it can't reach a trek page.
-  - CI and the digest integration test use the fixtures and `--no-sweep`. Local runs and Render keep live Open-Meteo.
+  - CI and the digest integration test use the fixtures and `--no-sweep`. Real runs keep live Open-Meteo.
   - Unit tests cover all three: a failed forecast with the run still succeeding, a failed email still failing it, and the sample label.
-- **Two stalls:** twice the laptop slept in the middle of a request and the session stopped. Both times nothing had been written, the tree was still clean at the last commit, and the work was redone from the top. The cost was time, not state, because work lands in small commits after the leak check. For Monday's long steps (Render's first deploy pulls about 12 GB of models), keep the machine awake.
+- **Two stalls:** twice the laptop slept in the middle of a request and the session stopped. Both times nothing had been written, the tree was still clean at the last commit, and the work was redone from the top. The cost was time, not state, because work lands in small commits after the leak check. For Monday's long steps (model downloads, generating the audio), keep the machine awake.
 - **Cut before publishing:** Sentry (it would add a third-party data flow the privacy notes don't cover) and Hindi audio (a check found nothing in the repo or the post that promises it).
 - **Demo query:** shot 2 now uses "lakes high in the mountains with wildflowers", which finds Kashmir Great Lakes, Brahmatal, Kedarkantha, Valley of Flowers and Goecha La without naming any of them. The December snow query stays out of the demo, because Kedarkantha's winter months stay `null` until an open source names them. We changed the query, not the data.
 - **Numbers:** 74 unit tests, and 13 integration tests in 38 s on the laptop.
@@ -188,7 +188,6 @@ Things that bit along the way:
 ### CI: Gemma on a CPU runner is slow, not broken
 - The integration job runs `gemma4:e2b` in Ollama on GitHub's CPU-only `ubuntu-24.04` runner. One full guide turn (search, recommend, answer) in the chat test took 82 s on one run and 171 s on another, and on a third it ran past the 180 s timeout. That third run (the weak-source commit) failed CI for that reason alone; the next runs passed unchanged. On the laptop, with `e4b`, the same turn takes 14 to 18 s.
 - The chat tests now have a 420 s timeout. A slow run here means CPU time and model loading, not a bug. A failure that survives 420 s should be read as a real one.
-- Response times on Render are measured separately (runbook, step 4).
 
 ### The guide under pressure, and the December gap
 - **Card order.** The guide's cards used to come in whatever order Gemma listed the slugs, so a Delhi group could see Sandakphu (West Bengal) before Dayara Bugyal. The server's stream checker already sees every tool result, so it now reorders the `recommendTreks` cards by the latest `searchTreks` ranking (relevance plus distance from the group's city) before they leave the server. The integration test pins the Delhi group's first card to Uttarakhand or Himachal.
@@ -214,3 +213,17 @@ Things that bit along the way:
   - no echoed HTML.
 
   Off-topic must make no tool calls, and the Hinglish group must get cards. All seven passed on the laptop (`e4b`) in about a minute. On CI's CPU runner with `e2b`, they add several minutes to the integration job.
+
+### Sunday 11 October 2026: no hosting
+- **Decision (Prateek):** no Render and no hosting. Pagdandi runs on a laptop, and anyone can run their own copy. Tiger Data, SerpApi, Resend (admin-only) and ElevenLabs stay.
+- **Why:**
+  - **No server.** The Render plan needed a CPU instance for Ollama at about $175 a month, on top of the web service and the cron job. On a laptop, a chat costs nothing beyond the electricity.
+  - **Privacy is simpler to state.** The model runs on the machine that serves the site, so chats never cross a network to reach it.
+  - **It matches what Pagdandi is:** open data and an open model that a group can run for itself.
+- **What we gave up:** a public URL. The demo is now a video plus "run it in 10 minutes", and the daily job runs from the laptop's cron.
+- **What changed:**
+  - `render.yaml` and `ops/ollama/` are deleted; git history keeps them.
+  - The Render-only `OLLAMA_HOSTPORT` mapping is gone.
+  - Two safety defaults replace what the hosting assumed:
+    - `OLLAMA_BASE_URL` must be a loopback address unless `OLLAMA_ALLOW_REMOTE=true`, so chats can't be sent off the machine by a typo.
+    - The rate limit no longer trusts `X-Forwarded-For` unless `TRUST_PROXY=true`. Without Render's proxy, any client could set that header to dodge the limit, so by default all visitors share one budget, which on a laptop protects its CPU.

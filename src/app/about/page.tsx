@@ -18,7 +18,8 @@ export default function AboutPage() {
             </Section>
             <Section title="How the guide works">
               <p>
-                The guide is Gemma 4, an open-weight model we host ourselves, driven by Mastra. It searches this database
+                The guide is Gemma 4, an open-weight model running on the laptop that serves this site, driven by Mastra.
+                There&apos;s no server and no per-chat bill, and anyone can host their own copy. It searches this database
                 (Postgres full-text search and EmbeddingGemma vectors) and only recommends treks from it. Every number on a
                 card comes from the database, and plain code checks the numbers in its sentences before you see them:
                 anything that doesn&apos;t match becomes &ldquo;see the card&rdquo;. Chats aren&apos;t stored.
@@ -26,7 +27,7 @@ export default function AboutPage() {
             </Section>
             <Section title="Privacy">
               <ul className="list-disc space-y-1 pl-5">
-                <li>Chats aren&apos;t stored, on our server or in your browser, and are never written to logs.</li>
+                <li>Chats never leave the machine running the site, aren&apos;t stored there or in your browser, and are never written to logs.</li>
                 <li>
                   Daily emails only go to the site admin until we have a domain. If you sign up with any other address, we
                   show a preview message and store nothing.

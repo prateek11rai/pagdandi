@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 
-export const MODEL_LINE = "Runs on Gemma 4, hosted by us. Chats aren't stored.";
+export const MODEL_LINE = "Runs on Gemma 4 on this machine. Chats aren't stored.";
 // The New plan page listens for this to start over when you're already on it.
 export const NEW_PLAN_EVENT = "pagdandi:new-plan";
 
