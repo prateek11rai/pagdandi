@@ -3,6 +3,14 @@ import { DIFFICULTIES, REGIONS, BUDGET_BANDS, type Region, type BudgetBand } fro
 
 export const DAY_BANDS = { "1": "Day hike", "2-3": "2–3 days", "4-6": "4–6 days", "7+": "7+ days" } as const;
 export type DayBand = keyof typeof DAY_BANDS;
+export const DAY_RANGES: Record<DayBand, [number, number]> = { "1": [1, 1], "2-3": [2, 3], "4-6": [4, 6], "7+": [7, 30] };
+// Budget bands go by the middle of a trek's estimate.
+export const BUDGET_RANGES: Record<BudgetBand, [number, number]> = {
+  "under-5k": [0, 4999],
+  "5k-10k": [5000, 9999],
+  "10k-15k": [10000, 14999],
+  "over-15k": [15000, 10_000_000],
+};
 
 // Search params from the URL. Anything unknown is dropped rather than rejected.
 export const filtersSchema = z.object({

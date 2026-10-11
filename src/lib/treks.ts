@@ -3,7 +3,8 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { sql } from "./db";
 import type { Trek } from "./trek-schema";
-import type { TrekFilters } from "./filters";
+import { BUDGET_RANGES, DAY_RANGES, type TrekFilters } from "./filters";
+import { trekRow, type TrekRow } from "./trek-row";
 
 export interface TrekCard {
   slug: string;
@@ -58,13 +59,6 @@ function toCard(r: CardRow): TrekCard {
 }
 
 // Filters shared by listing and search. Every value is a bound parameter.
-const DAY_RANGES: Record<string, [number, number]> = { "1": [1, 1], "2-3": [2, 3], "4-6": [4, 6], "7+": [7, 30] };
-const BUDGET_RANGES: Record<string, [number, number]> = {
-  "under-5k": [0, 4999],
-  "5k-10k": [5000, 9999],
-  "10k-15k": [10000, 14999],
-  "over-15k": [15000, 10_000_000],
-};
 
 const DIFFICULTY_ORDER = ["easy", "moderate", "difficult"] as const;
 
@@ -94,6 +88,13 @@ export async function listTreks(f: TrekFilters = {}): Promise<TrekCard[]> {
     order by name
   `;
   return rows.map(toCard);
+}
+
+// Every trek for the /treks table, from the full trek documents (so weak-source notes come along).
+export async function listTrekRows(): Promise<TrekRow[]> {
+  const db = sql();
+  const rows = await db<{ data: Trek }[]>`select data from treks order by name`;
+  return rows.map((r) => trekRow(r.data, audioUrl(r.data.slug)));
 }
 
 export async function getCards(slugs: string[]): Promise<TrekCard[]> {

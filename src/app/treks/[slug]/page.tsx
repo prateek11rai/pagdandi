@@ -38,7 +38,7 @@ export default async function TrekPage({ params }: Props) {
       <header className="relative isolate overflow-hidden border-b hairline">
         <div className="mx-auto max-w-4xl px-4 pb-6 pt-8 sm:px-6 sm:pt-12">
           <p className="label no-print">
-            <Link href="/" className="no-underline">
+            <Link href="/treks" className="no-underline">
               Treks
             </Link>{" "}
             / {REGIONS[trek.region]}
@@ -79,7 +79,7 @@ export default async function TrekPage({ params }: Props) {
         <Section id="listen" title="Listen" className="no-print">
           <p className="mb-3 text-ink-muted">Why this trek matters and what you&apos;ll see, in about a minute and a half.</p>
           {audio ? (
-            <AudioPlayer src={audio} title={trek.name} download />
+            <AudioPlayer src={audio} title={trek.name} size="full" />
           ) : (
             <p className="text-ink-muted">The audio intro for this trek is still being recorded.</p>
           )}
