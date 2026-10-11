@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatAltitude, formatBudget, formatDays, formatSeason } from "@/lib/format";
+import { formatAltitude, formatBudget, formatBudgetShort, formatDays, formatDaysShort, formatSeason } from "@/lib/format";
 
 describe("formatSeason", () => {
   it("wraps across the new year", () => expect(formatSeason([12, 1, 2, 3, 4])).toBe("Dec–Apr"));
@@ -19,4 +19,8 @@ describe("facts", () => {
     expect(formatDays(6)).toBe("6 days");
   });
   it("formats a budget range", () => expect(formatBudget(8000, 14000)).toBe("₹8,000–14,000"));
+  it("shortens days and budgets for cards", () => {
+    expect([formatDaysShort(1), formatDaysShort(3), formatDaysShort(null)]).toEqual(["Day hike", "3", "Not known yet"]);
+    expect([formatBudgetShort(6000, 12000), formatBudgetShort(500, 1500), formatBudgetShort(2000, 2000)]).toEqual(["₹6–12k", "₹500–1.5k", "₹2k"]);
+  });
 });

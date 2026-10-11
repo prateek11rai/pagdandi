@@ -34,6 +34,12 @@ export function formatDays(days: number | null | undefined): string {
   return days === 1 ? "Day hike" : `${days} days`;
 }
 
+// For tables and cards, where the column label already says "Days".
+export function formatDaysShort(days: number | null | undefined): string {
+  if (days == null) return "Not known yet";
+  return days === 1 ? "Day hike" : String(days);
+}
+
 export function formatKm(km: number | null | undefined): string | null {
   return km == null ? null : `${km.toLocaleString("en-IN")} km`;
 }
@@ -44,6 +50,13 @@ export function formatInr(n: number): string {
 
 export function formatBudget(min: number, max: number): string {
   return min === max ? formatInr(min) : `${formatInr(min)}–${max.toLocaleString("en-IN")}`;
+}
+
+// Compact, for cards: 6000, 12000 -> "₹6–12k"; 500, 1500 -> "₹500–1.5k".
+export function formatBudgetShort(min: number, max: number): string {
+  const k = (n: number) => (n >= 1000 ? `${Number((n / 1000).toFixed(1))}k` : String(n));
+  if (min === max) return `₹${k(min)}`;
+  return min >= 1000 ? `₹${k(min).slice(0, -1)}–${k(max)}` : `₹${min}–${k(max)}`;
 }
 
 export function daysUntil(date: Date, today: Date = new Date()): number {

@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   devIndicators: false,
   serverExternalPackages: ["@mastra/core"],
+  // The guide moved from /ask to the home page.
+  async redirects() {
+    return [{ source: "/ask", destination: "/", permanent: true }];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
