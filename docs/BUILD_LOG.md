@@ -232,3 +232,8 @@ Things that bit along the way:
   - `EMAIL_MODE=dry-run|smtp`, with `SMTP_HOST`, `SMTP_PORT` (587 with STARTTLS by default, 465 with TLS), `SMTP_USER` and `SMTP_PASS`. The From address is `SMTP_USER` unless `EMAIL_FROM` is set.
   - The SMTP mailer refuses any recipient but `ADMIN_EMAIL`, as a second lock behind the sign-up rule. Its errors carry only a code (`EAUTH`, `ESOCKET`…), never the server, the login or an address.
   - Confirm and unsubscribe, the admin-only sign-up and the "coming soon" copy are unchanged.
+- **Audio, made on the laptop and committed.**
+  - `pnpm audio` now writes mono MP3s at 64 kbps (about 0.5 MB a minute; all 20 come to about 8.5 MB, against a 30 MB budget). It runs with `--estimate`, `--only <slugs>`, `--missing` and `--force`.
+  - A file appears only once a complete MP3 has arrived (an ID3 tag or an MPEG frame sync), written to `.part` first. The run stops at the first failure, so used-up credits leave the remaining treks on "not recorded yet" rather than with a broken file.
+  - The voice's name goes into `public/audio/manifest.json` for the credits; its ID stays in the env.
+  - A manual `Audio intros` workflow does the same from GitHub, with repository secrets, and opens a pull request.
