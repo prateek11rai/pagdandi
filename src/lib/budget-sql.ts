@@ -17,4 +17,9 @@ export const sqlBudgetStore: BudgetStore = {
   async decrement(service, period, periodStart) {
     await sql()`update api_budget set used = greatest(used - 1, 0) where service = ${service} and period_kind = ${period} and period_start = ${periodStart}`;
   },
+  async used(service, period, periodStart) {
+    const [row] = await sql()<{ used: number }[]>`
+      select used from api_budget where service = ${service} and period_kind = ${period} and period_start = ${periodStart}`;
+    return row?.used ?? 0;
+  },
 };

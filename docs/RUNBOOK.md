@@ -61,13 +61,14 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    - `DATABASE_URL` pointing at Tiger.
 2. Run `pnpm dev`, open `http://localhost:3000/updates?trek=kedarkantha`, pick a travel date a week or two out, enter `ADMIN_EMAIL`, and choose **Get daily updates**.
 3. The confirmation email arrives (check spam). Click **Confirm**, which leads to `/updates?status=confirmed`.
-4. Send one digest. `--no-sweep` keeps a Sunday run from spending 20 searches:
+4. Optional, to check SerpApi and Gemma's summary on their own: `pnpm news:check --trek kedarkantha` makes exactly one search, counted against the caps, prints the headlines, the summary and the counters, and saves nothing else.
+5. Send one digest. `--no-sweep` keeps a Sunday run from spending 20 searches:
    ```sh
    pnpm digest --no-sweep     # expect: 1 trek(s) checked, 1 email(s); one SerpApi search
    ```
-5. Check the email: the subject reads "Kedarkantha · N days to go · …", with the forecast, the news (or "Nothing new.") and one thing to do outside. The SerpApi dashboard should show one more search.
-6. Click **Stop these emails** in the message; it leads to `/updates?status=unsubscribed`.
-7. Optional: schedule it for 7:00 IST with the cron line in the README.
+6. Check the email: the subject reads "Kedarkantha · N days to go · …", with the forecast, the news (or "Nothing new.") and one thing to do outside. The SerpApi dashboard should show one more search.
+7. Click **Stop these emails** in the message; it leads to `/updates?status=unsubscribed`.
+8. Optional: schedule it for 7:00 IST with the cron line in the README.
 
 **Rollback:** the unsubscribe link deletes the row; otherwise `psql "$TIGER_URL" -c "delete from subscriptions"`. Set `EMAIL_MODE=dry-run` and `NEWS_MODE=fixtures` again in `.env`. If the mailbox rejects the login, the digest logs only a code (`EAUTH`): check the app password.
 

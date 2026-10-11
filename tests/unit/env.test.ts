@@ -36,6 +36,11 @@ describe("env validation", () => {
     expect(() => parseEnv("web", { ...base, EMAIL_MODE: "resend" })).toThrow(/EMAIL_MODE is invalid/);
   });
 
+  it("requires the database and the SerpApi key for a news check", () => {
+    expect(() => parseEnv("news", { DATABASE_URL: base.DATABASE_URL })).toThrow(/SERPAPI_API_KEY is missing/);
+    expect(parseEnv("news", { DATABASE_URL: base.DATABASE_URL, SERPAPI_API_KEY: "test-key" }).SERPAPI_DAILY_CAP).toBe(25);
+  });
+
   it("requires the SerpApi key only for live news in the digest", () => {
     expect(() => parseEnv("digest", { ...base, NEWS_MODE: "serpapi" })).toThrow(/SERPAPI_API_KEY is missing/);
     expect(() => parseEnv("web", { ...base, NEWS_MODE: "serpapi" })).not.toThrow();

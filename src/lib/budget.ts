@@ -15,6 +15,8 @@ export interface BudgetStore {
   incrementIfBelow(service: string, period: "day" | "month", periodStart: string, cap: number): Promise<number | null>;
   // Undo one increment (used when the second counter refuses after the first one counted).
   decrement(service: string, period: "day" | "month", periodStart: string): Promise<void>;
+  // How many calls this period has counted so far (0 if none).
+  used(service: string, period: "day" | "month", periodStart: string): Promise<number>;
 }
 
 export interface Caps {
@@ -51,5 +53,8 @@ export class MemoryBudgetStore implements BudgetStore {
   async decrement(service: string, period: string, start: string) {
     const k = `${service}:${period}:${start}`;
     this.counts.set(k, Math.max(0, (this.counts.get(k) ?? 0) - 1));
+  }
+  async used(service: string, period: string, start: string) {
+    return this.counts.get(`${service}:${period}:${start}`) ?? 0;
   }
 }

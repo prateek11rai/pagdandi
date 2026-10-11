@@ -9,6 +9,7 @@ DevRelay rules for this repo: follow `.claude/devrelay-rules.md` (gitignored; se
 - `pnpm dev`: run the app. `pnpm test`: unit tests (no services). `pnpm test:integration`: needs `pnpm dev:up`. `pnpm typecheck`, `pnpm lint`.
 - `pnpm db:migrate`, `pnpm treks:validate`, `pnpm treks:load`, `pnpm treks:embed`: database and trek data pipeline. `pnpm search:eval`: the benchmark searches.
 - `pnpm digest --dry-run`: the daily job, printing emails instead of sending.
+- `pnpm news:check --trek <slug>`: one live SerpApi search, counted against the caps. Never in tests or CI.
 - `pnpm audio --estimate`: which intros are missing or have a changed script, without calling ElevenLabs. `pnpm audio` spends ElevenLabs credits.
 - `pnpm topo`: regenerate `public/brand/topo.svg`.
 
