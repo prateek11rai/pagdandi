@@ -29,7 +29,8 @@ async function ask(text: string): Promise<Chunk[]> {
     .map((l) => JSON.parse(l.slice(6)) as Chunk);
 }
 
-describe("the trek guide on real Gemma", () => {
+// Gemma on CI's CPU runner takes 80-180+ s for this turn (docs/BUILD_LOG.md); a slow run is not a bug.
+describe("the trek guide on real Gemma", { timeout: 420_000 }, () => {
   it("recommends treks from the database for the group prompt", async () => {
     const chunks = await ask("5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi");
     const calls = chunks.filter((c) => c.type === "tool-input-available").map((c) => c.toolName);

@@ -131,7 +131,17 @@ pnpm test:integration   # real Postgres + Ollama: loading, hybrid search, a real
 
 If the local stack is down, integration tests fail with "run `pnpm dev:up` first"; they never skip. CI runs both suites. The integration job uses Postgres with pgvector and Ollama with `gemma4:e2b`, plus recorded forecasts and news, so no test depends on an outside API.
 
-## Privacy
+## Privacy and safety
+
+**Safety.** The guide talks to groups about mountains, so the design assumes the model will sometimes be wrong or be pushed:
+
+- **A fixed prompt.** The guide's instructions live on the server. It only talks about treks in India, only states numbers that came back from its tools, adds an altitude sentence for anything above 3,500 m, and declines everything else without revealing its instructions. The chat route builds the agent's options itself, so a request can't change the instructions, tools or limits.
+- **Read-only tools.** `searchTreks`, `getTrek`, `getConditions` (stored conditions only) and `recommendTreks` read the database and nothing else. None of them writes, and none calls an outside API; SerpApi runs only from the daily job.
+- **Caps.** 6 chats a minute and 40 an hour per IP, a 32 KB request limit, text-only messages, the last 8 turns, 500 characters per question, 5 agent steps and 450 output tokens.
+- **Plain-code fact-check.** Cards are rendered from the database, not from the model's text. Every altitude, distance, day count and cost in the model's sentences is checked against the database before it leaves the server, and anything that doesn't match becomes "(see the card)". The altitude note under the cards is added by the page, not by the model.
+- **Not advice.** The site says on every relevant page that it is not medical advice and not a substitute for a licensed local guide.
+
+**Privacy.**
 
 - Chats are not stored and never logged. The page holds the conversation in memory only (no browser storage), so a reload or **New plan** clears it; the server only sees the recent turns, capped in length.
 - The model runs on our own server, so no model company sees what anyone is planning.

@@ -184,3 +184,8 @@ Things that bit along the way:
   - "A day hike near Mumbai this weekend" first got a question back: the guide didn't know today's date. The instructions now carry today's date in IST.
   - Then it recommended Triund, in Himachal: Gemma passed `maxDifficulty: "easy"` for any day hike, which filtered out Kalsubai (graded moderate). A sentence in the instructions didn't stop it, so the search tool never filters below moderate. Our "easy" grade (under 3,000 m, nothing technical) is stricter than a group's sense of easy.
   - Now the Mumbai chip gives Kalsubai first. The Delhi group still gets moderate treks within its limits.
+
+### CI: Gemma on a CPU runner is slow, not broken
+- The integration job runs `gemma4:e2b` in Ollama on GitHub's CPU-only `ubuntu-24.04` runner. One full guide turn (search, recommend, answer) in the chat test took 82 s on one run and 171 s on another, and on a third it ran past the 180 s timeout. That third run (the weak-source commit) failed CI for that reason alone; the next runs passed unchanged. On the laptop, with `e4b`, the same turn takes 14 to 18 s.
+- The chat tests now have a 420 s timeout. A slow run here means CPU time and model loading, not a bug. A failure that survives 420 s should be read as a real one.
+- Response times on Render are measured separately (runbook, step 4).
