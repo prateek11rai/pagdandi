@@ -51,13 +51,14 @@ interface TrekConditions {
   newsIsSample: boolean; // recorded fixtures in development: must never read as real news
 }
 
-// Conditions are fetched once per trek, however many people follow it. With `sweep`, every trek is refreshed.
-export async function runDigest(deps: DigestDeps, opts: { sweep: boolean }): Promise<DigestReport> {
+// Conditions are fetched once per trek, however many people follow it. With `sweep`, every trek is refreshed. With
+// `resend`, subscribers already sent today's email get it again (for a demo); the news search still counts.
+export async function runDigest(deps: DigestDeps, opts: { sweep: boolean; resend?: boolean }): Promise<DigestReport> {
   const today = todayIST(deps.now);
   const report: DigestReport = { expired: 0, treksChecked: 0, emailsSent: 0, forecastFailures: [], errors: [], budgetExceeded: false };
   report.expired = await expire(deps.store, deps.now);
 
-  const due = (await deps.store.listActive()).filter((s) => s.lastSentOn !== today);
+  const due = (await deps.store.listActive()).filter((s) => opts.resend === true || s.lastSentOn !== today);
   const bySlug = new Map<string, Subscription[]>();
   for (const s of due) bySlug.set(s.slug, [...(bySlug.get(s.slug) ?? []), s]);
   const slugs = opts.sweep ? await deps.allSlugs() : [...bySlug.keys()];

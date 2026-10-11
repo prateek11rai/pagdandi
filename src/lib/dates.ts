@@ -1,4 +1,4 @@
-// All "today" logic is in IST: the daily email goes out at 07:00 IST.
+// All "today" logic is in IST: "today's email" means the IST calendar day.
 export function todayIST(now = new Date()): string {
   return new Date(now.getTime() + 5.5 * 3600_000).toISOString().slice(0, 10);
 }

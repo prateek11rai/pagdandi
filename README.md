@@ -20,7 +20,7 @@ Every friend group has a trek it has talked about for years, and a group chat wh
   <img src="docs/img/treks-desktop.png" alt="The Treks table: name, state, days, max altitude, difficulty, season, budget and audio intro for every trek" width="720">
 
 - **Audio intros and a one-page plan.** Each trek page has a short audio intro to download for the drive, and prints on one page: the day-by-day, permits, last mobile signal and an altitude figure.
-- **Daily updates** (admin-only for now). One email at 7:00 IST until you leave: the forecast at the road head and the high point, this week's news, and one thing to do outside today. Until Pagdandi has a domain, only the admin gets them.
+- **Daily updates** (admin-only for now). One email a day until you leave: the forecast at the road head and the high point, this week's news, and one thing to do outside today. Until Pagdandi has a domain, only the admin gets them.
 
 ## How it works
 
@@ -48,7 +48,7 @@ pnpm dev                        # http://localhost:3000
 | `EMAIL_MODE=smtp`, `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` | Sends the daily email from your own mailbox (`SMTP_PORT` 587 with STARTTLS, or 465). Without them, emails are written to `.data/outbox/`. For Gmail, use an app password; any SMTP mailbox works. |
 | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | `pnpm audio` only, to generate the intros. |
 
-- **Daily updates:** `pnpm digest` sends today's emails. To run it at 7:00 IST from the laptop, add a cron line (with the laptop's clock on IST and `pnpm` on cron's `PATH`): `0 7 * * * cd /path/to/pagdandi && pnpm digest >> .data/digest.log 2>&1`. A launchd job works too.
+- **Daily updates:** run `pnpm digest` whenever you want today's email; nothing schedules it. Each subscriber gets at most one a day (`--resend` sends today's again, for a demo).
 - **Audio:** `pnpm audio --estimate` lists the intros that are missing or whose script changed, and `pnpm audio` makes them. See [CONTRIBUTING](CONTRIBUTING.md#audio-intros).
 
 `pnpm dev:down` stops only what `pnpm dev:up` started.
@@ -91,7 +91,7 @@ The [DEV Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://de
 - Code: [MIT](LICENSE). Trek data: [CC BY-SA 4.0](data/LICENSE.md).
 - Map data: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), ODbL. Forecasts: [Weather data by Open-Meteo.com](https://open-meteo.com/), CC BY 4.0.
 - Gemma 4: [Apache 2.0](https://ai.google.dev/gemma/apache_2). EmbeddingGemma is provided under and subject to the [Gemma Terms of Use](https://ai.google.dev/gemma/terms), and the site's terms carry the [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy).
-- Audio: generated with [ElevenLabs](https://elevenlabs.io) from each trek's sourced facts; the scripts are the `audio_script` field in each trek's YAML. Voice: George - Warm, Captivating Storyteller, an ElevenLabs default voice (`eleven_multilingual_v2`).
+- Audio intros generated with [ElevenLabs](https://elevenlabs.io), from each trek's hand-written script (the `audio_script` field in its YAML). Voice: George - Warm, Captivating Storyteller, an ElevenLabs default voice (`eleven_multilingual_v2`).
 - Logo: the Lucide "footprints" icon, ISC ([notice](public/brand/logo-LICENSE.txt)). Fonts: Eczar and Anek Devanagari (SIL Open Font License), self-hosted at build time.
 
 ## After the deadline

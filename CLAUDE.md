@@ -8,7 +8,7 @@ DevRelay rules for this repo: follow `.claude/devrelay-rules.md` (gitignored; se
 - `pnpm dev:up` / `pnpm dev:down`: start or stop local Postgres and Ollama (only what `dev:up` started).
 - `pnpm dev`: run the app. `pnpm test`: unit tests (no services). `pnpm test:integration`: needs `pnpm dev:up`. `pnpm typecheck`, `pnpm lint`.
 - `pnpm db:migrate`, `pnpm treks:validate`, `pnpm treks:load`, `pnpm treks:embed`: database and trek data pipeline. `pnpm search:eval`: the benchmark searches.
-- `pnpm digest --dry-run`: the daily job, printing emails instead of sending.
+- `pnpm digest --dry-run`: the daily job, printing emails instead of sending. Run by hand; no cron. `--resend` sends today's email again (admin, for a demo; the news search still counts).
 - `pnpm news:check --trek <slug>`: one live SerpApi search, counted against the caps. Never in tests or CI. Diagnostic: `--query "<text>"` searches that text instead, through the same client and caps, and prints the reply's shape.
 - `pnpm email:preview --trek <slug>`: render the digest and confirmation emails into `.data/outbox/` from sample data. Never sends.
 - `pnpm subscribe:admin --trek <slug> --date YYYY-MM-DD`: subscribe ADMIN_EMAIL and send the confirmation email (a real email when `EMAIL_MODE=smtp`). Never prints the address.

@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Daily updates" };
 export const dynamic = "force-dynamic";
 
 const STATUS: Record<string, string> = {
-  confirmed: "You're subscribed. The first email arrives at 7:00 IST tomorrow.",
+  confirmed: "You're subscribed. The first email comes with the next daily update.",
   unsubscribed: "Done. You won't get any more emails, and we've deleted the subscription.",
   invalid: "That link has expired or was already used.",
 };
@@ -31,7 +31,7 @@ export default async function UpdatesPage({ searchParams }: { searchParams: Para
         </p>
       )}
       <p className="max-w-[640px] text-ink-muted">
-        One short email every morning at 7:00 IST until the day you leave: the forecast at the road head and the high
+        One short email a day until the day you leave: the forecast at the road head and the high
         point, this week&apos;s news (closures, landslides, snowfall, permits), and one thing to do outside today to get
         ready.
       </p>
@@ -66,7 +66,7 @@ export default async function UpdatesPage({ searchParams }: { searchParams: Para
 function SampleEmail() {
   return (
     <div role="group" aria-label="Example email" className="rounded-xl border border-rule bg-paper-raised px-4 py-3.5">
-      <p className="text-xs text-ink-muted">From Pagdandi · 7:00 IST</p>
+      <p className="text-xs text-ink-muted">From Pagdandi · Daily update</p>
       <p className="mb-2.5 mt-1 font-serif text-[17px] font-semibold leading-snug">Kedarkantha · 12 days to go · all clear so far</p>
       <dl className="mb-2.5 flex flex-wrap gap-x-[18px] gap-y-1.5 text-[13px]">
         <div>

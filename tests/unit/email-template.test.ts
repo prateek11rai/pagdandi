@@ -70,7 +70,7 @@ describe("email template", () => {
   });
 
   it("says all is well on a day with no news, with the stop date right under it", () => {
-    const until = "You get this once a day at 7:00 IST until Sun, 25 Oct 2026.";
+    const until = "You get this once a day until Sun, 25 Oct 2026.";
     const m = digestEmail({ ...digest, news: [] });
     expect(m.text).toContain(`NEWS THIS WEEK\n${NO_NEWS}\n${until}\n\nONE THING TO DO OUTSIDE TODAY`);
     expect(m.text.split(until)).toHaveLength(2);
@@ -127,7 +127,7 @@ describe("email template", () => {
   it("carries the digest's parts in order, and the confirmation's button and plain link", () => {
     const visible = (html: string) => html.slice(html.indexOf("</div>"));
     const d = visible(digestEmail(digest).html);
-    const order = ["Daily update", "Valley of Flowers", "14 days to go", "Forecast", "Road head", "High point (estimate)", "News this week", "One thing to do outside today", "You get this once a day at 7:00 IST until Sun, 25 Oct 2026.", "Stop these emails", "Pagdandi · India&#39;s open trek database", "Open-Meteo.com", "OpenStreetMap"];
+    const order = ["Daily update", "Valley of Flowers", "14 days to go", "Forecast", "Road head", "High point (estimate)", "News this week", "One thing to do outside today", "You get this once a day until Sun, 25 Oct 2026.", "Stop these emails", "Pagdandi · India&#39;s open trek database", "Open-Meteo.com", "OpenStreetMap"];
     const at = order.map((s) => d.indexOf(s));
     expect(at.every((i) => i >= 0)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);

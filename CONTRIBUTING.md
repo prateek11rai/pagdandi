@@ -68,7 +68,7 @@ Files are mono MP3 at 64 kbps (about 0.5 MB a minute), and the script stops if `
 | `src/app/` | Pages (New plan, Treks, trek page, Daily updates, About and data) and API routes (chat, subscribe, confirm, unsubscribe, health). |
 | `src/mastra/` | The trek-guide agent, its model (Gemma via Ollama) and its tools. |
 | `src/lib/` | Env validation, database, search, fact-check, conditions (Open-Meteo, SerpApi, summaries), subscriptions, email (the HTML and text template, SMTP), audio generation, budget caps. |
-| `src/jobs/` | The daily digest (the cron entry point and its testable core). |
+| `src/jobs/` | The daily digest (the entry point you run by hand, and its testable core). |
 | `src/components/` | The app shell (sidebar and tab bar), the New plan chat and composer, the trek table and card, the audio player, the altitude chart, and UI primitives. |
 | `data/treks/` | One YAML file per trek (CC BY-SA 4.0), including its audio script. |
 | `public/audio/` | The audio intros, and the manifest of what each was made from. |

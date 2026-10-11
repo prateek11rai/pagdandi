@@ -37,7 +37,7 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    ```sh
    pnpm audio --estimate      # expect: 20 intro(s) to generate, 9,207 characters, about 4.7 MB
    ```
-   The free plan's 10,000 characters a month covers it, with a little room for a retry; a unit test keeps the 20 scripts under 10,000. The free plan has no commercial licence, and anything published with its audio must carry "elevenlabs.io" or "11.ai" in its title.
+   The free plan's 10,000 characters a month covers it, with a little room for a retry; a unit test keeps the 20 scripts under 10,000. The free plan has no commercial licence, and its terms ask for "elevenlabs.io" or "11.ai" in the title of anything published with its audio. Prateek's decision: neither the post's nor the video's title carries it; the post body and the README say "Audio intros generated with ElevenLabs", with the link.
 3. Make two, and listen on `http://localhost:3000/treks/kedarkantha` and `/treks/triund`:
    ```sh
    pnpm audio --only kedarkantha,triund
@@ -71,13 +71,13 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    ```
 7. Check the email: the subject reads "Pagdandi · Kedarkantha · N days to go · …", with the forecast, the news (or "No news. Everything looks good for your upcoming trek." with the stop date under it) and one thing to do outside. The SerpApi dashboard should show one more search.
 8. Click **Stop these emails** in the message; it leads to `/updates?status=unsubscribed`.
-9. Optional: schedule it for 7:00 IST with the cron line in the README.
+9. Nothing schedules the digest: run `pnpm digest --no-sweep` whenever you want today's email. For a demo, `pnpm digest --no-sweep --resend` sends today's email again, with one more search against the caps.
 
 **Rollback:** the unsubscribe link deletes the row; otherwise `psql "$TIGER_URL" -c "delete from subscriptions"`. Set `EMAIL_MODE=dry-run` and `NEWS_MODE=fixtures` again in `.env`. If the mailbox rejects the login, the digest logs only a code (`EAUTH`): check the app password.
 
 ## 4. Demo video
 
-Record from the shot list below, with the app running locally on Tiger. Upload it unlisted.
+Record from the shot list below, with the app running locally on Tiger. Upload it unlisted, without "elevenlabs.io" in the title (Prateek's decision; see step 2).
 
 **Rollback:** re-record; nothing else depends on it.
 

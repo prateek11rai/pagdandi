@@ -88,7 +88,7 @@ export function digestEmail(d: DigestContent): Email {
   const sample = d.forecastSample || d.newsSample;
   const subject = `Pagdandi · ${d.trek.name} · ${d.togo} · ${d.status}${sample ? " · SAMPLE DATA" : ""}`;
   const page = `${d.siteUrl}/treks/${d.trek.slug}`;
-  const until = `You get this once a day at 7:00 IST until ${formatTravelDate(d.travelDate)}.`;
+  const until = `You get this once a day until ${formatTravelDate(d.travelDate)}.`;
   const credits = [
     d.forecastSample ? "Forecast: sample data recorded from Open-Meteo.com." : "Weather data by Open-Meteo.com.",
     "Map data © OpenStreetMap contributors.",
@@ -180,7 +180,7 @@ ${button(page, "Open the trek page")}`;
 export function confirmationEmail(c: ConfirmContent): Email {
   const subject = `Pagdandi · Confirm daily updates for ${c.trek.name}`;
   const date = formatTravelDate(c.travelDate);
-  const what = "Confirm, and Pagdandi will email you once a day at 7:00 IST until your travel date: the forecast at the road head and the high point, this week's news, and one thing to do outside today.";
+  const what = "Confirm, and Pagdandi will email you once a day until your travel date: the forecast at the road head and the high point, this week's news, and one thing to do outside today.";
   const text = [
     "Pagdandi पगडंडी · Daily updates",
     "",

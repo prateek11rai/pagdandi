@@ -1,5 +1,7 @@
-// Run from the laptop at 07:00 IST (cron or launchd; see the README). `pnpm digest --dry-run` prints the emails (recipient masked, tokens redacted)
-// instead of sending them; `--sweep` refreshes every trek (the weekly run does this on Sundays), `--no-sweep` skips that.
+// Run by hand from the laptop whenever you want today's email; nothing schedules it. `pnpm digest --dry-run` prints the
+// emails (recipient masked, tokens redacted) instead of sending them; `--sweep` refreshes every trek (a run on a Sunday
+// does this), `--no-sweep` skips that; `--resend` sends today's email again to subscribers who already had it (admin use,
+// for a demo; the news search still counts against the caps).
 import { sqlBudgetStore } from "@/lib/budget-sql";
 import { fixtureForecast, openMeteoForecast } from "@/lib/conditions/open-meteo";
 import { fixtureNews, recordReplyErrors, serpApiNews } from "@/lib/conditions/news";
@@ -20,6 +22,7 @@ const now = new Date();
 // Sundays (IST) refresh every trek; --no-sweep turns that off for a one-off manual run.
 const sunday = new Date(now.getTime() + 5.5 * 3600_000).getUTCDay() === 0;
 const sweep = process.argv.includes("--sweep") || (sunday && !process.argv.includes("--no-sweep"));
+const resend = process.argv.includes("--resend");
 
 const printMailer: Mailer = {
   async send(m) {
@@ -54,11 +57,11 @@ const report = await runDigest(
     summarise: (t, items) => summariseNews(chatModel(), t.name, items),
     saveConditions,
   },
-  { sweep },
+  { sweep, resend },
 );
 
 console.log(
-  `digest ${dryRun ? "(dry run) " : ""}done: ${report.treksChecked} trek(s) checked, ${report.emailsSent} email(s), ${report.expired} expired subscription(s) removed, forecasts ${e.FORECAST_MODE}, news ${e.NEWS_MODE}${sweep ? ", weekly sweep" : ""}`,
+  `digest ${dryRun ? "(dry run) " : ""}done: ${report.treksChecked} trek(s) checked, ${report.emailsSent} email(s), ${report.expired} expired subscription(s) removed, forecasts ${e.FORECAST_MODE}, news ${e.NEWS_MODE}${sweep ? ", weekly sweep" : ""}${resend ? ", resent" : ""}`,
 );
 const ff = report.forecastFailures;
 if (ff.length > 0) console.warn(`  forecast unavailable for ${ff.length} of ${report.treksChecked} trek(s); their emails say so: ${ff.map((f) => `${f.slug} (${f.reason})`).join(", ")}`);

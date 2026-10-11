@@ -56,7 +56,7 @@ describe("daily digest", () => {
     await runDigest(deps, { sweep: false });
     await runDigest({ ...deps, now: new Date(NOW.getTime() + 24 * 3600_000) }, { sweep: false });
     expect(sent).toHaveLength(2);
-    for (const m of sent) expect(m.text).toContain(`NEWS THIS WEEK\n${NO_NEWS}\nYou get this once a day at 7:00 IST until Tue, 20 Oct 2026.`);
+    for (const m of sent) expect(m.text).toContain(`NEWS THIS WEEK\n${NO_NEWS}\nYou get this once a day until Tue, 20 Oct 2026.`);
   });
 
   it("lists every headline the search returned, newest first, up to six, whatever Gemma thought", async () => {
@@ -89,6 +89,16 @@ describe("daily digest", () => {
     expect(sent[0]!.text).toContain("NEWS THIS WEEK\nNews check failed today.");
     expect(sent[0]!.text).not.toContain(NO_NEWS);
     expect(r.errors).toEqual(["news for a: SerpApi reply error"]);
+  });
+
+  it("sends today's email again only with --resend, and the news search still counts", async () => {
+    const { sent, calls, deps } = await setup([{ slug: "a", travelDate: "2026-10-20" }]);
+    await runDigest(deps, { sweep: false });
+    await runDigest(deps, { sweep: false });
+    expect(sent).toHaveLength(1);
+    await runDigest(deps, { sweep: false, resend: true });
+    expect(sent).toHaveLength(2);
+    expect(calls.news).toEqual(["a", "a"]);
   });
 
   it("sends each subscriber at most one email a day", async () => {

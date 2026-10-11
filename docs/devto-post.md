@@ -15,7 +15,7 @@ Every city has a version of this group chat. Five college friends in Delhi NCR (
 
 - **A trek guide you can ask, right on the home page.** Tell it "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi", or tap "Lakes high in the mountains with wildflowers", and it recommends treks from the database, with a card for each. Its search understands meaning, not just names.
 - **The whole database in one table.** All 20 treks with plain filters for region, month, days, difficulty and budget, each trek's audio intro in its row, and a "weak source" mark on any fact whose only source we couldn't fully trust.
-- **Daily updates until you leave.** Whoever organises signs up with the travel date. Every morning at 7:00 IST they get one email: the forecast at the road head and the high point, this week's news (closures, landslides, snowfall, permits), every headline with its link, and **one thing to do outside today**, like a practice walk in the boots they'll trek in. The site marks this "coming soon": until Pagdandi has its own domain, only the admin gets the emails.
+- **Daily updates until you leave.** Whoever organises signs up with the travel date. Once a day they get one email: the forecast at the road head and the high point, this week's news (closures, landslides, snowfall, permits), every headline with its link, and **one thing to do outside today**, like a practice walk in the boots they'll trek in. The site marks this "coming soon": until Pagdandi has its own domain, only the admin gets the emails.
 
 Then it gets out of the way. Each trek has a short audio introduction to listen to on the drive up, and a **one-page printable plan**: the day-by-day, permits, last mobile signal and the altitude chart. On the trail, the phone stays in a pocket.
 
@@ -80,6 +80,8 @@ The open pieces are the core of how it works, not a layer on top.
 **Tiger Data holds it together.** One Postgres database has the treks, a hybrid search index (a generated `tsvector` plus a pgvector column, fused with reciprocal rank fusion), conditions history, subscriptions and the SerpApi budget counters.
 
 **SerpApi** finds fresh Google News results for each trek, only from the daily job. It never runs from the chat, and every search first reserves budget against hard per-day and per-month caps. **ElevenLabs** voices each trek's intro once into an MP3 the site serves itself, so it works offline once downloaded.
+
+Audio intros generated with [ElevenLabs](https://elevenlabs.io).
 
 Here's the heart of the prose check, from `src/lib/fact-check.ts`. Each pattern (altitude, feet, distance, days, nights, rupees) finds a number with its unit. The number has to match the database for the trek the sentence is about, or be a number the user typed; anything else gets replaced:
 
