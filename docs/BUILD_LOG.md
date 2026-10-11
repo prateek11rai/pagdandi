@@ -237,3 +237,14 @@ Things that bit along the way:
   - A file appears only once a complete MP3 has arrived (an ID3 tag or an MPEG frame sync), written to `.part` first. The run stops at the first failure, so used-up credits leave the remaining treks on "not recorded yet" rather than with a broken file.
   - The voice's name goes into `public/audio/manifest.json` for the credits; its ID stays in the env.
   - A manual `Audio intros` workflow does the same from GitHub, with repository secrets, and opens a pull request.
+
+### Sunday 11 October 2026: audio scripts by hand
+- **Decision (Prateek):** the 20 audio scripts are written by hand from each trek's sourced fields, not drafted by Gemma. They come to 9,207 characters, 71–85 words each. Every number in a script appears in that trek's YAML, and weakly sourced fields are left out.
+- **Why:**
+  - **The 10,000-character cap.** One ElevenLabs free month is 10,000 characters. Gemma's last drafts came to 16,638 (122–155 words each); the hand-written set fits, with a little room for a retry.
+  - **The drafts read as generic copy**, even with varied openings and a style check.
+- **What changed:**
+  - `scripts/draft-audio-scripts.ts` and `pnpm audio:draft` are deleted.
+  - The schema caps `audio_script` at 90 words (it was 260), and a unit test keeps the 20 scripts together under 10,000 characters.
+  - CONTRIBUTING asks for a hand-written script of at most 85 words, with every number taken from the file's own data.
+  - Gemma still runs the guide and the news summaries.

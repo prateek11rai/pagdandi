@@ -149,7 +149,7 @@ export const trekSchema = z
       if (top > 4000 && t.difficulty === "easy") issue("a trek above 4,000 m cannot be graded easy", ["difficulty"]);
     }
     if (new Set(t.season_months).size !== t.season_months.length) issue("season_months has duplicates", ["season_months"]);
-    if (t.audio_script && wordCount(t.audio_script) > 260) issue("audio_script is over 260 words", ["audio_script"]);
+    if (t.audio_script && wordCount(t.audio_script) > 90) issue("audio_script is over 90 words", ["audio_script"]);
   });
 
 export type Trek = z.infer<typeof trekSchema>;

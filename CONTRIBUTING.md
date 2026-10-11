@@ -28,7 +28,7 @@ Each trek is one file, `data/treks/<slug>.yaml`. The data is CC BY-SA 4.0, so an
      - `moderate` up to 4,000 m, or multi-day with steep climbs;
      - `difficult` above 4,000 m, high passes, glacier or scree.
    - `budget_inr` is a rough per-person estimate for the trek itself, from the railhead or airport. Its `basis` must start with "Pagdandi rough estimate:".
-4. Leave `audio_script` as `null`. We draft it with Gemma and review it.
+4. Write `audio_script` by hand, from the sourced fields, in at most 85 words (the validator stops at 90). Every number in it must appear in the file's own data, and it must name no fact that isn't in the file. Leave out anything listed in `weak_sources`.
 5. Check your file:
 
    ```sh

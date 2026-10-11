@@ -65,7 +65,7 @@ pnpm dev                                 # http://localhost:3000
 
 The open pieces are the core of how it works, not a layer on top.
 
-**Gemma, on the laptop that serves the site.** The trek guide is Gemma 4 (`gemma4:e4b`), served by Ollama on the same machine as the site. There's no server and no per-chat bill, and the app refuses to send chats to an Ollama anywhere else unless you opt in. **EmbeddingGemma** (300M parameters, 768 dimensions) turns every trek and every query into vectors for search. Gemma also summarises the morning's news into at most three lines, and drafted each trek's audio script from its data.
+**Gemma, on the laptop that serves the site.** The trek guide is Gemma 4 (`gemma4:e4b`), served by Ollama on the same machine as the site. There's no server and no per-chat bill, and the app refuses to send chats to an Ollama anywhere else unless you opt in. **EmbeddingGemma** (300M parameters, 768 dimensions) turns every trek and every query into vectors for search. Gemma also summarises the morning's news into at most three lines.
 
 **Mastra drives the agent.** The guide is a Mastra agent with four read-only tools: `searchTreks`, `getTrek`, `getConditions` and `recommendTreks`. It streams to the AI SDK's `useChat` through `@mastra/ai-sdk`. The route builds the agent's options itself from text-only, length-capped messages, so a browser can't swap the instructions or raise the limits.
 
@@ -128,8 +128,8 @@ What isn't local, so you know: **SerpApi** (news), **ElevenLabs** (the recorded 
 
 ## Prize Categories
 
-- **Best Use of Gemma:** Gemma 4 runs the trek guide, the news summaries and the audio-script drafts, and EmbeddingGemma powers search. Both run through Ollama on the laptop that serves the site.
+- **Best Use of Gemma:** Gemma 4 runs the trek guide and the news summaries, and EmbeddingGemma powers search. Both run through Ollama on the laptop that serves the site.
 - **Best Use of Tiger Data:** pgvector embeddings and hybrid full-text plus vector search for the agent, with conditions, subscriptions and API budget counters in the same Postgres.
 - **Best Use of SerpApi:** fresh Google News results ground each trek's daily update and the agent's `getConditions` tool, behind hard daily and monthly caps.
-- **Best Use of ElevenLabs:** narration for every trek, generated once from Gemma-drafted scripts and served as MP3s for the trail.
+- **Best Use of ElevenLabs:** narration for every trek, generated once from hand-written scripts that use only that trek's sourced facts, and served as MP3s for the trail.
 - **Best Use of Mastra:** a Mastra agent over an open model, with read-only tools, structured recommendations and streaming chat.

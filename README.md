@@ -74,7 +74,7 @@ The [DEV Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://de
 
 | Category | How Pagdandi uses it |
 |---|---|
-| Gemma | Gemma 4 runs the guide, summarises news and drafted the audio scripts; EmbeddingGemma powers search. Both run through Ollama on the laptop. |
+| Gemma | Gemma 4 runs the guide and summarises news; EmbeddingGemma powers search. Both run through Ollama on the laptop. |
 | Tiger Data | Postgres with pgvector: the treks, the hybrid search index, conditions, subscriptions and API budget counters. |
 | SerpApi | Google News results for each followed trek (closures, landslides, snowfall, permits), behind per-day and per-month caps. |
 | ElevenLabs | A short audio intro for every trek, generated once from its sourced script and committed as an MP3. |

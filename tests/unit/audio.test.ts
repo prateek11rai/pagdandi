@@ -48,10 +48,17 @@ describe("audio intros", () => {
     expect(readdirSync(d)).toEqual([]);
   });
 
+  const all = () => readTrekFiles().flatMap((r) => (r.trek?.audio_script ? [{ slug: r.trek.slug, text: r.trek.audio_script }] : []));
+
   it("fit 20 intros comfortably inside the size budget", () => {
-    const all = readTrekFiles().flatMap((r) => (r.trek?.audio_script ? [{ slug: r.trek.slug, text: r.trek.audio_script }] : []));
-    expect(all).toHaveLength(20);
-    expect(estimate(all).megabytes).toBeLessThan(AUDIO_BUDGET_BYTES / 1024 / 1024 / 2);
+    expect(all()).toHaveLength(20);
+    expect(estimate(all()).megabytes).toBeLessThan(AUDIO_BUDGET_BYTES / 1024 / 1024 / 2);
+  });
+
+  // One ElevenLabs free month is 10,000 characters: all the scripts together must fit in it.
+  it("keep the 20 scripts together under 10,000 characters", () => {
+    expect(all()).toHaveLength(20);
+    expect(estimate(all()).chars).toBeLessThan(10_000);
   });
 
   it("committed files stay under the budget", () => {

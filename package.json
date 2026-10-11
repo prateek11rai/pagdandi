@@ -27,8 +27,7 @@
     "digest": "tsx --conditions=react-server --env-file-if-exists=.env src/jobs/daily-digest.ts",
     "topo": "tsx scripts/make-topo.ts",
     "devrelay:setup": "bash scripts/devrelay-setup.sh",
-    "search:eval": "tsx --conditions=react-server --env-file-if-exists=.env scripts/search-eval.ts",
-    "audio:draft": "tsx --conditions=react-server --env-file-if-exists=.env scripts/draft-audio-scripts.ts"
+    "search:eval": "tsx --conditions=react-server --env-file-if-exists=.env scripts/search-eval.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "3.0.62",

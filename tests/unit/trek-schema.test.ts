@@ -67,6 +67,14 @@ describe("trek schema", () => {
     expect(check(t).length).toBeGreaterThan(0);
   });
 
+  it("caps an audio script at 90 words", () => {
+    const t = sampleTrek();
+    t.audio_script = Array.from({ length: 90 }, () => "word").join(" ");
+    expect(check(t)).toEqual([]);
+    t.audio_script += " more";
+    expect(check(t).join()).toMatch(/audio_script is over 90 words/);
+  });
+
   it("every trek in data/treks is valid", () => {
     const bad = readTrekFiles().filter((r) => r.errors.length > 0);
     expect(bad.map((r) => `${r.file}: ${r.errors.join("; ")}`)).toEqual([]);
