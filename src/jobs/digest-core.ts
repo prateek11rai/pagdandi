@@ -15,8 +15,7 @@ export interface DigestDeps {
   getTrek(slug: string): Promise<Trek | null>;
   allSlugs(): Promise<string[]>;
   fetchForecast(t: Trek): Promise<ForecastPayload>;
-  fetchNews(t: Trek): Promise<NewsPayload>; // may throw BudgetExceededError
-  previousNewsUrls(slug: string): Promise<Set<string>>;
+  fetchNews(t: Trek): Promise<NewsPayload>; // may throw BudgetExceededError or SerpApiReplyError
   summarise(t: Trek, items: NewsItem[]): Promise<NewsSummary>;
   saveConditions(slug: string, kind: "forecast" | "news", payload: ForecastPayload | NewsPayload, summary?: NewsSummary | null): Promise<void>;
 }
@@ -41,9 +40,13 @@ function reasonOf(e: unknown): string {
   return typeof err.cause?.code === "string" ? `${err.message} (${err.cause.code})` : err.message;
 }
 
+// The email shows at most this many headlines, newest first.
+export const HEADLINES = 6;
+
 interface TrekConditions {
   forecast: ForecastPayload | null;
-  news: NewsSummary | null; // null when news couldn't be checked today
+  items: NewsItem[]; // every headline the search returned, newest first
+  news: NewsSummary | null; // Gemma's reading of them; null when news couldn't be checked today
   newsNote: string | null;
   newsIsSample: boolean; // recorded fixtures in development: must never read as real news
 }
@@ -80,7 +83,7 @@ export async function runDigest(deps: DigestDeps, opts: { sweep: boolean }): Pro
 }
 
 async function checkTrek(trek: Trek, deps: DigestDeps, report: DigestReport): Promise<TrekConditions> {
-  const out: TrekConditions = { forecast: null, news: null, newsNote: null, newsIsSample: false };
+  const out: TrekConditions = { forecast: null, items: [], news: null, newsNote: null, newsIsSample: false };
   try {
     out.forecast = await deps.fetchForecast(trek);
   } catch (e) {
@@ -95,11 +98,11 @@ async function checkTrek(trek: Trek, deps: DigestDeps, report: DigestReport): Pr
     }
   }
   try {
-    const seen = await deps.previousNewsUrls(trek.slug);
+    // The reader sees every headline; Gemma only adds a "What matters" line above them.
     const news = await deps.fetchNews(trek);
-    const fresh = news.items.filter((i) => !seen.has(i.url));
+    out.items = news.items;
     out.newsIsSample = news.fixture === true;
-    out.news = await deps.summarise(trek, fresh);
+    out.news = await deps.summarise(trek, news.items);
     await deps.saveConditions(trek.slug, "news", news, out.news);
   } catch (e) {
     if (e instanceof BudgetExceededError) {
@@ -117,7 +120,7 @@ export function statusLine(c: TrekConditions): string {
   const soon = c.forecast?.places.flatMap((p) => p.days.slice(0, 2)) ?? [];
   const severe = soon.find((d) => isSevere(d.code));
   if (severe) return `${weatherLabel(severe.code)} in the forecast`;
-  if (c.news && c.news.bullets.length > 0) return "news to read";
+  if (c.items.length > 0) return "news to read";
   if (!c.forecast) return "forecast unavailable";
   return "all clear so far";
 }
@@ -153,7 +156,8 @@ export function composeDigest(
     status: statusLine(c),
     forecast: c.forecast ? c.forecast.places.map(forecastRow) : null,
     forecastSample: c.forecast?.fixture === true,
-    news: (c.news?.bullets ?? []).map((b) => ({ text: b.text, source: b.source ?? null, date: b.date ? formatShortDate(b.date) : null, url: b.url })),
+    news: c.items.slice(0, HEADLINES).map((i) => ({ text: i.title, source: i.source, date: i.date ? formatShortDate(i.date) : null, url: i.url })),
+    whatMatters: c.news?.bullets[0]?.text ?? null,
     newsNote: c.newsNote,
     newsSample: c.newsIsSample,
     prep: prepFor(n),

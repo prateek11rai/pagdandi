@@ -59,7 +59,8 @@ export interface DigestContent {
   status: string; // the subject's one-liner
   forecast: ForecastRow[] | null; // null: unavailable today
   forecastSample: boolean;
-  news: NewsLine[];
+  news: NewsLine[]; // every headline the search returned (capped), newest first
+  whatMatters: string | null; // Gemma's one line above them, only when it found something
   newsNote: string | null; // replaces the news when it couldn't be checked
   newsSample: boolean;
   prep: string;
@@ -108,13 +109,13 @@ export function digestEmail(d: DigestContent): Email {
     ...(d.forecastSample ? [`[${SAMPLE_FORECAST}]`] : []),
     ...(d.forecast ? d.forecast.flatMap((r) => [`${r.label}: ${r.place}`, ...r.days.map((day) => `  ${day}`)]) : ["Forecast unavailable today."]),
     "",
-    "NEWS SINCE YESTERDAY",
+    "NEWS THIS WEEK",
     ...(d.newsSample ? [`[${SAMPLE_NEWS}]`] : []),
     ...(newsLines === null
       ? [d.newsNote!]
       : quiet
         ? [NO_NEWS, until]
-        : newsLines.flatMap((n) => [`- ${n.text}`, ...(byline(n) ? [`  ${byline(n)}`] : []), ...(articleUrl(n) ? [`  ${articleUrl(n)}`] : [])])),
+        : [...(d.whatMatters ? [`What matters: ${d.whatMatters}`] : []), ...newsLines.flatMap((n) => [`- ${n.text}`, ...(byline(n) ? [`  ${byline(n)}`] : []), ...(articleUrl(n) ? [`  ${articleUrl(n)}`] : [])])]),
     "",
     "ONE THING TO DO OUTSIDE TODAY",
     d.prep,
@@ -143,7 +144,10 @@ export function digestEmail(d: DigestContent): Email {
       ? para(d.newsNote!)
       : quiet
         ? `${para(NO_NEWS)}${para(until, 14, "6px 0 0", P.muted)}`
-        : newsLines
+        : (d.whatMatters
+            ? `<p style="margin:0 0 12px;font-family:${BODY};font-size:15px;line-height:1.5;color:${P.ink}"><strong style="color:${P.mossStrong}">What matters:</strong> ${e(d.whatMatters)}</p>`
+            : "") +
+          newsLines
             .map(
               (n) => `<p style="margin:0 0 10px;font-family:${BODY};font-size:15px;line-height:1.45;color:${P.ink}">${
                 articleUrl(n) ? `<a href="${e(articleUrl(n)!)}" rel="noopener noreferrer" style="color:${P.ink};text-decoration:underline">${e(n.text)}</a>` : e(n.text)
@@ -157,7 +161,7 @@ export function digestEmail(d: DigestContent): Email {
 <p style="margin:4px 0 0;font-family:${BODY};font-size:14px;color:${P.muted}">${e(d.trek.state)}</p>
 <p style="margin:14px 0 4px;font-family:${BODY};font-size:14px;line-height:2;color:${P.muted}"><span style="display:inline-block;background:${P.mossTint};color:${P.mossStrong};border-radius:999px;padding:2px 12px;font-size:15px;font-weight:600;line-height:1.6">${e(d.togo)}</span>&nbsp; travel date ${e(formatTravelDate(d.travelDate))}</p>
 ${heading("Forecast")}${d.forecastSample ? notice(SAMPLE_FORECAST) : ""}${forecastHtml}
-${heading("News since yesterday")}${d.newsSample ? notice(SAMPLE_NEWS) : ""}${newsHtml}
+${heading("News this week")}${d.newsSample ? notice(SAMPLE_NEWS) : ""}${newsHtml}
 ${heading("One thing to do outside today")}
 <p style="margin:0;background:${P.deep};border-radius:8px;padding:12px 14px;font-family:${BODY};font-size:15px;line-height:1.5;color:${P.ink}">${e(d.prep)}</p>
 ${button(page, "Open the trek page")}`;
@@ -176,7 +180,7 @@ ${button(page, "Open the trek page")}`;
 export function confirmationEmail(c: ConfirmContent): Email {
   const subject = `Pagdandi · Confirm daily updates for ${c.trek.name}`;
   const date = formatTravelDate(c.travelDate);
-  const what = "Confirm, and Pagdandi will email you once a day at 7:00 IST until your travel date: the forecast at the road head and the high point, news since yesterday, and one thing to do outside today.";
+  const what = "Confirm, and Pagdandi will email you once a day at 7:00 IST until your travel date: the forecast at the road head and the high point, this week's news, and one thing to do outside today.";
   const text = [
     "Pagdandi पगडंडी · Daily updates",
     "",

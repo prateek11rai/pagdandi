@@ -19,6 +19,7 @@ const digest: DigestContent = {
     { text: 'Bridge <script>alert("x")</script> & road reopen', source: "Times & <b>Co</b>", date: "Sat, 10 Oct", url: "https://news.example/story?id=1&ref=feed" },
     { text: "A link that isn't https", source: null, date: null, url: "javascript:alert(1)" },
   ],
+  whatMatters: null,
   newsNote: null,
   newsSample: false,
   prep: "Walk 8 km today with a day pack carrying 4 to 5 kg.",
@@ -71,7 +72,7 @@ describe("email template", () => {
   it("says all is well on a day with no news, with the stop date right under it", () => {
     const until = "You get this once a day at 7:00 IST until Sun, 25 Oct 2026.";
     const m = digestEmail({ ...digest, news: [] });
-    expect(m.text).toContain(`NEWS SINCE YESTERDAY\n${NO_NEWS}\n${until}\n\nONE THING TO DO OUTSIDE TODAY`);
+    expect(m.text).toContain(`NEWS THIS WEEK\n${NO_NEWS}\n${until}\n\nONE THING TO DO OUTSIDE TODAY`);
     expect(m.text.split(until)).toHaveLength(2);
     const html = m.html.slice(m.html.indexOf("</div>"));
     expect(html.split(until)).toHaveLength(2);
@@ -79,6 +80,15 @@ describe("email template", () => {
     expect(atNews).toBeGreaterThan(0);
     expect(atNews < atUntil && atUntil < atPrep).toBe(true);
     expect(html.slice(atNews, atUntil)).not.toMatch(/<h2/);
+  });
+
+  it("puts Gemma's line, escaped, above the headlines only when there is one", () => {
+    const m = digestEmail({ ...digest, whatMatters: "Bridge <b>reopened</b> & road clear." });
+    expect(m.html).toContain('<strong style="color:#2f533c">What matters:</strong> Bridge &lt;b&gt;reopened&lt;/b&gt; &amp; road clear.</p>');
+    expect(m.html.indexOf("What matters:")).toBeLessThan(m.html.indexOf("news.example/story"));
+    expect(m.text).toContain("NEWS THIS WEEK\nWhat matters: Bridge <b>reopened</b> & road clear.\n- Bridge");
+    textMatchesHtml(m);
+    expect(digestEmail(digest).html).not.toContain("What matters:");
   });
 
   it("links each headline to its article only when the link is https", () => {
@@ -117,7 +127,7 @@ describe("email template", () => {
   it("carries the digest's parts in order, and the confirmation's button and plain link", () => {
     const visible = (html: string) => html.slice(html.indexOf("</div>"));
     const d = visible(digestEmail(digest).html);
-    const order = ["Daily update", "Valley of Flowers", "14 days to go", "Forecast", "Road head", "High point (estimate)", "News since yesterday", "One thing to do outside today", "You get this once a day at 7:00 IST until Sun, 25 Oct 2026.", "Stop these emails", "Pagdandi · India&#39;s open trek database", "Open-Meteo.com", "OpenStreetMap"];
+    const order = ["Daily update", "Valley of Flowers", "14 days to go", "Forecast", "Road head", "High point (estimate)", "News this week", "One thing to do outside today", "You get this once a day at 7:00 IST until Sun, 25 Oct 2026.", "Stop these emails", "Pagdandi · India&#39;s open trek database", "Open-Meteo.com", "OpenStreetMap"];
     const at = order.map((s) => d.indexOf(s));
     expect(at.every((i) => i >= 0)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);

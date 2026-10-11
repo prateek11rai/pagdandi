@@ -32,7 +32,7 @@ export default async function UpdatesPage({ searchParams }: { searchParams: Para
       )}
       <p className="max-w-[640px] text-ink-muted">
         One short email every morning at 7:00 IST until the day you leave: the forecast at the road head and the high
-        point, any news since yesterday (closures, landslides, snowfall, permits), and one thing to do outside today to get
+        point, this week&apos;s news (closures, landslides, snowfall, permits), and one thing to do outside today to get
         ready.
       </p>
       <p className="my-[18px] rounded-r-lg border-l-[3px] border-saffron bg-paper-deep px-3.5 py-2.5 text-sm">
@@ -79,7 +79,7 @@ function SampleEmail() {
         </div>
       </dl>
       <p className="mb-2.5 text-sm">
-        <strong>News since yesterday:</strong> nothing new.
+        <strong>News this week:</strong> No news. Everything looks good for your upcoming trek.
       </p>
       <p className="rounded-r-lg border-l-[3px] border-clay bg-paper-deep px-3.5 py-2.5 text-sm">
         One thing to do outside today: break in your socks and boots together on a 5 km walk, then check your feet.

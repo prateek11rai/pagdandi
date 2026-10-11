@@ -20,7 +20,7 @@ Every friend group has a trek it has talked about for years, and a group chat wh
   <img src="docs/img/treks-desktop.png" alt="The Treks table: name, state, days, max altitude, difficulty, season, budget and audio intro for every trek" width="720">
 
 - **Audio intros and a one-page plan.** Each trek page has a short audio intro to download for the drive, and prints on one page: the day-by-day, permits, last mobile signal and an altitude figure.
-- **Daily updates** (admin-only for now). One email at 7:00 IST until you leave: the forecast at the road head and the high point, news since yesterday, and one thing to do outside today. Until Pagdandi has a domain, only the admin gets them.
+- **Daily updates** (admin-only for now). One email at 7:00 IST until you leave: the forecast at the road head and the high point, this week's news, and one thing to do outside today. Until Pagdandi has a domain, only the admin gets them.
 
 ## How it works
 

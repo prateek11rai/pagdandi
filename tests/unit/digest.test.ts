@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { exitCode, runDigest, type DigestDeps } from "@/jobs/digest-core";
 import { BudgetExceededError } from "@/lib/budget";
+import { SerpApiReplyError } from "@/lib/conditions/news";
 import type { ForecastPayload } from "@/lib/conditions/types";
 import { NO_NEWS } from "@/lib/email-template";
 import { MemorySubscriptionStore } from "@/lib/subscriptions";
@@ -30,7 +31,6 @@ async function setup(subs: { slug: string; travelDate: string }[]) {
     allSlugs: async () => Object.keys(treks),
     fetchForecast: async (t) => (calls.forecast.push(t.slug), forecast),
     fetchNews: async (t) => (calls.news.push(t.slug), { query: "q", items: [] }),
-    previousNewsUrls: async () => new Set(),
     summarise: async () => ({ bullets: [] }),
     saveConditions: async () => {},
   };
@@ -56,7 +56,39 @@ describe("daily digest", () => {
     await runDigest(deps, { sweep: false });
     await runDigest({ ...deps, now: new Date(NOW.getTime() + 24 * 3600_000) }, { sweep: false });
     expect(sent).toHaveLength(2);
-    for (const m of sent) expect(m.text).toContain(`NEWS SINCE YESTERDAY\n${NO_NEWS}\nYou get this once a day at 7:00 IST until Tue, 20 Oct 2026.`);
+    for (const m of sent) expect(m.text).toContain(`NEWS THIS WEEK\n${NO_NEWS}\nYou get this once a day at 7:00 IST until Tue, 20 Oct 2026.`);
+  });
+
+  it("lists every headline the search returned, newest first, up to six, whatever Gemma thought", async () => {
+    const { sent, deps } = await setup([{ slug: "a", travelDate: "2026-10-20" }]);
+    const items = Array.from({ length: 8 }, (_, i) => ({ title: `Headline ${i}`, url: `https://news.example/${i}`, source: "Paper", date: `2026-10-0${9 - i}T06:00:00Z` }));
+    deps.fetchNews = async () => ({ query: "q", items });
+    await runDigest(deps, { sweep: false });
+    const text = sent[0]!.text;
+    expect(text.match(/^- Headline \d$/gm)).toEqual(["- Headline 0", "- Headline 1", "- Headline 2", "- Headline 3", "- Headline 4", "- Headline 5"]);
+    expect(text).toContain("  https://news.example/0");
+    expect(text).not.toContain("What matters:");
+    expect(text).not.toContain(NO_NEWS);
+    expect(sent[0]!.subject).toBe("Pagdandi · Trek A · 9 days to go · Heavy snow in the forecast");
+  });
+
+  it("puts Gemma's line above the headlines only when it found something", async () => {
+    const { sent, deps } = await setup([{ slug: "a", travelDate: "2026-10-20" }]);
+    deps.fetchNews = async () => ({ query: "q", items: [{ title: "Road to the trailhead closed", url: "https://news.example/road", source: "Paper", date: null }] });
+    deps.summarise = async () => ({ bullets: [{ text: "The road to the trailhead is closed.", url: "https://news.example/road", date: null }] });
+    await runDigest(deps, { sweep: false });
+    expect(sent[0]!.text).toContain("NEWS THIS WEEK\nWhat matters: The road to the trailhead is closed.\n- Road to the trailhead closed");
+  });
+
+  it("says the news check failed on a SerpApi error, and logs it by code only", async () => {
+    const { sent, deps } = await setup([{ slug: "a", travelDate: "2026-10-20" }]);
+    deps.fetchNews = async () => {
+      throw new SerpApiReplyError();
+    };
+    const r = await runDigest(deps, { sweep: false });
+    expect(sent[0]!.text).toContain("NEWS THIS WEEK\nNews check failed today.");
+    expect(sent[0]!.text).not.toContain(NO_NEWS);
+    expect(r.errors).toEqual(["news for a: SerpApi reply error"]);
   });
 
   it("sends each subscriber at most one email a day", async () => {

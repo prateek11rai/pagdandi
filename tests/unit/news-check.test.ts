@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { MemoryBudgetStore, periodsIST, reserve } from "@/lib/budget";
-import { fixtureNews, normalise, replyShape, type NewsSource } from "@/lib/conditions/news";
+import { fixtureNews, itemsFrom, normalise, replyShape, SerpApiReplyError, serpApiNews, type NewsSource, type ReplyError } from "@/lib/conditions/news";
 import { newsCheck, parseNewsCheckArgs, type NewsCheckDeps } from "@/lib/conditions/news-check";
 import type { Trek } from "@/lib/trek-schema";
 import { readTrekFiles } from "@/lib/trek-files";
@@ -114,15 +114,54 @@ describe("pnpm news:check", () => {
   });
 });
 
+// Reply bodies shaped like SerpApi's. The no-results wordings are the ones SerpApi documents; the digest records the
+// exact wording of each live one in .data/serpapi-reply-errors.jsonl, so this test can be matched to it.
+const NO_RESULTS_WORDINGS = ["Google hasn't returned any results for this query.", "Google News hasn't returned any results for this query."];
+const item = (n: number, date: string) => ({ title: `Headline ${n}`, link: `https://news.example/${n}`, source: { name: "Paper" }, iso_date: date });
+
 describe("SerpApi replies", () => {
-  it("treats news_results absent and news_results empty the same: no headlines", () => {
+  it("is no news when news_results is empty, absent, or absent with the no-results error", () => {
     expect(normalise([])).toEqual([]);
-    expect(replyShape({ search_metadata: { status: "Success" }, error: "Google News hasn't returned any results for this query." })).toEqual({
+    expect(itemsFrom({ search_metadata: { status: "Success" }, news_results: [] })).toEqual([]);
+    expect(itemsFrom({ search_metadata: { status: "Success" } })).toEqual([]);
+    for (const error of NO_RESULTS_WORDINGS) {
+      const seen: ReplyError[] = [];
+      expect(itemsFrom({ search_metadata: { status: "Success" }, error }, (r) => seen.push(r))).toEqual([]);
+      expect(seen).toEqual([{ kind: "no-results", error }]);
+    }
+    expect(replyShape({ search_metadata: { status: "Success" }, error: NO_RESULTS_WORDINGS[1] })).toEqual({
       keys: ["search_metadata", "error"],
-      error: "Google News hasn't returned any results for this query.",
+      error: NO_RESULTS_WORDINGS[1],
       status: "Success",
       newsResults: null,
+      topNews: null,
     });
-    expect(replyShape({ search_metadata: { status: "Success" }, news_results: [] }).newsResults).toBe(0);
+  });
+
+  it("treats any other error string as a failed check, never as no news", () => {
+    const seen: ReplyError[] = [];
+    const reply = { search_metadata: { status: "Error" }, error: "Your account has run out of searches." };
+    expect(() => itemsFrom(reply, (r) => seen.push(r))).toThrow(SerpApiReplyError);
+    expect(() => itemsFrom(reply)).toThrow(/^SerpApi reply error$/);
+    expect(seen).toEqual([{ kind: "error", error: "Your account has run out of searches." }]);
+  });
+
+  it("reads top_news as well as news_results, once per link, newest first", () => {
+    const items = itemsFrom({ news_results: [item(1, "2026-10-09T00:00:00Z"), item(2, "2026-10-07T00:00:00Z")], top_news: [item(3, "2026-10-10T00:00:00Z"), item(1, "2026-10-09T00:00:00Z")] });
+    expect(items.map((i) => i.title)).toEqual(["Headline 3", "Headline 1", "Headline 2"]);
+  });
+});
+
+describe("SerpApi client", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("counts an error reply once and throws, without retrying", async () => {
+    const budget = new MemoryBudgetStore();
+    let calls = 0;
+    vi.stubGlobal("fetch", async () => (calls++, new Response(JSON.stringify({ error: "Invalid parameter." }))));
+    const client = serpApiNews({ apiKey: "test-key", budget, caps, onReplyError: () => {} });
+    await expect(client.fetch(treks[0]!)).rejects.toThrow(SerpApiReplyError);
+    expect(calls).toBe(1);
+    expect(budget.counts.get(`serpapi:day:${periodsIST(new Date()).day}`)).toBe(1);
   });
 });

@@ -3,7 +3,7 @@
 // Diagnostic: --query "<text>" searches that text instead of the trek's own query (same client, same caps), and
 // prints the shape of SerpApi's reply: its top-level keys, its error string and its status.
 import { sqlBudgetStore } from "../src/lib/budget-sql";
-import { serpApiNews, type ReplyShape } from "../src/lib/conditions/news";
+import { recordReplyErrors, serpApiNews, type ReplyShape } from "../src/lib/conditions/news";
 import { newsCheck, parseNewsCheckArgs } from "../src/lib/conditions/news-check";
 import { summariseNews } from "../src/lib/conditions/summarize";
 import { closeDb } from "../src/lib/db";
@@ -30,7 +30,13 @@ const r = await newsCheck(
     getTrek,
     budget: sqlBudgetStore,
     caps,
-    news: serpApiNews({ apiKey: e.SERPAPI_API_KEY!, budget: sqlBudgetStore, caps, inspect: (s) => (shape = s) }),
+    news: serpApiNews({
+      apiKey: e.SERPAPI_API_KEY!,
+      budget: sqlBudgetStore,
+      caps,
+      inspect: (s) => (shape = s),
+      onReplyError: recordReplyErrors(".data/serpapi-reply-errors.jsonl"),
+    }),
     summarise: (t, items) => summariseNews(chatModel(), t.name, items),
   },
   args.query,
@@ -43,7 +49,8 @@ if (!r.ok) {
   console.log(`Query: ${r.news.query}`);
   const s = shape as ReplyShape | null;
   if (args.query && s) {
-    console.log(`Reply: keys ${s.keys.join(", ")}; news_results ${s.newsResults === null ? "absent" : s.newsResults}; error ${s.error ?? "none"}; status ${s.status ?? "none"}`);
+    const n = (v: number | null) => (v === null ? "absent" : v);
+    console.log(`Reply: keys ${s.keys.join(", ")}; news_results ${n(s.newsResults)}; top_news ${n(s.topNews)}; error ${s.error ?? "none"}; status ${s.status ?? "none"}`);
   }
   console.log(`${r.news.items.length} headline(s), newest first:`);
   for (const it of r.news.items) console.log(`  ${it.date?.slice(0, 10) ?? "no date   "}  ${it.source ?? "unknown source"}: ${it.title}\n              ${it.url}`);

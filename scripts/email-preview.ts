@@ -30,7 +30,7 @@ const news = await fixtureNews().fetch(trek);
 const digest = composeDigest(
   trek,
   { id: "preview", email: "preview", slug: trek.slug, travelDate, status: "active", lastSentOn: null },
-  { forecast, news: await summariseNews(chatModel(), trek.name, news.items), newsNote: null, newsIsSample: true },
+  { forecast, items: news.items, news: await summariseNews(chatModel(), trek.name, news.items), newsNote: null, newsIsSample: true },
   { today, siteUrl: e.SITE_URL, unsubscribeUrl: fake("unsubscribe") },
 );
 const confirm = confirmationEmail({

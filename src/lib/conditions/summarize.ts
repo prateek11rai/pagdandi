@@ -18,7 +18,7 @@ export async function summariseNews(model: LanguageModel, trekName: string, item
     maxOutputTokens: 300,
     providerOptions: { ollama: { reasoningEffort: "none" } },
     prompt: `These are news headlines that matched a search for the ${trekName} trek in India.
-Pick at most 3 that matter to someone about to do this trek: closures, landslides, snowfall, weather warnings, permit or fee changes, rescues. Ignore anything else.
+Pick at most 3 that matter to someone about to do this trek, most important first: closures, landslides, snowfall, weather warnings, permit or fee changes, rescues. Ignore anything else.
 For each, write one short plain sentence based only on the headline. Do not add facts that are not in the headline.
 Reply with JSON only, like {"bullets":[{"item":0,"text":"..."}]}. If none matter, reply {"bullets":[]}.
 

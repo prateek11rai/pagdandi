@@ -2,11 +2,10 @@
 // instead of sending them; `--sweep` refreshes every trek (the weekly run does this on Sundays), `--no-sweep` skips that.
 import { sqlBudgetStore } from "@/lib/budget-sql";
 import { fixtureForecast, openMeteoForecast } from "@/lib/conditions/open-meteo";
-import { fixtureNews, serpApiNews } from "@/lib/conditions/news";
+import { fixtureNews, recordReplyErrors, serpApiNews } from "@/lib/conditions/news";
 import { saveConditions } from "@/lib/conditions/store";
 import { summariseNews } from "@/lib/conditions/summarize";
-import type { NewsPayload } from "@/lib/conditions/types";
-import { closeDb, sql } from "@/lib/db";
+import { closeDb } from "@/lib/db";
 import { mailer } from "@/lib/email";
 import { loadEnv } from "@/lib/env";
 import { sqlSubscriptionStore } from "@/lib/subscriptions-sql";
@@ -34,7 +33,12 @@ const printMailer: Mailer = {
 const forecasts = e.FORECAST_MODE === "fixtures" ? fixtureForecast() : openMeteoForecast();
 const news =
   e.NEWS_MODE === "serpapi"
-    ? serpApiNews({ apiKey: e.SERPAPI_API_KEY!, budget: sqlBudgetStore, caps: { daily: e.SERPAPI_DAILY_CAP, monthly: e.SERPAPI_MONTHLY_CAP } })
+    ? serpApiNews({
+        apiKey: e.SERPAPI_API_KEY!,
+        budget: sqlBudgetStore,
+        caps: { daily: e.SERPAPI_DAILY_CAP, monthly: e.SERPAPI_MONTHLY_CAP },
+        onReplyError: recordReplyErrors(".data/serpapi-reply-errors.jsonl"),
+      })
     : fixtureNews();
 
 const report = await runDigest(
@@ -47,11 +51,6 @@ const report = await runDigest(
     allSlugs,
     fetchForecast: (t) => forecasts.fetch(t),
     fetchNews: (t) => news.fetch(t),
-    async previousNewsUrls(slug) {
-      const [row] = await sql()<{ payload: NewsPayload }[]>`
-        select payload from conditions where slug = ${slug} and kind = 'news' order by fetched_at desc limit 1`;
-      return new Set((row?.payload.items ?? []).map((i) => i.url));
-    },
     summarise: (t, items) => summariseNews(chatModel(), t.name, items),
     saveConditions,
   },
