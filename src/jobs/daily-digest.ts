@@ -1,7 +1,7 @@
 // Render Cron, 07:00 IST. `pnpm digest --dry-run` prints the emails (recipient masked, tokens redacted)
 // instead of sending them; `--sweep` refreshes every trek (the weekly run does this on Sundays), `--no-sweep` skips that.
 import { sqlBudgetStore } from "@/lib/budget-sql";
-import { fetchForecast } from "@/lib/conditions/open-meteo";
+import { fixtureForecast, openMeteoForecast } from "@/lib/conditions/open-meteo";
 import { fixtureNews, serpApiNews } from "@/lib/conditions/news";
 import { saveConditions } from "@/lib/conditions/store";
 import { summariseNews } from "@/lib/conditions/summarize";
@@ -13,7 +13,7 @@ import { sqlSubscriptionStore } from "@/lib/subscriptions-sql";
 import type { Mailer } from "@/lib/subscriptions";
 import { allSlugs, getTrek } from "@/lib/treks";
 import { chatModel } from "@/mastra/model";
-import { runDigest } from "./digest-core";
+import { exitCode, runDigest } from "./digest-core";
 
 const e = loadEnv("digest");
 const dryRun = process.argv.includes("--dry-run");
@@ -31,6 +31,7 @@ const printMailer: Mailer = {
   },
 };
 
+const forecasts = e.FORECAST_MODE === "fixtures" ? fixtureForecast() : openMeteoForecast();
 const news =
   e.NEWS_MODE === "serpapi"
     ? serpApiNews({ apiKey: e.SERPAPI_API_KEY!, budget: sqlBudgetStore, caps: { daily: e.SERPAPI_DAILY_CAP, monthly: e.SERPAPI_MONTHLY_CAP } })
@@ -44,7 +45,7 @@ const report = await runDigest(
     mailer: dryRun ? printMailer : mailer(),
     getTrek,
     allSlugs,
-    fetchForecast,
+    fetchForecast: (t) => forecasts.fetch(t),
     fetchNews: (t) => news.fetch(t),
     async previousNewsUrls(slug) {
       const [row] = await sql()<{ payload: NewsPayload }[]>`
@@ -58,8 +59,10 @@ const report = await runDigest(
 );
 
 console.log(
-  `digest ${dryRun ? "(dry run) " : ""}done: ${report.treksChecked} trek(s) checked, ${report.emailsSent} email(s), ${report.expired} expired subscription(s) removed, news source ${e.NEWS_MODE}${sweep ? ", weekly sweep" : ""}`,
+  `digest ${dryRun ? "(dry run) " : ""}done: ${report.treksChecked} trek(s) checked, ${report.emailsSent} email(s), ${report.expired} expired subscription(s) removed, forecasts ${e.FORECAST_MODE}, news ${e.NEWS_MODE}${sweep ? ", weekly sweep" : ""}`,
 );
+const ff = report.forecastFailures;
+if (ff.length > 0) console.warn(`  forecast unavailable for ${ff.length} of ${report.treksChecked} trek(s); their emails say so: ${ff.map((f) => `${f.slug} (${f.reason})`).join(", ")}`);
 for (const err of report.errors) console.error(`  ! ${err}`);
 await closeDb();
-process.exit(report.budgetExceeded || report.errors.length > 0 ? 1 : 0);
+process.exit(exitCode(report));

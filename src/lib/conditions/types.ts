@@ -17,6 +17,7 @@ export interface PlaceForecast {
 
 export interface ForecastPayload {
   places: PlaceForecast[];
+  fixture?: boolean; // true when the days are a recorded sample, not a live forecast
 }
 
 export interface NewsItem {

@@ -75,6 +75,7 @@ pnpm dev                     # http://localhost:3000
 | `CHAT_MODEL`, `EMBED_MODEL` | chat, search | Default `gemma4:e4b` and `embeddinggemma:300m`. |
 | `SITE_URL` | email links | Defaults to `http://localhost:3000`. |
 | `EMAIL_MODE`, `RESEND_API_KEY` | email | `dry-run` (default) writes emails to `.data/outbox/`. `resend` sends them, using a key from resend.com. |
+| `FORECAST_MODE` | digest | `open-meteo` (default) fetches live forecasts. `fixtures` uses a recorded sample, labelled as such and never stored; CI uses it. |
 | `NEWS_MODE`, `SERPAPI_API_KEY` | digest | `fixtures` (default) uses recorded samples, labelled as such. `serpapi` makes live searches, using the key from your SerpApi dashboard. |
 | `SERPAPI_DAILY_CAP`, `SERPAPI_MONTHLY_CAP` | digest | Hard caps (25 and 200); the free plan allows 250 a month. |
 | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | `pnpm audio` only | ElevenLabs settings and voice library. |
@@ -126,7 +127,7 @@ pnpm dev:up
 pnpm test:integration   # real Postgres + Ollama: loading, hybrid search, a real Gemma recommendation, the digest dry run
 ```
 
-If the local stack is down, integration tests fail with "run `pnpm dev:up` first"; they never skip. CI runs both suites. The integration job uses Postgres with pgvector and Ollama with `gemma4:e2b`.
+If the local stack is down, integration tests fail with "run `pnpm dev:up` first"; they never skip. CI runs both suites. The integration job uses Postgres with pgvector and Ollama with `gemma4:e2b`, plus recorded forecasts and news, so no test depends on an outside API.
 
 ## Privacy
 

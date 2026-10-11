@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { runDigest, type DigestDeps } from "@/jobs/digest-core";
+import { exitCode, runDigest, type DigestDeps } from "@/jobs/digest-core";
 import { BudgetExceededError } from "@/lib/budget";
 import type { ForecastPayload } from "@/lib/conditions/types";
 import { MemorySubscriptionStore } from "@/lib/subscriptions";
@@ -64,7 +64,49 @@ describe("daily digest", () => {
     };
     const r = await runDigest(deps, { sweep: false });
     expect(r.budgetExceeded).toBe(true);
+    expect(exitCode(r)).toBe(1);
     expect(sent[0]!.text).toContain("search budget is used up");
+  });
+
+  it("keeps going when one trek's forecast fails, says so in that email, and still succeeds", async () => {
+    const { sent, deps } = await setup([
+      { slug: "a", travelDate: "2026-10-20" },
+      { slug: "b", travelDate: "2026-10-12" },
+    ]);
+    deps.fetchForecast = async (t) => {
+      if (t.slug === "a") throw new TypeError("fetch failed", { cause: { code: "UND_ERR_CONNECT_TIMEOUT" } });
+      return forecast;
+    };
+    const r = await runDigest(deps, { sweep: false });
+    expect(r.forecastFailures).toEqual([{ slug: "a", reason: "fetch failed (UND_ERR_CONNECT_TIMEOUT)" }]);
+    expect(r.errors).toEqual([]);
+    expect(exitCode(r)).toBe(0);
+    expect(r.emailsSent).toBe(2);
+    const a = sent.find((m) => m.subject.startsWith("Trek A"))!;
+    expect(a.subject).toBe("Trek A · 9 days to go · forecast unavailable");
+    expect(a.text).toContain("Forecast unavailable today.");
+    expect(sent.find((m) => m.subject.startsWith("Trek B"))!.subject).toBe("Trek B · 1 day to go · Heavy snow in the forecast");
+  });
+
+  it("still fails the run when an email can't be sent", async () => {
+    const { deps } = await setup([{ slug: "a", travelDate: "2026-10-20" }]);
+    deps.mailer = { send: async () => Promise.reject(new Error("mail service down")) };
+    const r = await runDigest(deps, { sweep: false });
+    expect(r.errors).toEqual(["email for a failed: mail service down"]);
+    expect(exitCode(r)).toBe(1);
+  });
+
+  it("labels a sample forecast in the subject and body, and never stores it", async () => {
+    const { sent, deps } = await setup([{ slug: "a", travelDate: "2026-10-20" }]);
+    const saved: string[] = [];
+    deps.fetchForecast = async () => ({ ...forecast, fixture: true });
+    deps.saveConditions = async (_slug, kind) => void saved.push(kind);
+    await runDigest(deps, { sweep: false });
+    expect(saved).toEqual(["news"]);
+    expect(sent[0]!.subject).toBe("Trek A · 9 days to go · Heavy snow in the forecast · SAMPLE DATA");
+    expect(sent[0]!.text).toContain("FORECAST\n[SAMPLE DATA for development: this is not a real forecast]");
+    expect(sent[0]!.text).toContain("Forecast: sample data recorded from Open-Meteo.com.");
+    expect(sent[0]!.text).not.toContain("Weather data by Open-Meteo.com.");
   });
 
   it("includes one thing to do outside and an unsubscribe link", async () => {

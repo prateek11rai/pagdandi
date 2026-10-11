@@ -17,6 +17,7 @@ const schema = z.object({
   EMAIL_MODE: z.enum(["dry-run", "resend"]).default("dry-run"),
   EMAIL_FROM: z.string().min(3).default("Pagdandi <onboarding@resend.dev>"),
   RESEND_API_KEY: z.string().min(1).optional(),
+  FORECAST_MODE: z.enum(["open-meteo", "fixtures"]).default("open-meteo"),
   NEWS_MODE: z.enum(["fixtures", "serpapi"]).default("fixtures"),
   SERPAPI_API_KEY: z.string().min(1).optional(),
   SERPAPI_DAILY_CAP: positiveInt.default(25),

@@ -24,8 +24,20 @@ export interface DigestReport {
   expired: number;
   treksChecked: number;
   emailsSent: number;
+  // Their emails still go out, saying "forecast unavailable"; this alone doesn't fail the run.
+  forecastFailures: { slug: string; reason: string }[];
   errors: string[]; // never contain emails, tokens or URLs with keys
   budgetExceeded: boolean;
+}
+
+export function exitCode(r: DigestReport): 0 | 1 {
+  return r.budgetExceeded || r.errors.length > 0 ? 1 : 0;
+}
+
+// "fetch failed" alone says little; Node puts the network error code on `cause`.
+function reasonOf(e: unknown): string {
+  const err = e as Error & { cause?: { code?: unknown } };
+  return typeof err.cause?.code === "string" ? `${err.message} (${err.cause.code})` : err.message;
 }
 
 interface TrekConditions {
@@ -38,7 +50,7 @@ interface TrekConditions {
 // Conditions are fetched once per trek, however many people follow it. With `sweep`, every trek is refreshed.
 export async function runDigest(deps: DigestDeps, opts: { sweep: boolean }): Promise<DigestReport> {
   const today = todayIST(deps.now);
-  const report: DigestReport = { expired: 0, treksChecked: 0, emailsSent: 0, errors: [], budgetExceeded: false };
+  const report: DigestReport = { expired: 0, treksChecked: 0, emailsSent: 0, forecastFailures: [], errors: [], budgetExceeded: false };
   report.expired = await expire(deps.store, deps.now);
 
   const due = (await deps.store.listActive()).filter((s) => s.lastSentOn !== today);
@@ -70,9 +82,16 @@ async function checkTrek(trek: Trek, deps: DigestDeps, report: DigestReport): Pr
   const out: TrekConditions = { forecast: null, news: null, newsNote: null, newsIsSample: false };
   try {
     out.forecast = await deps.fetchForecast(trek);
-    await deps.saveConditions(trek.slug, "forecast", out.forecast);
   } catch (e) {
-    report.errors.push(`forecast for ${trek.slug} failed: ${(e as Error).message}`);
+    report.forecastFailures.push({ slug: trek.slug, reason: reasonOf(e) });
+  }
+  // Sample forecasts stay out of the database, so a trek page can never show one as real.
+  if (out.forecast && !out.forecast.fixture) {
+    try {
+      await deps.saveConditions(trek.slug, "forecast", out.forecast);
+    } catch (e) {
+      report.errors.push(`saving the forecast for ${trek.slug} failed: ${(e as Error).message}`);
+    }
   }
   try {
     const seen = await deps.previousNewsUrls(trek.slug);
@@ -124,8 +143,10 @@ export function composeDigest(
 ): { subject: string; text: string; html: string } {
   const n = daysBetween(o.today, sub.travelDate);
   const togo = n <= 0 ? "you leave today" : n === 1 ? "1 day to go" : `${n} days to go`;
-  const subject = `${trek.name} · ${togo} · ${statusLine(c)}`;
+  const forecastIsSample = c.forecast?.fixture === true;
+  const subject = `${trek.name} · ${togo} · ${statusLine(c)}${forecastIsSample || c.newsIsSample ? " · SAMPLE DATA" : ""}`;
   const forecast = c.forecast ? c.forecast.places.flatMap(placeLines) : ["Forecast unavailable today."];
+  if (forecastIsSample) forecast.unshift("[SAMPLE DATA for development: this is not a real forecast]");
   const news =
     c.newsNote !== null
       ? [c.newsNote]
@@ -148,7 +169,7 @@ export function composeDigest(
     prep,
     "",
     `Trek page: ${page}`,
-    c.newsIsSample ? "Weather data by Open-Meteo.com. News: sample data." : "Weather data by Open-Meteo.com. News found through SerpApi.",
+    `${forecastIsSample ? "Forecast: sample data recorded from Open-Meteo.com." : "Weather data by Open-Meteo.com."} ${c.newsIsSample ? "News: sample data." : "News found through SerpApi."}`,
     `Stop these emails: ${o.unsubscribeUrl}`,
   ].join("\n");
   const html = `<div style="font-family:Georgia,serif;max-width:560px;color:#1f2a24">

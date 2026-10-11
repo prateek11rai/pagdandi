@@ -19,8 +19,9 @@ afterAll(async () => {
 
 describe("pnpm digest --dry-run, end to end", () => {
   it("checks conditions and prints one masked email with redacted tokens", async () => {
-    const { stdout } = await promisify(execFile)("pnpm", ["-s", "digest", "--dry-run"], {
-      env: { ...process.env },
+    // Recorded forecasts and no weekly sweep: the test calls no outside API and doesn't change on Sundays.
+    const { stdout } = await promisify(execFile)("pnpm", ["-s", "digest", "--dry-run", "--no-sweep"], {
+      env: { ...process.env, FORECAST_MODE: "fixtures" },
       timeout: 170_000,
     });
     expect(stdout).toContain("=== To: a***@example.com");
@@ -28,6 +29,7 @@ describe("pnpm digest --dry-run, end to end", () => {
     expect(stdout).toContain("ONE THING TO DO OUTSIDE TODAY");
     expect(stdout).toContain("token=REDACTED");
     expect(stdout).not.toContain("admin@example.com");
-    expect(stdout).toMatch(/digest \(dry run\) done: \d+ trek\(s\) checked, 1 email/);
+    expect(stdout).toContain("[SAMPLE DATA for development: this is not a real forecast]");
+    expect(stdout).toMatch(/digest \(dry run\) done: 1 trek\(s\) checked, 1 email\(s\), .*forecasts fixtures, news fixtures$/m);
   });
 });

@@ -142,7 +142,7 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 | # | Shot | Narration |
 |---|---|---|
 | 1 | Cover image, then the home hero | "Every friend group has a trek they've talked about for years. Pagdandi is for getting it out of the group chat and onto a trail." |
-| 2 | Type "snow trek for beginners in December"; open the Month filter | "Search understands what you mean, not just names: full-text search and Gemma embeddings in one Postgres." |
+| 2 | Type "lakes high in the mountains with wildflowers" (Kashmir Great Lakes, Brahmatal, Kedarkantha, Valley of Flowers, Goecha La); then set Month to August | "Search understands what you mean, not just names: full-text search and Gemma embeddings in one Postgres." |
 | 3 | Kedarkantha: facts, safety note, the altitude figure with "Camp altitudes not known", sources; 5 s of audio | "Every number here has a source. If we couldn't find one, it says so. We don't guess altitudes." |
 | 4 | Ask: click the group starter; the cards stream in | "The guide is Gemma on our own server. It picks treks near you, the cards come from the database, and code checks every number it says." |
 | 5 | Get daily updates, then the morning email | "One email a day until you leave: the forecast, any news, and one thing to do outside today." |

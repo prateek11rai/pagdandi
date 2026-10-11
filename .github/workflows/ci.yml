@@ -52,6 +52,7 @@ jobs:
       TEST_DATABASE_URL: postgres://pagdandi@127.0.0.1:54329/pagdandi_test
       OLLAMA_BASE_URL: http://127.0.0.1:11434
       CHAT_MODEL: gemma4:e2b # the smaller Gemma 4, for CI's CPU
+      FORECAST_MODE: fixtures # recorded sample forecasts: the digest test never calls Open-Meteo from a runner
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

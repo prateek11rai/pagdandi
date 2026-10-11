@@ -129,3 +129,17 @@ Dead ends on the way:
   - Without a minimum length, drafts shrank to about 100 words.
 
   Result: 20 scripts, 122–155 words, no repeated openings, every number traceable to the YAML. That's 16,638 characters for ElevenLabs.
+
+### Sunday evening: CI's first run, two stalls, and what got cut
+- **CI's first run** (the repo's first push to GitHub, still private): the fast job passed, and Integration failed in the digest dry run with `forecast for harishchandragad failed: fetch failed`, an Open-Meteo call from the GitHub runner. Two things made that test fragile:
+  - Any failed forecast made the whole run exit 1, even though that trek's email had already gone out saying "Forecast unavailable today".
+  - It was Sunday in IST, so the dry run was also the weekly sweep: about 40 Open-Meteo calls from a shared runner, for a test that needs one trek.
+- **The fix:**
+  - A failed forecast is now counted on its own, not as an error. That email says "forecast unavailable", the log says how many treks failed and why (with Node's network error code, e.g. `fetch failed (UND_ERR_CONNECT_TIMEOUT)`), and the run exits 0. A failed email, a failed save or a full search budget still exits 1.
+  - `FORECAST_MODE=fixtures` serves a recorded Open-Meteo sample (Kedarkantha's road head and summit, recorded on 11 Oct), re-dated from today. The email marks it SAMPLE DATA in the subject and above the forecast, and it is never stored, so it can't reach a trek page.
+  - CI and the digest integration test use the fixtures and `--no-sweep`. Local runs and Render keep live Open-Meteo.
+  - Unit tests cover all three: a failed forecast with the run still succeeding, a failed email still failing it, and the sample label.
+- **Two stalls:** twice the laptop slept in the middle of a request and the session stopped. Both times nothing had been written, the tree was still clean at the last commit, and the work was redone from the top. The cost was time, not state, because work lands in small commits after the leak check. For Monday's long steps (Render's first deploy pulls about 12 GB of models), keep the machine awake.
+- **Cut before publishing:** Sentry (it would add a third-party data flow the privacy notes don't cover) and Hindi audio (a check found nothing in the repo or the post that promises it).
+- **Demo query:** shot 2 now uses "lakes high in the mountains with wildflowers", which finds Kashmir Great Lakes, Brahmatal, Kedarkantha, Valley of Flowers and Goecha La without naming any of them. The December snow query stays out of the demo, because Kedarkantha's winter months stay `null` until an open source names them. We changed the query, not the data.
+- **Numbers:** 74 unit tests, and 13 integration tests in 38 s on the laptop.

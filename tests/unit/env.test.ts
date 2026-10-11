@@ -30,6 +30,12 @@ describe("env validation", () => {
     expect(() => parseEnv("web", { ...base, NEWS_MODE: "serpapi" })).not.toThrow();
   });
 
+  it("uses live Open-Meteo forecasts unless fixtures are asked for", () => {
+    expect(parseEnv("digest", base).FORECAST_MODE).toBe("open-meteo");
+    expect(parseEnv("digest", { ...base, FORECAST_MODE: "fixtures" }).FORECAST_MODE).toBe("fixtures");
+    expect(() => parseEnv("digest", { ...base, FORECAST_MODE: "live" })).toThrow(/FORECAST_MODE is invalid/);
+  });
+
   it("treats empty strings as unset", () => {
     expect(() => parseEnv("web", { ...base, ADMIN_EMAIL: "" })).toThrow(/ADMIN_EMAIL is missing/);
   });
