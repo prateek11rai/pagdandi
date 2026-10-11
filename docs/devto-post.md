@@ -114,7 +114,6 @@ Hosted services see a little: SerpApi trek names, ElevenLabs the scripts, Open-M
 
 ## What I Got Wrong
 
-<!-- From docs/BUILD_LOG.md; edit freely -->
 - **Thinking mode ate the answers.** Gemma spent its whole budget reasoning and never answered. Off, it answered in under 3 seconds.
 - **"First-timers" meant "easy only".** That ruled out every moderate beginner trek. The search now takes a maximum difficulty and says which limit the closest matches miss.
 - **Textbook hybrid search lost to a stray word.** Every trek says "trek" and "day", so "short trek near Delhi" ranked Nagaland first. Dropping words found in most documents, and fusing fewer results, fixed it.
