@@ -9,7 +9,7 @@
 
 Every friend group has a trek it has talked about for years, and a group chat where "this time we're definitely going" never turns into a date. **Pagdandi** (पगडंडी, "footpath") is for that group. Tell it how many of you there are, who has trekked before, the budget, the days, the month and where you're starting from, and it recommends treks you can actually do, from 20 well-known Indian treks with every fact sourced. Then it gets out of the way: an audio intro for the drive, a one-page plan for the trail. It runs on a laptop, model included, and anyone can run their own copy.
 
-**[Watch the demo](docs/demo/pagdandi-demo.mp4)** (2½ minutes, 6 MB): the guide, the table with its audio intros, a trek page and the one-page plan, then a sign-up and the next morning's email.
+**[Watch the demo](docs/demo/pagdandi-demo.mp4)** (2½ minutes, 6 MB): the guide, the table with its audio intros, a trek page and the one-page plan, then a sign-up and the daily email.
 
 ## What you get
 
@@ -26,7 +26,7 @@ Every friend group has a trek it has talked about for years, and a group chat wh
 
 ## How it works
 
-The guide is Gemma 4 (`gemma4:e4b`) and search runs on EmbeddingGemma, both through Ollama on the laptop that serves the site: no server, and no per-chat bill. A Mastra agent with four read-only tools searches Postgres (Tiger Data or a local one) using hybrid search: full-text `tsvector` plus pgvector embeddings, fused with reciprocal rank fusion. Recommendations come back as cards rendered from the database, and plain code checks every altitude, distance, day count and cost in the guide's sentences before you see them. A daily job fetches each followed trek's forecast from Open-Meteo and news through SerpApi (under hard caps), and Gemma summarises the news. ElevenLabs voiced each trek's audio intro once, from its sourced script.
+The guide is Gemma 4 (`gemma4:e4b`) and search runs on EmbeddingGemma, both through Ollama on the laptop that serves the site: no server, and no per-chat bill. A Mastra agent with four read-only tools searches Postgres (Tiger Data or a local one) using hybrid search: full-text `tsvector` plus pgvector embeddings, fused with reciprocal rank fusion. Recommendations come back as cards rendered from the database, and plain code checks every altitude, distance, day count and cost in the guide's sentences before you see them. A daily job fetches each followed trek's forecast from Open-Meteo and news through SerpApi (under hard caps); the email lists every headline, and Gemma adds a one-line "What matters" when one does. ElevenLabs voiced each trek's audio intro once, from its sourced script.
 
 ## Run it
 
@@ -76,7 +76,7 @@ The [DEV Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://de
 
 | Category | How Pagdandi uses it |
 |---|---|
-| Gemma | Gemma 4 runs the guide and summarises news; EmbeddingGemma powers search. Both run through Ollama on the laptop. |
+| Gemma | Gemma 4 runs the guide and writes the "What matters" line over the daily news; EmbeddingGemma powers search. Both run through Ollama on the laptop. |
 | Tiger Data | Postgres with pgvector: the treks, the hybrid search index, conditions, subscriptions and API budget counters. |
 | SerpApi | Google News results for each followed trek (closures, landslides, snowfall, permits), behind per-day and per-month caps. |
 | ElevenLabs | A short audio intro for every trek, generated once from its sourced script and committed as an MP3. |
