@@ -1,12 +1,14 @@
 import type { UIMessageChunk } from "ai";
 import { orderBySearch, searchRanking } from "./card-order";
+import { rankByOrigin } from "./cities";
 import { checkSentence, SentenceBuffer, type FactContext } from "./fact-check";
 
 // Re-emits the agent's UI stream with every text sentence fact-checked before it leaves the server,
-// and the recommended cards in the search's ranking.
+// and the recommended cards in the search's ranking, nearest first when the group named its city.
 export function factCheckedStream(
   source: ReadableStream<UIMessageChunk>,
   base: Omit<FactContext, "contextSlugs">,
+  opts: { origin?: [number, number] | null } = {},
 ): ReadableStream<UIMessageChunk> {
   const contextSlugs: string[] = [];
   const buffers = new Map<string, SentenceBuffer>();
@@ -25,7 +27,7 @@ export function factCheckedStream(
           collectSlugs(chunk.output, contextSlugs);
           const tool = toolNames.get(chunk.toolCallId);
           if (tool === "searchTreks") ranked = searchRanking(chunk.output);
-          out.enqueue(tool === "recommendTreks" ? { ...chunk, output: withCardsInOrder(chunk.output, ranked) } : chunk);
+          out.enqueue(tool === "recommendTreks" ? { ...chunk, output: withCardsInOrder(chunk.output, ranked, opts.origin ?? null) } : chunk);
         } else if (chunk.type === "text-delta") {
           let b = buffers.get(chunk.id);
           if (!b) buffers.set(chunk.id, (b = new SentenceBuffer()));
@@ -43,10 +45,13 @@ export function factCheckedStream(
   );
 }
 
-function withCardsInOrder(output: unknown, ranked: string[]): unknown {
+// The model may leave out the group's city when it searches; the group's own words still count.
+function withCardsInOrder(output: unknown, ranked: string[], origin: [number, number] | null): unknown {
   const o = output as { cards?: unknown } | null;
   if (!o || !Array.isArray(o.cards)) return output;
-  return { ...o, cards: orderBySearch(o.cards as { slug: string }[], ranked) };
+  const cards = orderBySearch(o.cards as { slug: string; start?: [number, number] }[], ranked);
+  const placed = cards.every((c) => Array.isArray(c.start)) ? rankByOrigin(cards as { slug: string; start: [number, number] }[], origin) : cards;
+  return { ...o, cards: placed };
 }
 
 function collectSlugs(output: unknown, into: string[]) {

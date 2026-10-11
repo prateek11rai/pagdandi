@@ -44,6 +44,13 @@ export function cityCoords(name: string | undefined): [number, number] | null {
   return CITIES[ALIASES[key] ?? key] ?? null;
 }
 
+// The last city the group names in their own words ("…from Delhi", "Delhi se"), if we know it.
+export function cityIn(text: string): [number, number] | null {
+  let found: [number, number] | null = null;
+  for (const word of text.toLowerCase().match(/[a-z]+/g) ?? []) found = cityCoords(word) ?? found;
+  return found;
+}
+
 export function distanceKm([lat1, lon1]: [number, number], [lat2, lon2]: [number, number]): number {
   const rad = (d: number) => (d * Math.PI) / 180;
   const a = Math.sin(rad(lat2 - lat1) / 2) ** 2 + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(rad(lon2 - lon1) / 2) ** 2;

@@ -8,7 +8,7 @@ import { getCards } from "@/lib/treks";
 export const recommendTreksTool = createTool({
   id: "recommend-treks",
   description:
-    "Show 1 to 3 recommended trek cards to the user. Use slugs from search-treks results only. Each reason is one short sentence without numbers.",
+    "Show 1 to 3 recommended trek cards to the user. Use slugs from search-treks results only, starting with the first result unless it clearly doesn't fit. Each reason is one short sentence without numbers.",
   inputSchema: z.object({
     recommendations: z
       .array(z.object({ slug: z.string().regex(/^[a-z0-9-]{2,60}$/), reason: z.string().min(3).max(200) }))

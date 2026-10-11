@@ -2,6 +2,7 @@ import { handleChatStream } from "@mastra/ai-sdk";
 import { createUIMessageStreamResponse } from "ai";
 import { parseChatBody } from "@/lib/chat-input";
 import { factCheckedStream } from "@/lib/checked-stream";
+import { cityIn } from "@/lib/cities";
 import { userNumbersFrom } from "@/lib/fact-check";
 import { allow, CHAT_LIMITS, clientKey } from "@/lib/rate-limit";
 import { allTrekFacts } from "@/lib/trek-facts";
@@ -40,7 +41,11 @@ export async function POST(req: Request) {
       onError: () => GENERIC,
     });
     const facts = await allTrekFacts();
-    const checked = factCheckedStream(stream, { treks: facts, userNumbers: userNumbersFrom(chat.userText) });
+    const checked = factCheckedStream(
+      stream,
+      { treks: facts, userNumbers: userNumbersFrom(chat.userText) },
+      { origin: cityIn(chat.userText) },
+    );
     return createUIMessageStreamResponse({ stream: checked });
   } catch {
     return json(503, GENERIC);

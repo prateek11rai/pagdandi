@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cityCoords, distanceKm, rankByOrigin } from "@/lib/cities";
+import { cityCoords, cityIn, distanceKm, rankByOrigin } from "@/lib/cities";
 
 describe("starting city", () => {
   it("knows common names and aliases", () => {
@@ -23,5 +23,13 @@ describe("starting city", () => {
     const a = { slug: "a", start: [10, 76] as [number, number] };
     const b = { slug: "b", start: [30, 78] as [number, number] };
     expect(rankByOrigin([a, b], null).map((t) => t.slug)).toEqual(["a", "b"]);
+  });
+});
+
+describe("the group's own city", () => {
+  it("is the last known city or alias in what they wrote", () => {
+    expect(cityIn("hum 4 log hain, December mein Delhi se")).toEqual(cityCoords("delhi"));
+    expect(cityIn("we're in Bombay now, not Bangalore any more... actually Bangalore")).toEqual(cityCoords("bengaluru"));
+    expect(cityIn("a trek with lakes")).toBeNull();
   });
 });
