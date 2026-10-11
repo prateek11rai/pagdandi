@@ -1,9 +1,23 @@
 name: CI
 
+# Commits that touch only docs, Markdown, audio or brand assets skip CI; everything else (data, src, tests,
+# scripts, db, config and this workflow) runs it. A push is skipped only if every changed file matches.
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "public/audio/**"
+      - "public/brand/**"
+      - "LICENSE"
   pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
+      - "public/audio/**"
+      - "public/brand/**"
+      - "LICENSE"
 
 permissions:
   contents: read
