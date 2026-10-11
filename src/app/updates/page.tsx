@@ -36,8 +36,8 @@ export default async function UpdatesPage({ searchParams }: { searchParams: Para
         ready.
       </p>
       <p className="my-[18px] rounded-r-lg border-l-[3px] border-saffron bg-paper-deep px-3.5 py-2.5 text-sm">
-        <strong>Emails don&apos;t go out yet.</strong> Pagdandi has no domain of its own, so only the site admin receives
-        them for now. If you sign up with another address, nothing is stored. We&apos;ll switch this on once the domain
+        <strong>Admin-only for now.</strong> Pagdandi has no domain of its own, so only the site admin receives these
+        emails. If you sign up with another address, nothing is stored. We&apos;ll open it to everyone once the domain
         exists.
       </p>
 
@@ -46,7 +46,7 @@ export default async function UpdatesPage({ searchParams }: { searchParams: Para
           <SubscribeForm treks={treks} initialSlug={initialSlug} />
           <div>
             <h2 className="mb-1.5 font-sans text-[11px] font-normal uppercase tracking-[0.12em] text-ink-muted">
-              What the morning email looks like
+              What the daily email looks like
             </h2>
             <SampleEmail />
             <h2 className="mb-1.5 mt-6 border-b border-rule pb-1 text-[19px]">Meanwhile</h2>
@@ -67,7 +67,7 @@ function SampleEmail() {
   return (
     <div role="group" aria-label="Example email" className="rounded-xl border border-rule bg-paper-raised px-4 py-3.5">
       <p className="text-xs text-ink-muted">From Pagdandi · Daily update</p>
-      <p className="mb-2.5 mt-1 font-serif text-[17px] font-semibold leading-snug">Kedarkantha · 12 days to go · all clear so far</p>
+      <p className="mb-2.5 mt-1 font-serif text-[17px] font-semibold leading-snug">Pagdandi · Kedarkantha · 12 days to go · all clear so far</p>
       <dl className="mb-2.5 flex flex-wrap gap-x-[18px] gap-y-1.5 text-[13px]">
         <div>
           <dt className="text-[10px] uppercase tracking-[0.12em] text-ink-muted">Sankri</dt>

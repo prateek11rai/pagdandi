@@ -16,7 +16,7 @@ const config = {
 };
 const message = {
   to: "admin@example.com",
-  subject: "Kedarkantha · 12 days to go · all clear so far",
+  subject: "Pagdandi · Kedarkantha · 12 days to go · all clear so far",
   text: "FORECAST\n…",
   html: "<p>FORECAST</p>",
   headers: { "List-Unsubscribe": "<https://example.org/api/unsubscribe?token=t>" },

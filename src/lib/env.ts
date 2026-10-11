@@ -53,7 +53,7 @@ const HINTS: Partial<Record<keyof Env, string>> = {
   SMTP_PASS: "needed when EMAIL_MODE=smtp: the mailbox's password; for Gmail, an app password.",
   SERPAPI_API_KEY: "needed when NEWS_MODE=serpapi. Find it in your SerpApi dashboard.",
   ELEVENLABS_API_KEY: "needed by `pnpm audio`. Create one in ElevenLabs settings.",
-  ELEVENLABS_VOICE_ID: "needed by `pnpm audio`. Pick a voice in the ElevenLabs voice library.",
+  ELEVENLABS_VOICE_ID: "needed by `pnpm audio`. Pick a premade voice from the Default tab under Voices (the free plan's API refuses Voice Library voices).",
 };
 
 export class EnvError extends Error {}
