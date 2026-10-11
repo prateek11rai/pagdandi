@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       mailer: mailer(),
       adminEmail: e.ADMIN_EMAIL,
       siteUrl: e.SITE_URL,
-      trekName: trek.name,
+      trek: { name: trek.name, state: trek.state, slug: trek.slug },
     });
     if (result.kind === "preview") return json(200, PREVIEW_MESSAGE);
     if (result.kind === "invalid") return json(400, result.message);

@@ -1,4 +1,5 @@
 import { daysBetween, todayIST } from "./dates";
+import { confirmationEmail } from "./email-template";
 import { hashToken, newToken } from "./tokens";
 
 export interface Subscription {
@@ -35,7 +36,7 @@ export const PREVIEW_MESSAGE =
 // Until the site has a domain, only the admin can subscribe. Anyone else gets the preview message and nothing is stored.
 export async function subscribe(
   input: { email: string; slug: string; travelDate: string },
-  deps: { store: SubscriptionStore; mailer: Mailer; adminEmail: string; siteUrl: string; trekName: string; now?: Date },
+  deps: { store: SubscriptionStore; mailer: Mailer; adminEmail: string; siteUrl: string; trek: { name: string; state: string; slug: string }; now?: Date },
 ): Promise<SubscribeResult> {
   if (input.email.trim().toLowerCase() !== deps.adminEmail.trim().toLowerCase()) return { kind: "preview" };
   const today = todayIST(deps.now);
@@ -54,13 +55,8 @@ export async function subscribe(
   });
   const confirmUrl = `${deps.siteUrl}/api/confirm?token=${confirm.token}`;
   const unsubscribeUrl = `${deps.siteUrl}/api/unsubscribe?token=${unsubscribe.token}`;
-  await deps.mailer.send({
-    to: deps.adminEmail,
-    subject: `Confirm daily updates for ${deps.trekName}`,
-    text: `Confirm daily updates for ${deps.trekName} until ${input.travelDate}:\n${confirmUrl}\n\nNot you? Ignore this email and nothing happens. Unsubscribe any time: ${unsubscribeUrl}\n`,
-    html: `<p>Confirm daily updates for <strong>${escapeHtml(deps.trekName)}</strong> until ${input.travelDate}:</p><p><a href="${confirmUrl}">Confirm</a></p><p>Not you? Ignore this email and nothing happens.</p><p><a href="${unsubscribeUrl}">Unsubscribe</a></p>`,
-    headers: unsubscribeHeaders(unsubscribeUrl),
-  });
+  const email = confirmationEmail({ siteUrl: deps.siteUrl, trek: deps.trek, travelDate: input.travelDate, confirmUrl, unsubscribeUrl });
+  await deps.mailer.send({ to: deps.adminEmail, ...email, headers: unsubscribeHeaders(unsubscribeUrl) });
   return { kind: "pending" };
 }
 
@@ -88,9 +84,6 @@ export function unsubscribeHeaders(url: string): Record<string, string> {
   return { "List-Unsubscribe": `<${url}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" };
 }
 
-export function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
-}
 
 // In-memory store for tests and local experiments.
 export class MemorySubscriptionStore implements SubscriptionStore {

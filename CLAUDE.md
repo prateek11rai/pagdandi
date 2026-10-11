@@ -10,6 +10,7 @@ DevRelay rules for this repo: follow `.claude/devrelay-rules.md` (gitignored; se
 - `pnpm db:migrate`, `pnpm treks:validate`, `pnpm treks:load`, `pnpm treks:embed`: database and trek data pipeline. `pnpm search:eval`: the benchmark searches.
 - `pnpm digest --dry-run`: the daily job, printing emails instead of sending.
 - `pnpm news:check --trek <slug>`: one live SerpApi search, counted against the caps. Never in tests or CI.
+- `pnpm email:preview --trek <slug>`: render the digest and confirmation emails into `.data/outbox/` from sample data. Never sends.
 - `pnpm audio --estimate`: which intros are missing or have a changed script, without calling ElevenLabs. `pnpm audio` spends ElevenLabs credits.
 - `pnpm topo`: regenerate `public/brand/topo.svg`.
 

@@ -2,7 +2,9 @@ import { mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import nodemailer from "nodemailer";
 import { dryRunMailer, smtpMailer, smtpTransportOptions } from "@/lib/email";
+import { unsubscribeHeaders } from "@/lib/subscriptions";
 
 const config = {
   host: "smtp.example.com",
@@ -36,14 +38,37 @@ describe("SMTP email", () => {
     const t = fakeTransport();
     await smtpMailer(config, t).send(message);
     expect(t.sent).toEqual([
-      { from: "admin@example.com", to: "admin@example.com", subject: message.subject, text: message.text, html: message.html, headers: message.headers },
+      {
+        from: { name: "Pagdandi", address: "admin@example.com" },
+        to: "admin@example.com",
+        subject: message.subject,
+        text: message.text,
+        html: message.html,
+        headers: message.headers,
+      },
     ]);
   });
 
-  it("uses EMAIL_FROM when it's set", async () => {
+  it("uses EMAIL_FROM's address when it's set, always with Pagdandi as the name", async () => {
     const t = fakeTransport();
-    await smtpMailer({ ...config, from: "Pagdandi <admin@example.com>" }, t).send(message);
-    expect((t.sent[0] as { from: string }).from).toBe("Pagdandi <admin@example.com>");
+    await smtpMailer({ ...config, from: "Someone Else <updates@example.com>" }, t).send(message);
+    expect((t.sent[0] as { from: unknown }).from).toEqual({ name: "Pagdandi", address: "updates@example.com" });
+  });
+
+  // nodemailer's stream transport builds the real message without a network: what a mail client receives.
+  it("goes out as multipart/alternative, from \"Pagdandi\", with both unsubscribe headers", async () => {
+    const stream = nodemailer.createTransport({ streamTransport: true, buffer: true, newline: "unix" });
+    let raw = "";
+    await smtpMailer(config, { sendMail: async (m) => void (raw = String(((await stream.sendMail(m)) as { message: Buffer }).message)) }).send({
+      ...message,
+      headers: unsubscribeHeaders("https://example.org/api/unsubscribe?token=t"),
+    });
+    expect(raw).toMatch(/^From: Pagdandi <admin@example\.com>$/m);
+    expect(raw).toMatch(/^Content-Type: multipart\/alternative;/m);
+    expect(raw).toMatch(/^Content-Type: text\/plain; charset=utf-8$/m);
+    expect(raw).toMatch(/^Content-Type: text\/html; charset=utf-8$/m);
+    expect(raw).toMatch(/^List-Unsubscribe: <https:\/\/example\.org\/api\/unsubscribe\?token=t>$/m);
+    expect(raw).toMatch(/^List-Unsubscribe-Post: List-Unsubscribe=One-Click$/m);
   });
 
   it("refuses any recipient but the admin, before touching the server", async () => {
@@ -69,10 +94,12 @@ describe("dry-run email", () => {
   let dir: string;
   afterEach(() => rmSync(dir, { recursive: true, force: true }));
 
-  it("writes the email to the outbox folder instead of sending it", async () => {
+  it("writes the email to the outbox folder instead of sending it, as text and HTML", async () => {
     dir = mkdtempSync(path.join(tmpdir(), "outbox-"));
     await dryRunMailer(dir).send(message);
-    const [file] = readdirSync(dir);
-    expect(readFileSync(path.join(dir, file!), "utf8")).toBe(`To: admin@example.com\nSubject: ${message.subject}\n\n${message.text}`);
+    const files = readdirSync(dir).sort();
+    expect(files.map((f) => path.extname(f))).toEqual([".html", ".txt"]);
+    expect(readFileSync(path.join(dir, files[1]!), "utf8")).toBe(`To: admin@example.com\nSubject: ${message.subject}\n\n${message.text}`);
+    expect(readFileSync(path.join(dir, files[0]!), "utf8")).toBe(message.html);
   });
 });

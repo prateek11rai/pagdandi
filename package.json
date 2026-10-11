@@ -28,7 +28,8 @@
     "topo": "tsx scripts/make-topo.ts",
     "devrelay:setup": "bash scripts/devrelay-setup.sh",
     "search:eval": "tsx --conditions=react-server --env-file-if-exists=.env scripts/search-eval.ts",
-    "news:check": "tsx --conditions=react-server --env-file-if-exists=.env scripts/news-check.ts"
+    "news:check": "tsx --conditions=react-server --env-file-if-exists=.env scripts/news-check.ts",
+    "email:preview": "tsx --conditions=react-server --env-file-if-exists=.env scripts/email-preview.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "3.0.62",

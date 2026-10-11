@@ -3,7 +3,8 @@ import { isSevere, weatherLabel } from "@/lib/conditions/weather-codes";
 import type { ForecastPayload, NewsItem, NewsPayload, NewsSummary, PlaceForecast } from "@/lib/conditions/types";
 import { daysBetween, todayIST } from "@/lib/dates";
 import { prepFor } from "@/lib/prep";
-import { escapeHtml, expire, unsubscribeHeaders, unsubscribeUrlFor, type Mailer, type Subscription, type SubscriptionStore } from "@/lib/subscriptions";
+import { digestEmail, formatShortDate, type ForecastRow } from "@/lib/email-template";
+import { expire, unsubscribeHeaders, unsubscribeUrlFor, type Mailer, type Subscription, type SubscriptionStore } from "@/lib/subscriptions";
 import type { Trek } from "@/lib/trek-schema";
 
 export interface DigestDeps {
@@ -125,14 +126,16 @@ const DAY = new Intl.DateTimeFormat("en-IN", { weekday: "short", day: "numeric",
 
 const round1 = (n: number) => Math.round(n * 10) / 10;
 
-function placeLines(p: PlaceForecast): string[] {
-  const head = `${p.place === "road_head" ? "Road head" : "High point (estimate)"}: ${p.name}${p.elevationM !== null ? `, ${p.elevationM.toLocaleString("en-IN")} m` : ""}`;
-  const days = p.days.slice(0, 2).map((d) => {
-    const temp = d.tminC !== null && d.tmaxC !== null ? `${Math.round(d.tminC)} to ${Math.round(d.tmaxC)} °C` : "temperature n/a";
-    const wet = d.snowCm ? `, ${round1(d.snowCm)} cm snow` : d.precipMm ? `, ${round1(d.precipMm)} mm rain` : "";
-    return `  ${DAY.format(new Date(d.date))}: ${weatherLabel(d.code)}, ${temp}${wet}`;
-  });
-  return [head, ...days];
+function forecastRow(p: PlaceForecast): ForecastRow {
+  return {
+    label: p.place === "road_head" ? "Road head" : "High point (estimate)",
+    place: `${p.name}${p.elevationM !== null ? `, ${p.elevationM.toLocaleString("en-IN")} m` : ""}`,
+    days: p.days.slice(0, 2).map((d) => {
+      const temp = d.tminC !== null && d.tmaxC !== null ? `${Math.round(d.tminC)} to ${Math.round(d.tmaxC)} °C` : "temperature n/a";
+      const wet = d.snowCm ? `, ${round1(d.snowCm)} cm snow` : d.precipMm ? `, ${round1(d.precipMm)} mm rain` : "";
+      return `${DAY.format(new Date(d.date))}: ${weatherLabel(d.code)}, ${temp}${wet}`;
+    }),
+  };
 }
 
 export function composeDigest(
@@ -142,41 +145,18 @@ export function composeDigest(
   o: { today: string; siteUrl: string; unsubscribeUrl: string },
 ): { subject: string; text: string; html: string } {
   const n = daysBetween(o.today, sub.travelDate);
-  const togo = n <= 0 ? "you leave today" : n === 1 ? "1 day to go" : `${n} days to go`;
-  const forecastIsSample = c.forecast?.fixture === true;
-  const subject = `${trek.name} · ${togo} · ${statusLine(c)}${forecastIsSample || c.newsIsSample ? " · SAMPLE DATA" : ""}`;
-  const forecast = c.forecast ? c.forecast.places.flatMap(placeLines) : ["Forecast unavailable today."];
-  if (forecastIsSample) forecast.unshift("[SAMPLE DATA for development: this is not a real forecast]");
-  const news =
-    c.newsNote !== null
-      ? [c.newsNote]
-      : c.news && c.news.bullets.length > 0
-        ? c.news.bullets.map((b) => `- ${b.text} ${b.url}`)
-        : ["Nothing new."];
-  if (c.newsIsSample) news.unshift("[SAMPLE DATA for development: these are not real news reports]");
-  const prep = prepFor(n);
-  const page = `${o.siteUrl}/treks/${trek.slug}`;
-  const text = [
-    `${trek.name} · ${togo}`,
-    "",
-    "FORECAST",
-    ...forecast,
-    "",
-    "NEWS SINCE YESTERDAY",
-    ...news,
-    "",
-    "ONE THING TO DO OUTSIDE TODAY",
-    prep,
-    "",
-    `Trek page: ${page}`,
-    `${forecastIsSample ? "Forecast: sample data recorded from Open-Meteo.com." : "Weather data by Open-Meteo.com."} ${c.newsIsSample ? "News: sample data." : "News found through SerpApi."}`,
-    `Stop these emails: ${o.unsubscribeUrl}`,
-  ].join("\n");
-  const html = `<div style="font-family:Georgia,serif;max-width:560px;color:#1f2a24">
-<h2 style="margin:0 0 4px">${escapeHtml(trek.name)}</h2><p style="margin:0 0 16px;color:#5a635c">${escapeHtml(togo)}</p>
-<h3>Forecast</h3><p>${forecast.map(escapeHtml).join("<br>")}</p>
-<h3>News since yesterday</h3><p>${news.map((l) => escapeHtml(l)).join("<br>")}</p>
-<h3>One thing to do outside today</h3><p>${escapeHtml(prep)}</p>
-<p><a href="${page}">Trek page</a> · Weather data by <a href="https://open-meteo.com/">Open-Meteo.com</a> · <a href="${o.unsubscribeUrl}">Stop these emails</a></p></div>`;
-  return { subject, text, html };
+  return digestEmail({
+    siteUrl: o.siteUrl,
+    trek: { name: trek.name, state: trek.state, slug: trek.slug },
+    togo: n <= 0 ? "you leave today" : n === 1 ? "1 day to go" : `${n} days to go`,
+    travelDate: sub.travelDate,
+    status: statusLine(c),
+    forecast: c.forecast ? c.forecast.places.map(forecastRow) : null,
+    forecastSample: c.forecast?.fixture === true,
+    news: (c.news?.bullets ?? []).map((b) => ({ text: b.text, source: b.source ?? null, date: b.date ? formatShortDate(b.date) : null })),
+    newsNote: c.newsNote,
+    newsSample: c.newsIsSample,
+    prep: prepFor(n),
+    unsubscribeUrl: o.unsubscribeUrl,
+  });
 }

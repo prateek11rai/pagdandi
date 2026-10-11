@@ -35,7 +35,7 @@ export interface NewsPayload {
 
 // Gemma's summary: at most three bullets, each tied to one of the items above.
 export interface NewsSummary {
-  bullets: { text: string; url: string; date: string | null }[];
+  bullets: { text: string; url: string; date: string | null; source?: string | null }[];
 }
 
 export interface LatestConditions {

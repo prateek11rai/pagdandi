@@ -25,7 +25,7 @@ describe("pnpm digest --dry-run, end to end", () => {
       timeout: 170_000,
     });
     expect(stdout).toContain("=== To: a***@example.com");
-    expect(stdout).toMatch(/Subject: Kedarkantha · \d+ days to go · /);
+    expect(stdout).toMatch(/Subject: Pagdandi · Kedarkantha · \d+ days to go · /);
     expect(stdout).toContain("ONE THING TO DO OUTSIDE TODAY");
     expect(stdout).toContain("token=REDACTED");
     expect(stdout).not.toContain("admin@example.com");

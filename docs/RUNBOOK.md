@@ -59,16 +59,17 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    - `EMAIL_MODE=smtp`, `SMTP_HOST`, `SMTP_PORT` (587, or 465), `SMTP_USER`, `SMTP_PASS`, and `ADMIN_EMAIL` (the mailbox you'll read);
    - `NEWS_MODE=serpapi` and `SERPAPI_API_KEY`;
    - `DATABASE_URL` pointing at Tiger.
-2. Run `pnpm dev`, open `http://localhost:3000/updates?trek=kedarkantha`, pick a travel date a week or two out, enter `ADMIN_EMAIL`, and choose **Get daily updates**.
-3. The confirmation email arrives (check spam). Click **Confirm**, which leads to `/updates?status=confirmed`.
-4. Optional, to check SerpApi and Gemma's summary on their own: `pnpm news:check --trek kedarkantha` makes exactly one search, counted against the caps, prints the headlines, the summary and the counters, and saves nothing else.
-5. Send one digest. `--no-sweep` keeps a Sunday run from spending 20 searches:
+2. To look at the emails first, `pnpm email:preview --trek kedarkantha` writes the digest and the confirmation to `.data/outbox/` as HTML and text, from sample data; it never sends. Open the `.html` files in a browser.
+3. Run `pnpm dev`, open `http://localhost:3000/updates?trek=kedarkantha`, pick a travel date a week or two out, enter `ADMIN_EMAIL`, and choose **Get daily updates**.
+4. The confirmation email arrives (check spam). Click **Confirm daily updates**, which leads to `/updates?status=confirmed`.
+5. Optional, to check SerpApi and Gemma's summary on their own: `pnpm news:check --trek kedarkantha` makes exactly one search, counted against the caps, prints the headlines, the summary and the counters, and saves nothing else.
+6. Send one digest. `--no-sweep` keeps a Sunday run from spending 20 searches:
    ```sh
    pnpm digest --no-sweep     # expect: 1 trek(s) checked, 1 email(s); one SerpApi search
    ```
-6. Check the email: the subject reads "Kedarkantha · N days to go · …", with the forecast, the news (or "Nothing new.") and one thing to do outside. The SerpApi dashboard should show one more search.
-7. Click **Stop these emails** in the message; it leads to `/updates?status=unsubscribed`.
-8. Optional: schedule it for 7:00 IST with the cron line in the README.
+7. Check the email: the subject reads "Pagdandi · Kedarkantha · N days to go · …", with the forecast, the news (or "Nothing new.") and one thing to do outside. The SerpApi dashboard should show one more search.
+8. Click **Stop these emails** in the message; it leads to `/updates?status=unsubscribed`.
+9. Optional: schedule it for 7:00 IST with the cron line in the README.
 
 **Rollback:** the unsubscribe link deletes the row; otherwise `psql "$TIGER_URL" -c "delete from subscriptions"`. Set `EMAIL_MODE=dry-run` and `NEWS_MODE=fixtures` again in `.env`. If the mailbox rejects the login, the digest logs only a code (`EAUTH`): check the app password.
 

@@ -8,7 +8,7 @@ function setup() {
   const sent: { to: string; subject: string; text: string }[] = [];
   const mailer: Mailer = { send: async (m) => void sent.push(m) };
   const store = new MemorySubscriptionStore(() => NOW);
-  const deps = { store, mailer, adminEmail: ADMIN, siteUrl: "https://example.org", trekName: "Example Trek", now: NOW };
+  const deps = { store, mailer, adminEmail: ADMIN, siteUrl: "https://example.org", trek: { name: "Example Trek", state: "Uttarakhand", slug: "example-trek" }, now: NOW };
   return { sent, store, deps };
 }
 const tokenIn = (text: string, path: string) => new RegExp(`${path}\\?token=([A-Za-z0-9_-]+)`).exec(text)![1]!;

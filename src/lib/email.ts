@@ -33,13 +33,15 @@ export function mailer(): Mailer {
   });
 }
 
-// dry-run: write each email to a folder (.data/outbox/, gitignored) instead of sending. Nothing is logged.
+// dry-run: write each email to a folder (.data/outbox/, gitignored) instead of sending, as .txt and .html. Nothing
+// is logged.
 export function dryRunMailer(dir: string): Mailer {
   return {
     async send(m) {
       mkdirSync(dir, { recursive: true });
-      const file = path.join(dir, `${new Date().toISOString().replace(/[:.]/g, "-")}.txt`);
-      writeFileSync(file, `To: ${m.to}\nSubject: ${m.subject}\n\n${m.text}`);
+      const base = path.join(dir, new Date().toISOString().replace(/[:.]/g, "-"));
+      writeFileSync(`${base}.txt`, `To: ${m.to}\nSubject: ${m.subject}\n\n${m.text}`);
+      writeFileSync(`${base}.html`, m.html);
     },
   };
 }
@@ -49,8 +51,9 @@ export function smtpTransportOptions(c: Pick<SmtpConfig, "host" | "port" | "user
   return { host: c.host, port: c.port, secure: c.port === 465, requireTLS: c.port !== 465, auth: { user: c.user, pass: c.pass } };
 }
 
+// From reads "Pagdandi" <address>, whatever display name EMAIL_FROM had. Text and HTML go as multipart/alternative.
 export function smtpMessage(c: Pick<SmtpConfig, "from">, m: Message) {
-  return { from: c.from, to: m.to, subject: m.subject, text: m.text, html: m.html, headers: m.headers };
+  return { from: { name: "Pagdandi", address: addressIn(c.from) }, to: m.to, subject: m.subject, text: m.text, html: m.html, headers: m.headers };
 }
 
 const same = (a: string, b: string) => addressIn(a).toLowerCase() === addressIn(b).toLowerCase();

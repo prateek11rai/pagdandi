@@ -47,7 +47,7 @@ describe("daily digest", () => {
     expect(calls.forecast.sort()).toEqual(["a", "b"]);
     expect(calls.news.sort()).toEqual(["a", "b"]);
     expect(r.emailsSent).toBe(3);
-    expect(sent.map((m) => m.subject)).toContain("Trek B · 1 day to go · Heavy snow in the forecast");
+    expect(sent.map((m) => m.subject)).toContain("Pagdandi · Trek B · 1 day to go · Heavy snow in the forecast");
   });
 
   it("sends each subscriber at most one email a day", async () => {
@@ -82,10 +82,10 @@ describe("daily digest", () => {
     expect(r.errors).toEqual([]);
     expect(exitCode(r)).toBe(0);
     expect(r.emailsSent).toBe(2);
-    const a = sent.find((m) => m.subject.startsWith("Trek A"))!;
-    expect(a.subject).toBe("Trek A · 9 days to go · forecast unavailable");
+    const a = sent.find((m) => m.subject.startsWith("Pagdandi · Trek A"))!;
+    expect(a.subject).toBe("Pagdandi · Trek A · 9 days to go · forecast unavailable");
     expect(a.text).toContain("Forecast unavailable today.");
-    expect(sent.find((m) => m.subject.startsWith("Trek B"))!.subject).toBe("Trek B · 1 day to go · Heavy snow in the forecast");
+    expect(sent.find((m) => m.subject.startsWith("Pagdandi · Trek B"))!.subject).toBe("Pagdandi · Trek B · 1 day to go · Heavy snow in the forecast");
   });
 
   it("still fails the run when an email can't be sent", async () => {
@@ -103,7 +103,7 @@ describe("daily digest", () => {
     deps.saveConditions = async (_slug, kind) => void saved.push(kind);
     await runDigest(deps, { sweep: false });
     expect(saved).toEqual(["news"]);
-    expect(sent[0]!.subject).toBe("Trek A · 9 days to go · Heavy snow in the forecast · SAMPLE DATA");
+    expect(sent[0]!.subject).toBe("Pagdandi · Trek A · 9 days to go · Heavy snow in the forecast · SAMPLE DATA");
     expect(sent[0]!.text).toContain("FORECAST\n[SAMPLE DATA for development: this is not a real forecast]");
     expect(sent[0]!.text).toContain("Forecast: sample data recorded from Open-Meteo.com.");
     expect(sent[0]!.text).not.toContain("Weather data by Open-Meteo.com.");

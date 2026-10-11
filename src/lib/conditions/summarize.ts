@@ -32,7 +32,7 @@ ${list}`,
       .filter((b) => b.item < items.length && !seen.has(b.item) && seen.add(b.item))
       .map((b) => {
         const it = items[b.item]!;
-        return { text: numbersWithin(b.text, it.title) ? b.text : it.title, url: it.url, date: it.date };
+        return { text: numbersWithin(b.text, it.title) ? b.text : it.title, url: it.url, date: it.date, source: it.source };
       }),
   };
 }
