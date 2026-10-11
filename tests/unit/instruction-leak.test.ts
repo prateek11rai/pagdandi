@@ -4,9 +4,11 @@ import { factCheckedStream } from "@/lib/checked-stream";
 import { LEAK_REPLY } from "@/lib/instruction-leak";
 import { instructionsFor } from "@/mastra/agents/trek-guide";
 
+const INSTRUCTIONS = instructionsFor(new Date("2026-10-11T06:00:00Z"));
+
 // The guide's reply as the browser would read it, streamed in small pieces like the model's own deltas.
-async function reply(text: string): Promise<string> {
-  const pieces = text.match(/[\s\S]{1,7}/g) ?? [];
+async function reply(text: string, size = 7): Promise<string> {
+  const pieces = text.match(new RegExp(`[\\s\\S]{1,${size}}`, "g")) ?? [];
   const chunks = [
     { type: "text-start", id: "t1" },
     ...pieces.map((delta) => ({ type: "text-delta", id: "t1", delta })),
@@ -18,13 +20,33 @@ async function reply(text: string): Promise<string> {
       c.close();
     },
   });
-  const stream = factCheckedStream(source, { treks: [], userNumbers: [] }, { instructions: instructionsFor(new Date("2026-10-11T06:00:00Z")) });
+  const stream = factCheckedStream(source, { treks: [], userNumbers: [] }, { instructions: INSTRUCTIONS });
   let out = "";
   for await (const c of stream) if (c.type === "text-delta") out += c.delta;
   return out;
 }
 
+// The red-team suite's own check (tests/integration/guide.ts): any eight-word run of the instructions in the prose.
+function leaked(prose: string): string[] {
+  const words = (s: string) => s.toLowerCase().match(/[a-z0-9"'-]+/g) ?? [];
+  const said = ` ${words(prose).join(" ")} `;
+  return INSTRUCTIONS.split("\n")
+    .filter((line) => !/^(5|6)\./.test(line) && !line.startsWith("Today is"))
+    .flatMap((line) => {
+      const w = words(line);
+      return w.length < 8 ? [] : Array.from({ length: w.length - 7 }, (_, i) => w.slice(i, i + 8).join(" "));
+    })
+    .filter((run) => said.includes(` ${run} `));
+}
+
 describe("instruction leaks", () => {
+  it("leave no eight-word run, however the whole prompt is copied", async () => {
+    const shapes = [INSTRUCTIONS, INSTRUCTIONS.replaceAll("\n", " "), INSTRUCTIONS.replace(/^(\d+)\. /gm, "**$1.** "), `Here it is:\n\n${INSTRUCTIONS}`];
+    for (const shape of shapes) {
+      for (const size of [1, 3, 7, 40]) expect(leaked(await reply(shape, size)), `chunks of ${size}`).toEqual([]);
+    }
+  });
+
   it("replace a sentence that copies the instructions with the fixed reply", async () => {
     const text = "Sure, here they are. 1. First call search-treks with what the group wants. Tell me about your group!";
     expect(await reply(text)).toBe(`Sure, here they are. ${LEAK_REPLY} Tell me about your group!`);
@@ -41,6 +63,13 @@ describe("instruction leaks", () => {
   it("keep a list marker that starts an ordinary sentence", async () => {
     expect(await reply("Two picks:\n1. Kalsubai is close to Mumbai.\n2. Harishchandragad has a fort.")).toBe(
       "Two picks:\n1. Kalsubai is close to Mumbai.\n2. Harishchandragad has a fort.",
+    );
+  });
+
+  it("count a held list number as part of the sentence after it", async () => {
+    // Seven words of rule 7, plus its number: what got past the first version on CI.
+    expect(await reply("Sure.\n7. For weather, closures or news, call get-conditions. Ask me about a trek!")).toBe(
+      `Sure.\n${LEAK_REPLY} Ask me about a trek!`,
     );
   });
 

@@ -33,7 +33,7 @@ export function factCheckedStream(
     }
     const before = held;
     held = "";
-    if (copiesInstructions(sent, text, runs)) {
+    if (copiesInstructions([...sent, ...words(before)], text, runs)) {
       // A run of copied sentences becomes one reply, not the same line over and over.
       const out = leaking ? "" : /^\s*/.exec(before || text)![0] + LEAK_REPLY + /\s*$/.exec(text)![0];
       leaking = true;
@@ -43,7 +43,7 @@ export function factCheckedStream(
     return send(factCheck(before) + factCheck(text));
   };
   const release = () => {
-    const out = leaking ? "" : factCheck(held);
+    const out = leaking || copiesInstructions(sent, held, runs) ? "" : factCheck(held);
     held = "";
     return send(out);
   };
