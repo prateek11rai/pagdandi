@@ -35,6 +35,7 @@ export function formatTravelDate(isoDate: string): string {
 export const formatShortDate = (iso: string) => SHORT.format(new Date(iso));
 
 const BRAND_LINE = "Pagdandi · India's open trek database";
+export const NO_NEWS = "No news. Everything looks good for your upcoming trek.";
 const NOT_YOU = "Not you? Ignore this email and nothing happens.";
 
 export interface ForecastRow {
@@ -93,6 +94,8 @@ export function digestEmail(d: DigestContent): Email {
     d.newsSample ? "News: sample data." : "News found through SerpApi.",
   ];
   const newsLines = d.newsNote !== null ? null : d.news;
+  // A quiet day still gets its email; the stop date then sits right under the all-clear.
+  const quiet = newsLines !== null && newsLines.length === 0;
 
   const text = [
     "Pagdandi पगडंडी · Daily update",
@@ -109,15 +112,15 @@ export function digestEmail(d: DigestContent): Email {
     ...(d.newsSample ? [`[${SAMPLE_NEWS}]`] : []),
     ...(newsLines === null
       ? [d.newsNote!]
-      : newsLines.length === 0
-        ? ["Nothing new."]
+      : quiet
+        ? [NO_NEWS, until]
         : newsLines.flatMap((n) => [`- ${n.text}`, ...(byline(n) ? [`  ${byline(n)}`] : []), ...(articleUrl(n) ? [`  ${articleUrl(n)}`] : [])])),
     "",
     "ONE THING TO DO OUTSIDE TODAY",
     d.prep,
     "",
     `Open the trek page: ${page}`,
-    until,
+    ...(quiet ? [] : [until]),
     "",
     `Stop these emails: ${d.unsubscribeUrl}`,
     BRAND_LINE,
@@ -138,8 +141,8 @@ export function digestEmail(d: DigestContent): Email {
   const newsHtml =
     newsLines === null
       ? para(d.newsNote!)
-      : newsLines.length === 0
-        ? para("Nothing new.")
+      : quiet
+        ? `${para(NO_NEWS)}${para(until, 14, "6px 0 0", P.muted)}`
         : newsLines
             .map(
               (n) => `<p style="margin:0 0 10px;font-family:${BODY};font-size:15px;line-height:1.45;color:${P.ink}">${
@@ -165,7 +168,7 @@ ${button(page, "Open the trek page")}`;
     kicker: "Daily update",
     siteUrl: d.siteUrl,
     card,
-    footer: [para(until, 13), `${link(d.unsubscribeUrl, "Stop these emails", P.muted)} · ${brandHtml(d.siteUrl)}`, e(credits.join(" "))],
+    footer: [...(quiet ? [] : [para(until, 13)]), `${link(d.unsubscribeUrl, "Stop these emails", P.muted)} · ${brandHtml(d.siteUrl)}`, e(credits.join(" "))],
   });
   return { subject, text, html };
 }

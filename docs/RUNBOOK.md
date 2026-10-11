@@ -69,7 +69,7 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    ```sh
    pnpm digest --no-sweep     # expect: 1 trek(s) checked, 1 email(s); one SerpApi search
    ```
-7. Check the email: the subject reads "Pagdandi · Kedarkantha · N days to go · …", with the forecast, the news (or "Nothing new.") and one thing to do outside. The SerpApi dashboard should show one more search.
+7. Check the email: the subject reads "Pagdandi · Kedarkantha · N days to go · …", with the forecast, the news (or "No news. Everything looks good for your upcoming trek." with the stop date under it) and one thing to do outside. The SerpApi dashboard should show one more search.
 8. Click **Stop these emails** in the message; it leads to `/updates?status=unsubscribed`.
 9. Optional: schedule it for 7:00 IST with the cron line in the README.
 

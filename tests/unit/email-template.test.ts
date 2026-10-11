@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { confirmationEmail, digestEmail, type DigestContent, type Email } from "@/lib/email-template";
+import { confirmationEmail, digestEmail, NO_NEWS, type DigestContent, type Email } from "@/lib/email-template";
 
 // Synthetic values only: nothing here comes from .env.
 const SITE = "https://pagdandi.example";
@@ -68,6 +68,19 @@ describe("email template", () => {
     expect(m.text).toContain('- Bridge <script>alert("x")</script> & road reopen\n  Times & <b>Co</b> · Sat, 10 Oct\n  https://news.example/story?id=1&ref=feed');
   });
 
+  it("says all is well on a day with no news, with the stop date right under it", () => {
+    const until = "You get this once a day at 7:00 IST until Sun, 25 Oct 2026.";
+    const m = digestEmail({ ...digest, news: [] });
+    expect(m.text).toContain(`NEWS SINCE YESTERDAY\n${NO_NEWS}\n${until}\n\nONE THING TO DO OUTSIDE TODAY`);
+    expect(m.text.split(until)).toHaveLength(2);
+    const html = m.html.slice(m.html.indexOf("</div>"));
+    expect(html.split(until)).toHaveLength(2);
+    const [atNews, atUntil, atPrep] = [html.indexOf(NO_NEWS), html.indexOf(until), html.indexOf("One thing to do outside today")];
+    expect(atNews).toBeGreaterThan(0);
+    expect(atNews < atUntil && atUntil < atPrep).toBe(true);
+    expect(html.slice(atNews, atUntil)).not.toMatch(/<h2/);
+  });
+
   it("links each headline to its article only when the link is https", () => {
     const m = digestEmail(digest);
     expect(m.html).toContain(">A link that isn&#39;t https</p>");
@@ -108,7 +121,7 @@ describe("email template", () => {
     const at = order.map((s) => d.indexOf(s));
     expect(at.every((i) => i >= 0)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
-    expect(digestEmail({ ...digest, news: [] }).html).toContain("Nothing new.");
+    expect(digestEmail({ ...digest, news: [] }).html).not.toContain("Nothing new.");
 
     const c = confirmationEmail(confirm).html;
     expect(c).toMatch(/<td style="background:#3f6b4f;border-radius:8px"><a href="https:\/\/pagdandi\.example\/api\/confirm\?token=c0nf"[^>]*>Confirm daily updates<\/a><\/td>/);

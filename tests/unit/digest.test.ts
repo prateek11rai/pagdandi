@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { exitCode, runDigest, type DigestDeps } from "@/jobs/digest-core";
 import { BudgetExceededError } from "@/lib/budget";
 import type { ForecastPayload } from "@/lib/conditions/types";
+import { NO_NEWS } from "@/lib/email-template";
 import { MemorySubscriptionStore } from "@/lib/subscriptions";
 import type { Trek } from "@/lib/trek-schema";
 import { sampleTrek } from "./sample-trek";
@@ -48,6 +49,14 @@ describe("daily digest", () => {
     expect(calls.news.sort()).toEqual(["a", "b"]);
     expect(r.emailsSent).toBe(3);
     expect(sent.map((m) => m.subject)).toContain("Pagdandi · Trek B · 1 day to go · Heavy snow in the forecast");
+  });
+
+  it("sends every day, even when there is no news", async () => {
+    const { sent, deps } = await setup([{ slug: "a", travelDate: "2026-10-20" }]);
+    await runDigest(deps, { sweep: false });
+    await runDigest({ ...deps, now: new Date(NOW.getTime() + 24 * 3600_000) }, { sweep: false });
+    expect(sent).toHaveLength(2);
+    for (const m of sent) expect(m.text).toContain(`NEWS SINCE YESTERDAY\n${NO_NEWS}\nYou get this once a day at 7:00 IST until Tue, 20 Oct 2026.`);
   });
 
   it("sends each subscriber at most one email a day", async () => {
