@@ -115,13 +115,13 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 ## 6. Agent session
 
 - [x] The curated, scrubbed transcript of this build session: `.data/agent-session/pagdandi-build-session.json` (gitignored), 46 messages. It passed the planner's leak scan, and Prateek approved submitting it privately.
-- [ ] On "submit session and draft", I submit it through DevRelay as a private session, using only material from this session.
-- [ ] Prateek publishes it on DEV, and the post embeds it with `{% agent_session <id> %}`. Slices worth embedding: `13..26` (the red-team suite and the leak guard) and `34..43` (the emails and the news decisions).
+- [x] Submitted through DevRelay on 12 Oct as a private session: id 803, unpublished, 46 messages, only material from this session.
+- [ ] Prateek publishes the session on DEV. Until then it shows only to him. The post already embeds it with `{% agent_session 803 %}`. Slices worth embedding: `13..26` (the red-team suite and the leak guard) and `34..43` (the emails and the news decisions).
 
 ## 7. DEV draft
 
-- [ ] On "submit session and draft", once the post is approved, I create it as a DEV draft (`published: false`) through DevRelay, with the session embedded.
-- [ ] Prateek reviews the draft on DEV.
+- [x] Created on 12 Oct through DevRelay as a DEV draft (article 4834392, `published: false`) from `docs/devto-post.md`, with the four tags, the cover and the session embed. Verified unpublished.
+- [ ] Prateek reviews the draft on DEV, checks that the cover took, and makes any last edits.
 
 **Rollback:** a draft can be edited or deleted on DEV.
 

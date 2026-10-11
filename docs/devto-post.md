@@ -127,7 +127,7 @@ What isn't local, so you know: **SerpApi** (news), **ElevenLabs** (the recorded 
 
 ## My Agent Session
 
-<!-- {% agent_session <id> %} — curated and scrubbed; published after review -->
+{% agent_session 803 %}
 
 ## Prize Categories
 
