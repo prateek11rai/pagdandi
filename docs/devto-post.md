@@ -45,8 +45,6 @@ The screen is the shortest part of the experience: a few minutes to choose, ten 
 
 **[Watch the demo](https://github.com/prateek11rai/pagdandi/blob/main/docs/demo/pagdandi-demo.mp4)** (2½ minutes; GitHub plays it in the browser): the guide, the table with its audio intros, a trek page and the one-page plan, then a sign-up and the daily email.
 
-<!-- If Prateek uploads the video to YouTube, replace the link above with {% embed <YouTube URL> %}. -->
-
 **Run it in 10 minutes**, plus the model download (a few GB). Pagdandi runs on a laptop; there's no hosted copy, and anyone can run their own. On a Mac with Homebrew:
 
 ```sh
