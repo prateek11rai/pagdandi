@@ -266,3 +266,20 @@ Things that bit along the way:
 - **SerpApi errors aren't "no news".** SerpApi answers HTTP 200 with an `error` string both for "Google found nothing" and for real failures. Only the no-results wording ("…hasn't returned any results for this query.") counts as no news. Any other error makes the email say "News check failed today", and the run logs only "SerpApi reply error". Each such reply's exact wording goes to `.data/serpapi-reply-errors.jsonl` (gitignored), so the test can be matched to the live wording on the next empty reply. Headlines in `top_news` are read too, once per link.
 - **No schedule (Prateek).** Nothing runs the digest on its own: no cron, no launchd. Run `pnpm digest` whenever you want today's email. `--resend` sends today's email again to subscribers who already had it, for a demo; its news search still counts against the caps. The "7:00 IST" promises are gone from the emails, `/updates`, the README and the post, which now just say "once a day".
 - **ElevenLabs credit (Prateek).** Neither the post's title nor the video's carries "elevenlabs.io". The post body and the README say "Audio intros generated with ElevenLabs", with the link. The free plan's terms ask for "elevenlabs.io" or "11.ai" in published titles; this is Prateek's call.
+
+### Monday 12 October 2026: the video, the demo server, real digests, a public repo
+- **The repository went public at 00:02 IST**, after Prateek's full-history scan came back clean: 43 commits, one noreply author.
+- **The demo server.** The `pnpm dev` I had started passed `ADMIN_EMAIL` on its command line, which overrides `.env`. So the site treated Prateek's real address as a non-admin, and his sign-up showed "nothing was stored". The planner restarted it with no command-line variables, and it now reads `.env` only. Lesson: on a machine whose `.env` holds the real settings, don't put env vars on the command line except for a deliberate dry run.
+- **Real digests.** Prateek confirmed Kedarkantha (travel 26 Oct) through the real email. At about 00:45 IST, `pnpm digest --no-sweep` sent two emails, each with SMTP reply 250: Kedarkantha with "Heavy snow in the forecast", and Valley of Flowers.
+- **The demo video.** Prateek recorded three screen captures. The planner edited them with ffmpeg into `docs/demo/pagdandi-demo.mp4` (6.1 MB, 163 s):
+  - cuts, and a crop to the page;
+  - a blur over the address and the mail header;
+  - the real MP3 intros mixed in where the players ran, since macOS screen capture records no system audio.
+
+  No YouTube: the README and the post link the GitHub page, which plays it.
+- **Review fixes.**
+  - `/updates` said "Emails don't go out yet" while the admin was getting real ones; it now says "Admin-only for now".
+  - Gemma's news role was still described as summarising the morning's news.
+  - The post's Code section now uses `{% github %}`.
+  - The three screenshots the README and the post use were retaken from the finished site. The old ones showed "not recorded yet" for every intro, and the sidebar from the hosting days.
+- **A limit worth knowing.** While retaking the home screenshot, one answer's card reason called Kumara Parvatha "a taste of Himalayan beauty", but it's in the Western Ghats. The fact-check catches wrong numbers, not wrong places. Card reasons are short and labelled as the guide's, but a place-name check against each trek's state and region would be the next guard to add.

@@ -2,15 +2,19 @@
 
 The exact steps, in order. Pagdandi runs on the laptop: there's no hosting step. Each step has a check and a rollback. The challenge deadline is **Mon 12 Oct 06:59 UTC (12:29 IST)**; aim to publish by **11:00 IST**.
 
+**Status, 12 Oct ~01:40 IST:** steps 0–4 are done. Left: 5 (the post's last placeholders), 6 (submit the agent session), 7 (the DEV draft) and 8 (publish). The steps that are done keep their commands, for anyone running their own copy.
+
 Run commands from the repository root. Keep secrets out of shell history: read a value with `read -rs NAME`, then `export NAME`, or put it in `.env` (gitignored). Never `echo` one.
 
 ## 0. Before you start
 
-- [ ] Accounts: SerpApi (done). Still to come: Tiger Data, ElevenLabs, and an SMTP mailbox for the admin (for Gmail, an app password).
-- [ ] Claim the ElevenLabs credit at hacktoberfest.com/my/promos.
-- [ ] Local stack up: `pnpm dev:up`. Unit tests pass: `pnpm test`. CI is green on `main`.
+- [x] Accounts: SerpApi, Tiger Data, ElevenLabs (free plan) and an SMTP mailbox for the admin (a Gmail app password).
+- [x] ElevenLabs credit: not needed. The 20 scripts fit the free plan's 10,000 characters.
+- [x] Local stack up: `pnpm dev:up`. Unit tests pass: `pnpm test`. CI is green on `main`.
 
 ## 1. Tiger Data: database, pgvector, treks, embeddings
+
+**Done 11 Oct.** Postgres 18.6 with pgvector 0.8.7, over TLS 1.3; 20 treks loaded and embedded. The search eval ranks exactly as the local database does, at about 0.8 s a search (a 246 ms round trip, three queries).
 
 1. In the Tiger Data console, create a **free** service. Copy its connection string; it ends in `?sslmode=require`.
 2. Point this shell at it without echoing the value: `read -rs TIGER_URL && export TIGER_URL`.
@@ -31,6 +35,8 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 **Rollback:** set `DATABASE_URL` back to the local one from `.env.example`. To reset Tiger: `psql "$TIGER_URL" -c "drop schema public cascade; create schema public;"`, or delete the service.
 
 ## 2. Audio from the laptop: ElevenLabs
+
+**Done 11 Oct.** All 20 intros, voiced by George (a premade voice), 29.7–33.3 s each, 4.9 MB in total; `public/audio/manifest.json` records what each was made from.
 
 1. In `.env`, set `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`. The voice must be a premade one, from the **Default** tab under Voices, not the Voice Library: on the free plan the API refuses every Library voice with HTTP 402 ("Free users cannot use library voices via the API"). None of the 21 premade voices is Indian English; we use George.
 2. Check the credits and the size first. This makes no API call:
@@ -55,6 +61,8 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 
 ## 3. One real digest email over SMTP
 
+**Done 11–12 Oct.** Confirmation emails and three digests went out over SMTP, each with reply code 250. Valley of Flowers and Kedarkantha are subscribed (travel 25 and 26 Oct).
+
 1. In `.env`, set:
    - `EMAIL_MODE=smtp`, `SMTP_HOST`, `SMTP_PORT` (587, or 465), `SMTP_USER`, `SMTP_PASS`, and `ADMIN_EMAIL` (the mailbox you'll read);
    - `NEWS_MODE=serpapi` and `SERPAPI_API_KEY`;
@@ -77,7 +85,9 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 
 ## 4. Demo video
 
-Record from the shot list below, with the app running locally on Tiger. Upload it unlisted, without "elevenlabs.io" in the title (Prateek's decision; see step 2).
+**Done 12 Oct.** Prateek recorded three screen captures, and the planner edited them into `docs/demo/pagdandi-demo.mp4` (6.1 MB, 163 s): the cuts, a crop to the page, a blur over the address and the mail header, and the real MP3 intros mixed in where the players ran (macOS screen capture records no system audio). It's committed, and the README links it. No YouTube upload; the post links the video's GitHub page, which plays it.
+
+- [ ] Optional: in GitHub's web editor, drag the MP4 onto the empty line under "Watch the demo" in the README (a comment marks the spot). GitHub turns it into a link that plays inline.
 
 **Rollback:** re-record; nothing else depends on it.
 
@@ -90,27 +100,35 @@ Record from the shot list below, with the app running locally on Tiger. Upload i
 | 3 | Treks: the table; set Month to August; play one intro from its row | "All 20 treks in one table. Every fact is sourced, and a weak source is marked as one." |
 | 4 | Kedarkantha: facts with weak-source marks, the altitude warning, the figure with "Camp altitudes not known", sources; 5 s of audio | "Every number here has a source. If we couldn't find one, it says so. We don't guess altitudes." |
 | 5 | New plan: tap the Delhi group; cards, the altitude note and the three actions | "The guide is Gemma on this laptop. It picks treks near you, the cards come from the database, and code checks every number it says." |
-| 6 | Get daily updates for the top pick, then the morning email in the mailbox | "One email a day until you leave: the forecast, any news, and one thing to do outside today." |
+| 6 | Get daily updates for the top pick, then the email in the mailbox | "One email a day until you leave: the forecast, any news, and one thing to do outside today." |
 | 7 | Print the one-page plan; download the MP3; your park test walk | "On the trail, the phone stays in your pocket." |
 | 8 | The repo page and "Run it" | "The data is open, and so is the whole thing. Run your own copy, fix a trek, or add yours." |
 
 ## 5. Fill the post's placeholders (`docs/devto-post.md`)
 
-- [ ] **Video:** embed it in Demo with `{% embed <url> %}`. Demo has no live URL: "Run it in 10 minutes" stays.
-- [ ] **Screenshots:** in the DEV editor, upload `docs/img/home-thread-desktop.png`, `docs/img/treks-desktop.png` and `docs/img/trek-mobile.png`, and replace the relative paths with the uploaded URLs. Upload `docs/img/cover.png` as the cover.
-- [ ] **Taking it outside:** your test-walk notes and photos. Say plainly that it was a park test walk, not the trek.
-- [ ] **README:** the post link under "Built for", and any commit made after 12 Oct 06:59 UTC, with its date, under "After the deadline".
+- [x] **Video:** Demo links the video's GitHub page; "Run it in 10 minutes" stays.
+- [ ] **Screenshots:** in the DEV editor, upload `docs/img/home-thread-desktop.png`, `docs/img/treks-desktop.png` and `docs/img/trek-mobile.png` (retaken on 12 Oct from the finished site), and replace the relative paths with the uploaded URLs. Upload `docs/img/cover.png` as the cover.
+- [ ] **Taking it outside:** Prateek's park test-walk notes and photos. Say plainly that it was a park test walk, not the trek.
+- [ ] **What I Got Wrong:** optional edits by Prateek.
+- [ ] **After publishing:** the post link under "Built for" in the README, and any commit made after 12 Oct 06:59 UTC, with its date, under "After the deadline".
 
 ## 6. Agent session
 
-- I build the curated, scrubbed transcript and show it to you.
-- Nothing is sent to DevRelay until you and Prateek approve.
-- Prateek publishes it on DEV, and the post embeds it with `{% agent_session <id> %}`.
+- [x] The curated, scrubbed transcript of this build session: `.data/agent-session/pagdandi-build-session.json` (gitignored), 46 messages. It passed the planner's leak scan, and Prateek approved submitting it privately.
+- [ ] On "submit session and draft", I submit it through DevRelay as a private session, using only material from this session.
+- [ ] Prateek publishes it on DEV, and the post embeds it with `{% agent_session <id> %}`. Slices worth embedding: `13..26` (the red-team suite and the leak guard) and `34..43` (the emails and the news decisions).
 
 ## 7. DEV draft
 
-- Once the post is approved, I create it as a DEV draft (`published: false`) through DevRelay.
-- Prateek reviews it and publishes it himself, with the tags `devchallenge, hf26challenge, opensource, webdev`.
-- Right before publishing, the repository goes public, after a full-history scan.
+- [ ] On "submit session and draft", once the post is approved, I create it as a DEV draft (`published: false`) through DevRelay, with the session embedded.
+- [ ] Prateek reviews the draft on DEV.
 
-**Rollback:** a draft can be edited or deleted on DEV, and a published post can be unpublished; publish only once it's final.
+**Rollback:** a draft can be edited or deleted on DEV.
+
+## 8. Publish
+
+- [x] The repository is public (since 12 Oct 00:02 IST), after a clean full-history scan: 43 commits, one noreply author.
+- [ ] Prateek publishes the post himself, by 11:00 IST, with the tags `devchallenge, hf26challenge, opensource, webdev`.
+- [ ] Then the README gets the post link (step 5), and every later commit is listed under "After the deadline".
+
+**Rollback:** a published post can be unpublished; publish only once it's final.
