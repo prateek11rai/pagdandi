@@ -33,13 +33,14 @@ The screen is the shortest part of the experience: a few minutes to choose, ten 
 
 ### Taking it outside
 
-> **PLACEHOLDER: your notes and photos go here.**
-> This is a *test walk*, not the trek itself: a park walk in Delhi NCR, listening to one trek's audio intro, with the printed one-page plan in a pocket, to see what using Pagdandi away from the screen feels like. Some questions to answer:
-> - Which park, how long, which trek's intro and plan?
-> - Did the audio work offline? Was it the right length?
-> - Was the printed plan readable outdoors? What was missing?
-> - What would you change after this walk?
-> - Photos: the printed plan in hand, and the path.
+![Snow-covered peaks under heavy cloud above a green valley, with mist along the ridges, a stream on the slopes and an Indian tricolour on a pole beside a blue tent roof](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/kedarnath-2026.jpg)
+*Kedarnath, on our recent trip, before Pagdandi existed.*
+
+This photo is from Kedarnath, where my friends and I went recently: cloud sitting on the snow peaks, and the slopes green from the monsoon. Kedarnath is a pilgrimage walk, and it isn't one of Pagdandi's 20 treks yet. We didn't use Pagdandi on that trip either. It didn't exist.
+
+That trip was the exception. Most of the time we're the group from the top of this post. We plan the next one at our desks, the chat stalls on "which one can all of us actually do?", and nobody gets up.
+
+Pagdandi is built for that moment: ten minutes to agree on a trek, then the phone goes in a pocket, with the intro downloaded and the one-page plan printed. And because the data is open, every group that plans with it can leave it better for the next one. Kedarnath is the natural first addition, by pull request, sourced like every other trek.
 
 ## Demo
 

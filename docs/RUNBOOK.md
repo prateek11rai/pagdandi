@@ -101,14 +101,14 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 | 4 | Kedarkantha: facts with weak-source marks, the altitude warning, the figure with "Camp altitudes not known", sources; 5 s of audio | "Every number here has a source. If we couldn't find one, it says so. We don't guess altitudes." |
 | 5 | New plan: tap the Delhi group; cards, the altitude note and the three actions | "The guide is Gemma on this laptop. It picks treks near you, the cards come from the database, and code checks every number it says." |
 | 6 | Get daily updates for the top pick, then the email in the mailbox | "One email a day until you leave: the forecast, any news, and one thing to do outside today." |
-| 7 | Print the one-page plan; download the MP3; your park test walk | "On the trail, the phone stays in your pocket." |
+| 7 | Print the one-page plan; download the MP3 | "On the trail, the phone stays in your pocket." |
 | 8 | The repo page and "Run it" | "The data is open, and so is the whole thing. Run your own copy, fix a trek, or add yours." |
 
 ## 5. Fill the post's placeholders (`docs/devto-post.md`)
 
 - [x] **Video:** Demo links the video's GitHub page; "Run it in 10 minutes" stays.
 - [x] **Screenshots and cover:** the post loads `docs/img/cover.png` and the three screenshots (retaken on 12 Oct from the finished site) from the public repo's raw URLs on main, so nothing needs uploading in the DEV editor. If one is replaced, keep its file name, or update the post.
-- [ ] **Taking it outside:** Prateek's park test-walk notes and photos. Say plainly that it was a park test walk, not the trek.
+- [x] **Taking it outside:** the true story, in Prateek's voice: the Kedarnath trip with his photo (`docs/img/kedarnath-2026.jpg`), saying plainly that Pagdandi wasn't used on it (it didn't exist yet) and that Kedarnath is a natural first addition by pull request.
 - [ ] **What I Got Wrong:** optional edits by Prateek.
 - [ ] **After publishing:** the post link under "Built for" in the README, and any commit made after 12 Oct 06:59 UTC, with its date, under "After the deadline".
 
