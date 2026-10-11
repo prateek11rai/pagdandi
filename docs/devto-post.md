@@ -7,29 +7,34 @@ cover_image: https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/i
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)*
 
+> **TL;DR** Pagdandi is an open database of 20 Indian treks, every fact sourced, with a trek guide that runs on Gemma on a laptop.
+> Tell it who's going, the budget, the days and where you start; it picks treks you can actually do, and code checks every number it says.
+> Then it gets out of the way: a half-minute audio intro, a one-page plan, and one email a day until you leave.
+
 ## What I Built
 
-Every city has a version of this group chat. Five college friends in Delhi NCR (call them the Sunday-plans group; they're a composite of friend groups we all know) have been saying *"is baar pakka trek chalenge"* ("this time we're definitely going on a trek") for three years. They have different budgets. Two of them have never trekked. Nobody wants to be the one who plans it, so it never happens.
+Every city has this group chat. Five college friends in Delhi NCR (a composite of groups we all know) have been saying *"is baar pakka trek chalenge"* ("this time we're definitely going on a trek") for three years. Different budgets, two first-timers, and nobody wants to be the one who plans it.
 
-**[Pagdandi](https://github.com/prateek11rai/pagdandi)** (पगडंडी, "footpath") is built for that group. It's an open database of 20 well-known Indian treks, from Kedarkantha and the Kashmir Great Lakes to Kalsubai and the living root bridges of Nongriat, with three ways in:
+**[Pagdandi](https://github.com/prateek11rai/pagdandi)** (पगडंडी, "footpath") is for them. Four ways in:
 
-- **A trek guide you can ask, right on the home page.** Tell it "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi", or tap "Lakes high in the mountains with wildflowers", and it recommends treks from the database, with a card for each. Its search understands meaning, not just names.
-- **The whole database in one table.** All 20 treks with plain filters for region, month, days, difficulty and budget, each trek's audio intro in its row, and a "weak source" mark on any fact whose only source we couldn't fully trust.
-- **Daily updates until you leave.** Whoever organises signs up with the travel date. Once a day they get one email: the forecast at the road head and the high point, this week's news (closures, landslides, snowfall, permits), every headline with its link, and **one thing to do outside today**, like a practice walk in the boots they'll trek in. The site marks this "coming soon": until Pagdandi has its own domain, only the admin gets the emails.
+**Ask the guide.** "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi." The answer is a few sentences and a card per trek, nearest first.
 
-Then it gets out of the way. Each trek has a short audio introduction to listen to on the drive up, and a **one-page printable plan**: the day-by-day, permits, last mobile signal and the altitude chart. On the trail, the phone stays in a pocket.
-
-The screen is the shortest part of the experience: a few minutes to choose, ten seconds of email a day, then the actual walking.
-
-<!-- The cover and these images load from the public repo's raw URLs on main, so nothing needs uploading; DEV may re-host them on its CDN. Local paths: docs/img/cover.png (cover), docs/img/home-thread-desktop.png, docs/img/treks-desktop.png, docs/img/trek-mobile.png. -->
+<!-- Images load from the public repo's raw URLs on main, so nothing needs uploading; DEV may re-host them. Local paths: docs/img/cover.png (cover), flow.png, home-thread-desktop.png, treks-desktop.png, trek-mobile.png, audio-intro.png, email-kedarkantha.png, kedarnath-2026.jpg. -->
 ![New plan: a group's question, the guide's answer, three trek cards, an altitude note and buttons for the next steps](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/home-thread-desktop.png)
-*New plan, the home page. The Delhi group asks; the guide answers in a few sentences, and the cards, the altitude note and the next steps come from the database, not from the model.*
+*The cards, the altitude note and the next steps come from the database, not from the model.*
+
+**Browse the table.** All 20 treks, plain filters, an audio intro in every row, and a "weak source" mark on any fact with only one shaky source.
 
 ![The Treks table: name, state, days, max altitude, difficulty, season, budget and an audio intro for every trek](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/treks-desktop.png)
-*Treks: all 20 in one table. Filters are plain; "weak source" marks a fact whose only source we couldn't fully trust.*
+
+**Open a trek.** Sources for every fact, an altitude warning above 3,500 m, a plan that prints on one page, and an audio intro to download for the drive.
 
 ![The Kedarkantha trek page on a phone: facts with weak-source marks, the altitude warning and the actions](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/trek-mobile.png)
-*Kedarkantha on a phone. The facts strip marks the two facts with a weak source, the altitude warning appears above 3,500 m, and the plan prints on one page.*
+
+**Get daily updates.** Sign up with the travel date and get one email a day until you leave: the forecast at the road head and the high point, the week's headlines with links, and one thing to do outside today. Until Pagdandi has a domain, only the admin gets them.
+
+![The daily email for Kedarkantha: 14 days to go, the forecast at Sankri and at the summit with heavy snow, no news this week, and one thing to do outside today](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/email-kedarkantha.png)
+*This morning's real email for Kedarkantha. Open-Meteo's forecast and a SerpApi news search feed it; this week the search found nothing, so it says so.*
 
 ### Taking it outside
 
@@ -44,9 +49,9 @@ Pagdandi is built for that moment: ten minutes to agree on a trek, then the phon
 
 ## Demo
 
-**[Watch the demo](https://github.com/prateek11rai/pagdandi/blob/main/docs/demo/pagdandi-demo.mp4)** (2½ minutes; GitHub plays it in the browser): the guide, the table with its audio intros, a trek page and the one-page plan, then a sign-up and the daily email.
+**[Watch the demo](https://github.com/prateek11rai/pagdandi/blob/main/docs/demo/pagdandi-demo.mp4)** (2½ minutes, plays on GitHub): the guide, the table, a trek page and its plan, then a sign-up and the email.
 
-**Run it in 10 minutes**, plus the model download (a few GB). Pagdandi runs on a laptop; there's no hosted copy, and anyone can run their own. On a Mac with Homebrew:
+There's no hosted copy: Pagdandi runs on a laptop. Running your own takes about 10 minutes, plus the model download:
 
 ```sh
 brew install ollama postgresql@17 pgvector node@24 pnpm
@@ -64,75 +69,68 @@ pnpm dev                                 # http://localhost:3000
 
 ## How I Built It
 
-The open pieces are the core of how it works, not a layer on top.
+![How Pagdandi works: the group's question goes to New plan (Gemma 4 via Ollama, a Mastra agent with four read-only tools) on the laptop, which searches Postgres on Tiger Data (20 sourced treks, hybrid search) and returns cards from the database with fact-checked prose; a card opens the trek page (sources, weak-source marks, an ElevenLabs audio intro, a one-page plan); signing up starts daily updates, where Open-Meteo's forecast and SerpApi's headlines, with Gemma's one-line "What matters", become a branded email over SMTP](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/flow.png)
+*Solid boxes run on the laptop; dashed boxes are hosted services.*
 
-**Gemma, on the laptop that serves the site.** The trek guide is Gemma 4 (`gemma4:e4b`), served by Ollama on the same machine as the site. There's no server and no per-chat bill, and the app refuses to send chats to an Ollama anywhere else unless you opt in. **EmbeddingGemma** (300M parameters, 768 dimensions) turns every trek and every query into vectors for search. Gemma also reads each day's headlines and, when one matters for the trek, puts a one-line "What matters" above them; the reader still sees every headline, with its link.
+- **Gemma 4 on the laptop.** `gemma4:e4b` runs through Ollama on the machine that serves the site, so a chat costs nothing and never reaches a model company. **EmbeddingGemma** (768 dimensions) turns treks and questions into vectors. The app refuses a remote Ollama unless you opt in.
+- **Mastra runs the agent**, with four read-only tools: `searchTreks`, `getTrek`, `getConditions` and `recommendTreks`. The server builds the agent's options from text-only, length-capped messages, so a browser can't swap the prompt or raise the limits.
+- **Tiger Data** holds one Postgres: the treks, a hybrid index (a generated `tsvector` plus a pgvector column, fused with reciprocal rank fusion), conditions, subscriptions and the API budget counters.
+- **SerpApi** finds the week's Google News for each followed trek, only from the daily job and behind hard daily and monthly caps. Gemma adds one "What matters" line on top; the reader still sees every headline.
+- **ElevenLabs** voiced all 20 intros once, from scripts I wrote by hand from each trek's sourced facts. The MP3s are committed, so the site serves them itself and they play offline.
 
-**Mastra drives the agent.** The guide is a Mastra agent with four read-only tools: `searchTreks`, `getTrek`, `getConditions` and `recommendTreks`. It streams to the AI SDK's `useChat` through `@mastra/ai-sdk`. The route builds the agent's options itself from text-only, length-capped messages, so a browser can't swap the instructions or raise the limits.
-
-**The model never types a number we show unchecked.** This was the rule I cared about most. A model that confidently says "Kedarkantha is 4,200 m" is how people get hurt. So:
-
-- Recommendations come back as a `recommendTreks` tool call with slugs and reasons. The cards are rendered from the database, not from the model's text.
-- Every sentence the model streams passes through plain code before it leaves the server. Altitudes (in metres or feet), days, nights, distances and rupee amounts are compared with the database facts for the treks that sentence mentions. Anything that doesn't match becomes "(see the card)". Numbers the user typed ("₹12k each") are allowed back.
-- Above 3,500 m, a safety note appears under the cards. It's deterministic: the UI adds it, not the model.
-
-**Every fact in the data is sourced.** Each trek is a YAML file. The schema rejects any non-null fact unless one of its sources names that field. Research agents drafted the 20 treks from Wikipedia, Wikivoyage, OpenStreetMap, UNESCO and government pages; trekking companies were off limits. A second pass re-opened every source and checked every number. If a fact can't be sourced, it's `null`, and the site says "not known yet".
-
-**Tiger Data holds it together.** One Postgres database has the treks, a hybrid search index (a generated `tsvector` plus a pgvector column, fused with reciprocal rank fusion), conditions history, subscriptions and the SerpApi budget counters.
-
-**SerpApi** finds fresh Google News results for each trek, only from the daily job. It never runs from the chat, and every search first reserves budget against hard per-day and per-month caps. **ElevenLabs** voices each trek's intro once into an MP3 the site serves itself, so it works offline once downloaded.
+![The Listen block on the Kedarkantha page, with the player at 0:08 of 0:31](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/audio-intro.png)
+*Voiced by ElevenLabs from the trek's sourced script.* Listen to the [Kedarkantha intro (32 s)](https://cdn.jsdelivr.net/gh/prateek11rai/pagdandi@main/public/audio/kedarkantha.en.mp3) or the [Valley of Flowers intro (30 s)](https://cdn.jsdelivr.net/gh/prateek11rai/pagdandi@main/public/audio/valley-of-flowers.en.mp3).
 
 Audio intros generated with [ElevenLabs](https://elevenlabs.io).
 
-Here's the heart of the prose check, from `src/lib/fact-check.ts`. Each pattern (altitude, feet, distance, days, nights, rupees) finds a number with its unit. The number has to match the database for the trek the sentence is about, or be a number the user typed; anything else gets replaced:
+**The rule I cared about most: the model never shows a number unchecked.** A guide that confidently says "Kedarkantha is 4,200 m" is how people get hurt.
+
+- Cards render database values, never the model's.
+- Every sentence the model streams is checked in code before it leaves the server. Altitudes, days, distances and rupees must match the data for the trek it names, or the user's own numbers; anything else becomes "(see the card)".
+- The altitude note above 3,500 m comes from the UI, not the model.
+- A red-team suite runs real Gemma against prompt injection, off-topic requests, treks we don't have and a request for its instructions. When CI caught Gemma copying its rules, a guard went in that replaces any sentence copying eight words in a row from them.
 
 ```ts
-for (const [kind, re] of PATTERNS) {
-  for (const m of sentence.matchAll(re)) {
-    const start = m.index!;
-    const end = start + m[0].length;
-    if (spans.some((s) => start < s.end && end > s.start)) continue; // already judged by an earlier pattern
-    const value = toNumber(m[1]!, m[2]);
-    const ok =
-      ctx.userNumbers.includes(value) ||
-      (kind === "altitude" && ALLOWED_ALTITUDES.includes(value)) ||
-      treks.some((t) => matches(kind, value, t));
-    spans.push({ start, end, ok });
-  }
+// simplified from src/lib/fact-check.ts: one pattern (altitude, days, distance or rupees) at a time
+for (const m of sentence.matchAll(re)) {
+  const value = toNumber(m[1]!, m[2]);
+  const ok =
+    ctx.userNumbers.includes(value) ||
+    treks.some((t) => matches(kind, value, t));
+  spans.push({ start: m.index!, end: m.index! + m[0].length, ok });
 }
-const bad = spans.filter((s) => !s.ok).sort((a, b) => b.start - a.start);
 ```
 
-So "Kedarkantha reaches 4,200 m" streams out as "Kedarkantha reaches (see the card)". The answer arrives sentence by sentence, because the server holds each sentence back until it ends and has been checked.
+**Every fact is sourced.** Each trek is a YAML file, and the schema rejects any fact no source names. Agents drafted the 20 from Wikipedia, Wikivoyage, OpenStreetMap, UNESCO and government pages, with trekking companies off limits, and a second pass re-checked every number. What can't be sourced stays `null`, and the site says "not known yet".
 
 ## Why Does Open Innovation Matter?
 
-- **Plans stay on the machine.** When five friends type their budgets, dates and who's never trekked, that goes to a model on the laptop that serves the site, not to a model company. Chats aren't stored or logged.
-- **No server, no per-chat bill.** Pagdandi runs on a laptop, so a chat costs nothing beyond the electricity. Anyone can host their own copy for their own friends.
-- **We could shape the model's job.** With open weights and a local runtime, I could turn Gemma's thinking off when it was wasting the whole token budget, use the smaller `e2b` on CI's CPU runner, and test everything on the laptop that runs it.
-- **The data is open too.** CC BY-SA trek files that anyone can correct or extend by pull request, with CI validating every source. A closed API couldn't give us that.
+- **Plans stay on the machine.** Budgets, dates and who's never trekked go to a model on the laptop, not to a model company. Chats aren't stored.
+- **No per-chat bill.** Anyone can run a copy for their own friends.
+- **We could shape the model's job.** Open weights and a local runtime let me turn thinking off when it ate the token budget, and run the smaller `e2b` on CI's CPU runner.
+- **The data is open too.** CC BY-SA trek files that anyone can fix or extend by pull request, with CI validating every source.
 
-What isn't local, so you know: **SerpApi** (news), **ElevenLabs** (the recorded audio), **Open-Meteo** (forecasts) and **Tiger Data** (the database) are hosted services. They see trek names, audio scripts, trek coordinates, and the guide's search queries and the admin's subscription, never the chat itself. Email goes out over SMTP from the admin's own mailbox, to the admin.
+Hosted services see a little: SerpApi trek names, ElevenLabs the scripts, Open-Meteo coordinates, Tiger Data the search queries and the admin's subscription; the email leaves from the admin's own mailbox. None of them sees the chat.
 
 ## What I Got Wrong
 
 <!-- From docs/BUILD_LOG.md; edit freely -->
-- **Thinking mode ate the answers.** With thinking on, Gemma spent all 300 tokens reasoning and never answered. Turning it off gave a full answer in under 3 seconds after the tool call.
-- **"First-timers" meant "easy only".** The guide read "2 first-timers" as `difficulty: easy`, which ruled out every moderate beginner trek, and the group got nothing. Now the tool takes a maximum difficulty, and when nothing fits it returns the closest matches and says which constraint they miss.
-- **A trek in Karnataka for a group in Delhi.** The guide's search tool filtered the group's limits *after* hybrid search had already cut each side to its top 8, so often only one trek survived, from anywhere in India. Now the limits are SQL filters inside the search, and the tool re-ranks by distance from the group's city. The Delhi group gets Dayara Bugyal in Uttarakhand first, every time.
-- **Textbook hybrid search lost to a stray word.** OR-ing every word matched 19 of 20 treks, because every trek says "trek" and "day". `ts_rank` has no IDF, and with only 20 treks every trek sat somewhere in the vector list, so a single matching word ("near", "long") earned a fusion bonus. "Short trek near Delhi" ranked a trek in Nagaland first. The fix: drop words found in more than half the documents, and fuse only each side's top 8.
-- **The summariser made sample news look real.** In development, recorded sample headlines start with "SAMPLE:". Gemma's tidy one-line summaries dropped that, so sample news read like real reports in the email. Now sample data is labelled outside the model, in both the email and the page.
-- **The facts I couldn't find.** Kedarkantha is famous as a December snow trek, but no open source I could find names its winter months, so a December search doesn't find it. The rule is "never guess", and this is what it costs.
-- **My first lint setup tripped my own leak check.** ESLint 9 is end-of-life, and its deprecation notice put an `eslint.org` URL into the lockfile, which my pre-commit check (only `registry.npmjs.org` allowed) rejected. Moving to ESLint 10 fixed the cause.
+- **Thinking mode ate the answers.** Gemma spent its whole budget reasoning and never answered. Off, it answered in under 3 seconds.
+- **"First-timers" meant "easy only".** That ruled out every moderate beginner trek. The search now takes a maximum difficulty and says which limit the closest matches miss.
+- **Textbook hybrid search lost to a stray word.** Every trek says "trek" and "day", so "short trek near Delhi" ranked Nagaland first. Dropping words found in most documents, and fusing fewer results, fixed it.
+- **Gemma judged the news, and missed what mattered.** It skipped a temple near Ghangaria, the base for the Valley of Flowers, closing for the season, and an earthquake in Uttarkashi. Now the email shows every headline, and Gemma only adds one line.
+- **The facts I couldn't find.** No open source names Kedarkantha's winter months, so a December search misses it. "Never guess" has a cost.
 
 ## My Agent Session
+
+The curated build session, from the scaffold to the first real email, with the commands that ran and their output:
 
 {% agent_session 803 %}
 
 ## Prize Categories
 
-- **Best Use of Gemma:** Gemma 4 runs the trek guide and writes the "What matters" line over each day's news, and EmbeddingGemma powers search. Both run through Ollama on the laptop that serves the site.
-- **Best Use of Tiger Data:** pgvector embeddings and hybrid full-text plus vector search for the agent, with conditions, subscriptions and API budget counters in the same Postgres.
-- **Best Use of SerpApi:** fresh Google News results ground each trek's daily update and the agent's `getConditions` tool, behind hard daily and monthly caps.
-- **Best Use of ElevenLabs:** narration for every trek, generated once from hand-written scripts that use only that trek's sourced facts, and served as MP3s for the trail.
+- **Best Use of Gemma:** Gemma 4 runs the guide and the news line; EmbeddingGemma powers search. Both on the laptop, through Ollama.
+- **Best Use of Tiger Data:** pgvector plus full-text hybrid search for the agent, with conditions, subscriptions and budget counters in the same Postgres.
+- **Best Use of SerpApi:** each trek's weekly headlines in the daily email and the agent's `getConditions` tool, behind hard caps.
+- **Best Use of ElevenLabs:** a half-minute intro for every trek, voiced once from a sourced script and served for the trail.
 - **Best Use of Mastra:** a Mastra agent over an open model, with read-only tools, structured recommendations and streaming chat.

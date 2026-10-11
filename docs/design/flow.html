@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How Pagdandi works (1400×800)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Eczar:wght@500;700&family=Anek+Devanagari:wght@400;500;600&display=block" rel="stylesheet">
+<link rel="stylesheet" href="brand-card.css">
+<style>
+  :root { --w: 1400px; --h: 800px; --raised: #fbf8f1; --rule: #d2cfc6; }
+  .topo { opacity: .1; }
+  h1 { position: absolute; left: 56px; top: 40px; font-family: "Eczar", serif; font-size: 40px; font-weight: 700; color: var(--moss); }
+  h1 span { color: var(--clay); font-weight: 500; font-size: .7em; margin-left: .3em; }
+  .legend { position: absolute; right: 56px; top: 52px; display: flex; gap: 22px; font-size: 17px; color: var(--muted); }
+  .legend i { display: inline-block; width: 26px; height: 16px; margin-right: 8px; vertical-align: -2px; border-radius: 4px; background: var(--raised); }
+  .legend .l { border: 2px solid var(--moss); }
+  .legend .h { border: 2px dashed var(--clay); }
+  .box { position: absolute; padding: 16px 18px; border-radius: 12px; background: var(--raised); font-size: 17px; line-height: 1.35; }
+  .box h2 { font-family: "Eczar", serif; font-size: 23px; font-weight: 700; line-height: 1.15; margin-bottom: 8px; color: var(--ink); }
+  .box p { color: var(--muted); }
+  .box b { color: var(--ink); font-weight: 600; }
+  .laptop { border: 2px solid var(--moss); }
+  .hosted { border: 2px dashed var(--clay); }
+  .tag { position: absolute; top: -12px; right: 14px; padding: 1px 9px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: var(--paper); }
+  .laptop .tag { color: var(--moss); border: 1.5px solid var(--moss); }
+  .hosted .tag { color: var(--clay); border: 1.5px dashed var(--clay); }
+  .chat { position: absolute; padding: 16px 18px; border-radius: 16px 16px 4px 16px; background: #e8e3d6; font-size: 18px; line-height: 1.35; color: var(--ink); }
+  .chat small { display: block; margin-bottom: 6px; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .lane { position: absolute; border: 1.5px solid var(--rule); border-radius: 16px; background: rgba(251, 248, 241, .55); }
+  .lane > h2 { position: absolute; left: 22px; top: 14px; font-family: "Eczar", serif; font-size: 23px; font-weight: 700; color: var(--ink); }
+  .lane > p { position: absolute; left: 22px; top: 46px; font-size: 15px; color: var(--muted); }
+  svg.arrows { position: absolute; inset: 0; width: 1400px; height: 800px; overflow: visible; }
+  svg.arrows path { fill: none; stroke: var(--ink); stroke-width: 2; opacity: .55; }
+  svg.arrows text { font-family: "Anek Devanagari", sans-serif; font-size: 15px; fill: var(--muted); }
+</style>
+</head>
+<body>
+<div class="topo"></div>
+<h1>How Pagdandi works <span lang="hi">पगडंडी</span></h1>
+<div class="legend"><span><i class="l"></i>Runs on the laptop</span><span><i class="h"></i>Hosted service</span></div>
+
+<!-- Row 1: the guide -->
+<div class="chat" style="left:56px; top:142px; width:260px;"><small>The group chat</small>“5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi”</div>
+
+<div class="box laptop" style="left:376px; top:140px; width:290px; height:158px;"><span class="tag">Laptop</span>
+  <h2>New plan</h2><p><b>Gemma 4</b> via Ollama<br><b>Mastra</b> agent<br>4 read-only tools</p></div>
+
+<div class="box hosted" style="left:726px; top:140px; width:290px; height:158px;"><span class="tag">Tiger Data</span>
+  <h2>Postgres</h2><p><b>20 sourced treks</b><br>Hybrid search:<br>tsvector + pgvector</p></div>
+
+<div class="box laptop" style="left:1076px; top:140px; width:268px; height:158px;"><span class="tag">Laptop</span>
+  <h2>The answer</h2><p><b>Cards</b> from the database<br>Prose <b>fact-checked</b>:<br>no unchecked number</p></div>
+
+<!-- Row 2: after the plan -->
+<div class="box laptop" style="left:56px; top:440px; width:360px; height:212px;"><span class="tag">Laptop</span>
+  <h2>Trek page</h2><p><b>Sources</b> for every fact<br><b>Weak-source</b> marks<br><b>Audio intro</b>, voiced once by<br>ElevenLabs (hosted), served locally<br><b>One-page plan</b> to print</p></div>
+
+<div class="lane" style="left:476px; top:410px; width:868px; height:340px;">
+  <h2>Daily updates</h2><p>One email a day until the travel date, run by hand</p></div>
+
+<div class="box hosted" style="left:506px; top:500px; width:220px; height:96px;"><span class="tag">Hosted</span>
+  <h2>Open-Meteo</h2><p>Forecast, 2 places</p></div>
+<div class="box hosted" style="left:506px; top:630px; width:220px; height:96px;"><span class="tag">Hosted</span>
+  <h2>SerpApi</h2><p>News, under hard caps</p></div>
+
+<div class="box laptop" style="left:786px; top:552px; width:240px; height:124px;"><span class="tag">Laptop</span>
+  <h2>Gemma</h2><p>One line: “What matters”<br>Every headline still shown</p></div>
+
+<div class="box hosted" style="left:1086px; top:552px; width:234px; height:124px;"><span class="tag">SMTP</span>
+  <h2>Branded email</h2><p>From the admin’s mailbox, to the admin</p></div>
+
+<svg class="arrows" viewBox="0 0 1400 800" aria-hidden="true">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:#1f2a24; stroke:none; opacity:1"/></marker></defs>
+  <path d="M318 219 L370 219" marker-end="url(#a)"/>
+  <path d="M668 204 L720 204" marker-end="url(#a)"/>
+  <path d="M720 236 L668 236" marker-end="url(#a)"/>
+  <text x="672" y="192">search</text>
+  <path d="M1018 219 L1070 219" marker-end="url(#a)"/>
+  <path d="M1210 300 C1210 380, 300 370, 236 434" marker-end="url(#a)"/>
+  <text x="700" y="368">open a card</text>
+  <path d="M418 560 L470 560" marker-end="url(#a)"/>
+  <text x="408" y="548" style="font-size:14px">sign up</text>
+  <path d="M728 540 C880 470, 1150 470, 1200 546" marker-end="url(#a)"/>
+  <text x="890" y="486">forecast</text>
+  <path d="M728 678 C760 678, 750 626, 780 622" marker-end="url(#a)"/>
+  <text x="734" y="700" style="font-size:14px">headlines</text>
+  <path d="M1028 614 L1080 614" marker-end="url(#a)"/>
+</svg>
+</body>
+</html>
