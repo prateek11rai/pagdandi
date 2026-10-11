@@ -158,3 +158,29 @@ Dead ends on the way:
   - Day counts: Dayara Bugyal, Har Ki Dun, Kedarkantha, Nag Tibba.
 - **Why Dayara Bugyal's season is a note, not `null`:** making it `null` would drop the trek from every month filter, including the Delhi group's December pick. The district page is consistent with year-round access (summer grazing, winter snow); only the month list rests on an operator's blog.
 - **Not shown yet:** the trek page doesn't display the notes yet. That comes with the new layout.
+
+### Sunday evening: restructure to a chat-first app shell
+Prateek reviewed the site and we agreed a new structure, from an interactive prototype (`docs/design/proto.html`, with its screenshots). Everything underneath stayed: search, the Mastra agent, the fact-check, the digest, the data and the tests.
+- **Why chat-first.** The group's real question is "which trek can *we* actually do?", and only the guide answers that: their size, budget, days, month and city. So the home page is the guide: one question, the composer, three suggestions, and three treks to browse. The old search box is gone. Semantic search is still there, inside the guide; the Treks page is a plain table with plain filters.
+- **Why one theme.** Two themes doubled every screenshot and every contrast check, for a site you mostly glance at before going outside. The dark tokens, the toggle and its inline script are gone.
+- **Why Eczar and Anek Devanagari.** Both are designed for Devanagari as well as Latin, so "पगडंडी" and the trek names in Hindi match the English beside them. Fraunces with a separate Devanagari face never quite did. Both come through `next/font/google`, self-hosted at build time.
+- **The shell:** a 272 px sidebar (New plan, Treks, Daily updates with "coming soon", About and data, and the model line). Below 900 px it becomes a bottom tab bar, with About behind "More".
+- **New plan:**
+  - On send, the intro fades out and the composer docks at the bottom. It sits outside the animated column, because `position: fixed` inside a transformed parent is fixed to that parent, not the viewport.
+  - The guide's text comes first, then the cards, the altitude note and three actions.
+  - Chats aren't stored anywhere, so the actions and cards open in a new tab: following one doesn't lose the plan.
+- **Treks:**
+  - One table of all 20, with a mini audio player per row and "weak source" marks (the display deferred from the audit).
+  - Below a 54rem container, the rows stack with their own labels, so phones get no horizontal scroll.
+- **Trek page:** the prototype's facts strip and two columns. Weak-source marks link to the notes under Sources. `?print=1` from the guide opens the print dialog.
+
+Things that bit along the way:
+- **Tailwind can't see built class names.** I first wrote the table's container-query classes as `` `${T}:table-cell` ``. Tailwind scans source text for complete class names, so none of them were generated, and the table stayed in its phone layout at 1440 px. They're written out in full now.
+- **Strict CSP vs. a progress bar.** A `style` attribute rendered on the server is an inline style, which our CSP (nonce, no `'unsafe-inline'`) blocks. The audio bar's width is set through a ref after hydration instead.
+- **Nonces need per-request rendering.** Removing the theme script also removed the layout's `headers()` call, which had been keeping every page dynamic. Without it, static pages would be prerendered without the request's nonce. The layout now awaits `connection()`.
+- **The topo backdrop over a whole page.** Stretched to cover a long page, the SVG mask scaled its strokes into thick bands. It's capped at 1.5 screens now and fades out at 60% of that.
+- **A middle dot that hugs the next word.** In Anek Devanagari, " · " renders tight against the following word. Separators are spans with their own margin.
+- **Two of the three suggested chips needed the guide fixed.**
+  - "A day hike near Mumbai this weekend" first got a question back: the guide didn't know today's date. The instructions now carry today's date in IST.
+  - Then it recommended Triund, in Himachal: Gemma passed `maxDifficulty: "easy"` for any day hike, which filtered out Kalsubai (graded moderate). A sentence in the instructions didn't stop it, so the search tool never filters below moderate. Our "easy" grade (under 3,000 m, nothing technical) is stricter than a group's sense of easy.
+  - Now the Mumbai chip gives Kalsubai first. The Delhi group still gets moderate treks within its limits.

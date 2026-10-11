@@ -3,7 +3,7 @@ import { z } from "zod";
 import { cityCoords, rankByOrigin } from "@/lib/cities";
 import { formatSeason } from "@/lib/format";
 import { searchTreks } from "@/lib/search";
-import { DIFFICULTIES, REGIONS, type Region } from "@/lib/trek-schema";
+import { DIFFICULTIES, REGIONS, type Difficulty, type Region } from "@/lib/trek-schema";
 import type { TrekCard } from "@/lib/treks";
 
 const summary = (c: TrekCard) => ({
@@ -16,6 +16,10 @@ const summary = (c: TrekCard) => ({
   season: formatSeason(c.seasonMonths),
   budgetInr: `${c.budgetMinInr}-${c.budgetMaxInr} (trek only, from railhead; estimate)`,
 });
+
+export function floorAtModerate(d: Difficulty): Difficulty {
+  return d === "easy" ? "moderate" : d;
+}
 
 export const searchTreksTool = createTool({
   id: "search-treks",
@@ -32,8 +36,11 @@ export const searchTreksTool = createTool({
   }),
   execute: async ({ query, region, month, maxDifficulty, maxDays, maxBudgetInr, from }) => {
     const origin = cityCoords(from);
+    // Our "easy" grade is strict (under 3,000 m, nothing technical). A group asking for something easy still fits
+    // most moderate treks, so the ceiling never goes below moderate; Gemma tends to pass "easy" for any day hike.
+    const ceiling = maxDifficulty ? floorAtModerate(maxDifficulty) : undefined;
     // Hard limits are SQL filters, so both sides of the hybrid search rank only treks that fit.
-    const { cards } = await searchTreks(query, { region, month, maxDifficulty, maxDays, maxBudgetInr }, 10);
+    const { cards } = await searchTreks(query, { region, month, maxDifficulty: ceiling, maxDays, maxBudgetInr }, 10);
     if (cards.length > 0) return { treks: rankByOrigin(cards, origin).slice(0, 5).map(summary) };
     // Nothing fits every limit: offer the closest matches and say so.
     const loose = await searchTreks(query, { region }, 10);

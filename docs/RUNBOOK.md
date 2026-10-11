@@ -62,7 +62,7 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    - `EMAIL_MODE=resend`, `RESEND_API_KEY`, `ADMIN_EMAIL` (the Resend account's email);
    - `NEWS_MODE=serpapi`, `SERPAPI_API_KEY`;
    - `DATABASE_URL` pointing at Tiger.
-2. Run `pnpm dev` and open `http://localhost:3000/treks/kedarkantha`. Under **Get daily updates**, enter `ADMIN_EMAIL` and a travel date a week or two out.
+2. Run `pnpm dev` and open `http://localhost:3000/updates?trek=kedarkantha`. Enter a travel date a week or two out and `ADMIN_EMAIL`, then **Get daily updates**.
 3. The confirmation email arrives (check spam). Click **Confirm**, which leads to `/updates?status=confirmed`.
 4. Send one digest. Use `--no-sweep`, so a Sunday run doesn't spend 20 searches:
    ```sh
@@ -95,7 +95,7 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    curl -s "$URL/api/health"                      # {"ok":true,"db":true}
    curl -sI "$URL/" | grep -i content-security    # nonce CSP present
    ```
-   Then open `/`, a trek page, `/ask`, `/updates` and `/about` on a phone.
+   Then open `/` (send one suggestion), `/treks`, a trek page, `/updates` and `/about` on a phone.
 5. Measure chat latency. Run the group prompt three times; the per-IP rate limit allows 6 a minute:
    ```sh
    for i in 1 2 3; do
@@ -118,9 +118,9 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 
 - [ ] **Live URL:** in the post's Demo section and in the README's "Try it".
 - [ ] **Screenshots:**
-  - In the DEV editor, upload `docs/img/home-desktop-light.png` and `docs/img/trek-mobile-dark.png`, and replace the relative paths with the uploaded URLs.
+  - In the DEV editor, upload `docs/img/home-thread-desktop.png`, `docs/img/treks-desktop.png` and `docs/img/trek-mobile.png`, and replace the relative paths with the uploaded URLs.
   - Upload `docs/img/cover.png` as the cover.
-  - Optionally add `docs/img/ask-desktop-light.png`.
+  - The other screenshots in `docs/img/` (each page at 1440 and 390 px wide) are there if a section needs one.
 - [ ] **Taking it outside:** your test-walk notes and photos. Say plainly that it was a park test walk, not the trek.
 - [ ] **Demo video:**
   - Record it from the shot list below.
@@ -141,10 +141,11 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 
 | # | Shot | Narration |
 |---|---|---|
-| 1 | Cover image, then the home hero | "Every friend group has a trek they've talked about for years. Pagdandi is for getting it out of the group chat and onto a trail." |
-| 2 | Type "lakes high in the mountains with wildflowers" (Kashmir Great Lakes, Brahmatal, Kedarkantha, Valley of Flowers, Goecha La); then set Month to August | "Search understands what you mean, not just names: full-text search and Gemma embeddings in one Postgres." |
-| 3 | Kedarkantha: facts, safety note, the altitude figure with "Camp altitudes not known", sources; 5 s of audio | "Every number here has a source. If we couldn't find one, it says so. We don't guess altitudes." |
-| 4 | Ask: click the group starter; the cards stream in | "The guide is Gemma on our own server. It picks treks near you, the cards come from the database, and code checks every number it says." |
-| 5 | Get daily updates, then the morning email | "One email a day until you leave: the forecast, any news, and one thing to do outside today." |
-| 6 | Print the one-page plan; download the MP3; your park test walk | "On the trail, the phone stays in your pocket." |
-| 7 | The repo page | "The data is open. Fix a trek, or add yours." |
+| 1 | Cover image, then New plan: the question, the composer and the three suggestions | "Every friend group has a trek they've talked about for years. Pagdandi is for getting it out of the group chat and onto a trail." |
+| 2 | Tap "Lakes high in the mountains with wildflowers"; the cards stream in | "The guide understands what you mean, not just names: full-text search and Gemma embeddings in one Postgres." |
+| 3 | Treks: the table; set Month to August; play one intro from its row | "All 20 treks in one table. Every fact is sourced, and a weak source is marked as one." |
+| 4 | Kedarkantha: facts with weak-source marks, the altitude warning, the figure with "Camp altitudes not known", sources; 5 s of audio | "Every number here has a source. If we couldn't find one, it says so. We don't guess altitudes." |
+| 5 | New plan: tap the Delhi group; cards, the altitude note and the three actions | "The guide is Gemma on our own server. It picks treks near you, the cards come from the database, and code checks every number it says." |
+| 6 | Get daily updates for the top pick, then the morning email | "One email a day until you leave: the forecast, any news, and one thing to do outside today." |
+| 7 | Print the one-page plan; download the MP3; your park test walk | "On the trail, the phone stays in your pocket." |
+| 8 | The repo page | "The data is open. Fix a trek, or add yours." |

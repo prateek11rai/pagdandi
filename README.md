@@ -17,10 +17,11 @@ Pagdandi ("footpath") is a website for friend groups who keep saying "this time 
 
 ## What it is
 
-- **Treks** (`/`): search by what you want ("lakes high in the mountains with wildflowers"), filter by region, month, days, difficulty and budget, and browse guidebook-style cards.
-- **Trek pages** (`/treks/<slug>`): the facts, an audio intro, an altitude-by-day figure, the day-by-day plan, getting there, permits, last mobile signal, when to go, today's conditions, and sources. Add **Take it on the trail** for the MP3 and a one-page printable plan.
-- **Ask** (`/ask`): tell the guide about your group, and it recommends treks from the database.
-- **Updates** (`/updates`): a short email at 7:00 IST until your travel date, with the forecast, news since yesterday, and one thing to do outside today.
+- **New plan** (`/`): the home page is the trek guide. Tell it about your group, or tap a suggestion ("Lakes high in the mountains with wildflowers"), and it recommends treks from the database as cards, with an altitude note and the next steps. Its search understands meaning, not just names.
+- **Treks** (`/treks`): all 20 treks in one table, with plain filters (name, region, month, days, difficulty, budget), the audio intro in each row, and a "weak source" mark on any fact whose only source we couldn't fully trust.
+- **Trek pages** (`/treks/<slug>`): the facts, the altitude warning above 3,500 m, the audio intro, the day-by-day plan with an altitude figure, getting there, last mobile signal, permits, today's conditions and sources. Print it as a one-page plan, or download the MP3.
+- **Daily updates** (`/updates`, coming soon): a short email at 7:00 IST until your travel date, with the forecast, news since yesterday, and one thing to do outside today. Until there's a domain, only the admin gets it.
+- **About and data** (`/about`): how the guide works, where the data comes from, privacy and credits.
 
 How it works:
 
@@ -97,17 +98,17 @@ Other commands:
 
 | Path | What's there |
 |---|---|
-| `src/app/` | Pages (Treks, trek page, Ask, Updates, About) and API routes (chat, subscribe, confirm, unsubscribe, health). |
+| `src/app/` | Pages (New plan, Treks, trek page, Daily updates, About and data) and API routes (chat, subscribe, confirm, unsubscribe, health). |
 | `src/mastra/` | The trek-guide agent, its model (Gemma via Ollama) and its tools. |
 | `src/lib/` | Env validation, database, search, fact-check, conditions (Open-Meteo, SerpApi, summaries), subscriptions, email, budget caps. |
 | `src/jobs/` | The daily digest (the cron entry point and its testable core). |
-| `src/components/` | The trek card, altitude chart, audio player, chat, and UI primitives. |
+| `src/components/` | The app shell (sidebar and tab bar), the New plan chat and composer, the trek table and card, the audio player, the altitude chart, and UI primitives. |
 | `data/treks/` | One YAML file per trek (CC BY-SA 4.0). |
 | `db/migrations/` | Plain SQL migrations. |
 | `scripts/` | Data pipeline, audio, dev stack, DevRelay setup. |
 | `ops/ollama/` | The Ollama image for Render's private service. |
 | `tests/` | `unit/` (no services) and `integration/` (needs `pnpm dev:up`). |
-| `docs/` | Build log, runbook for deploying, DevRelay setup, post draft, screenshots. |
+| `docs/` | Build log, runbook for deploying, DevRelay setup, post draft, screenshots, and the design prototype (`docs/design/`). |
 
 ## Data
 
@@ -123,7 +124,7 @@ Other commands:
 ## Testing
 
 ```sh
-pnpm test               # unit: schema, search ranking, prose fact-check, cards, subscriptions, digest, budget caps, lockfile hosts, env
+pnpm test               # unit: schema, search ranking, prose fact-check, pages (New plan, Treks table), cards, subscriptions, digest, budget caps, lockfile hosts, env
 pnpm dev:up
 pnpm test:integration   # real Postgres + Ollama: loading, hybrid search, a real Gemma recommendation, the digest dry run
 ```
@@ -132,7 +133,7 @@ If the local stack is down, integration tests fail with "run `pnpm dev:up` first
 
 ## Privacy
 
-- Chats are not stored and never logged. The browser keeps the conversation; the server only sees the recent turns, capped in length.
+- Chats are not stored and never logged. The page holds the conversation in memory only (no browser storage), so a reload or **New plan** clears it; the server only sees the recent turns, capped in length.
 - The model runs on our own server, so no model company sees what anyone is planning.
 - Daily emails reach only the admin until there's a domain. Any other address gets a preview message, and nothing is stored.
 - For the admin's subscription, we store the email, the trek and the travel date, and delete them the day after travel. Tokens are random and stored only as hashes.

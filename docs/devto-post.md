@@ -13,20 +13,23 @@ Every city has a version of this group chat. Five college friends in Delhi NCR (
 
 **[Pagdandi](https://github.com/prateek11rai/pagdandi)** (पगडंडी, "footpath") is built for that group. It's an open database of 20 well-known Indian treks, from Kedarkantha and the Kashmir Great Lakes to Kalsubai and the living root bridges of Nongriat, with three ways in:
 
-- **Search that understands meaning.** Type "lakes high in the mountains with wildflowers" or "short trek near Delhi for a long weekend", and filter by region, month, days, difficulty and budget.
-- **A trek guide you can ask.** Tell it "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi" and it recommends treks from the database, with a card for each.
-- **Daily updates until you leave.** Whoever organises signs up with the travel date. Every morning at 7:00 IST they get one email: the forecast at the road head and the high point, any news since yesterday (closures, landslides, snowfall, permits), and **one thing to do outside today**, like a practice walk in the boots they'll trek in.
+- **A trek guide you can ask, right on the home page.** Tell it "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi", or tap "Lakes high in the mountains with wildflowers", and it recommends treks from the database, with a card for each. Its search understands meaning, not just names.
+- **The whole database in one table.** All 20 treks with plain filters for region, month, days, difficulty and budget, each trek's audio intro in its row, and a "weak source" mark on any fact whose only source we couldn't fully trust.
+- **Daily updates until you leave.** Whoever organises signs up with the travel date. Every morning at 7:00 IST they get one email: the forecast at the road head and the high point, any news since yesterday (closures, landslides, snowfall, permits), and **one thing to do outside today**, like a practice walk in the boots they'll trek in. The site marks this "coming soon": until Pagdandi has its own domain, only the admin gets the emails.
 
 Then it gets out of the way. Each trek has a short audio introduction to listen to on the drive up, and a **one-page printable plan**: the day-by-day, permits, last mobile signal and the altitude chart. On the trail, the phone stays in a pocket.
 
 The screen is the shortest part of the experience: a few minutes to choose, ten seconds of email a day, then the actual walking.
 
 <!-- Paths are relative to the repo; replace them with the DEV-uploaded image URLs before publishing (see docs/RUNBOOK.md, step 5). -->
-![The Pagdandi home page: a search box that takes plain descriptions, filters, and guidebook-style trek cards](docs/img/home-desktop-light.png)
-*The Treks page. Describe the trek you want, filter by region, month, days, difficulty and budget, and every card shows facts from the database.*
+![New plan: a group's question, the guide's answer, three trek cards, an altitude note and buttons for the next steps](docs/img/home-thread-desktop.png)
+*New plan, the home page. The Delhi group asks; the guide answers in a few sentences, and the cards, the altitude note and the next steps come from the database, not from the model.*
 
-![The Kedarkantha trek page on a phone, in the dark theme](docs/img/trek-mobile-dark.png)
-*Kedarkantha on a phone at night. The facts strip, an altitude-safety note for anything above 3,500 m, and an altitude figure that says "Camp altitudes not known" instead of drawing a line it can't source.*
+![The Treks table: name, state, days, max altitude, difficulty, season, budget and an audio intro for every trek](docs/img/treks-desktop.png)
+*Treks: all 20 in one table. Filters are plain; "weak source" marks a fact whose only source we couldn't fully trust.*
+
+![The Kedarkantha trek page on a phone: facts with weak-source marks, the altitude warning and the actions](docs/img/trek-mobile.png)
+*Kedarkantha on a phone. The facts strip marks the two facts with a weak source, the altitude warning appears above 3,500 m, and the plan prints on one page.*
 
 ### Taking it outside
 
