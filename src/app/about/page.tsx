@@ -27,7 +27,7 @@ export default function AboutPage() {
             </Section>
             <Section title="Privacy">
               <ul className="list-disc space-y-1 pl-5">
-                <li>Chats never leave the machine running the site, aren&apos;t stored there or in your browser, and are never written to logs.</li>
+                <li>Chats go to the model on the machine running the site, not to a model company. They aren&apos;t stored there or in your browser, and are never written to logs.</li>
                 <li>
                   Daily emails only go to the site admin until we have a domain. If you sign up with any other address, we
                   show a preview message and store nothing.

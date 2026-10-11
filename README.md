@@ -1,38 +1,72 @@
-<p align="center">
-  <img src="public/brand/logo.svg" alt="" width="64" height="64">
-</p>
-
-<h1 align="center">Pagdandi</h1>
-
-<p align="center"><strong>पगडंडी · India's open trek database.</strong> Pick a trek your group can actually do, get the conditions every morning until you leave, then put the phone away.</p>
+<p align="center"><img src="docs/img/banner.png" alt="Pagdandi"></p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/code-MIT-3F6B4F"></a>
+  <a href="LICENSE"><img alt="Code: MIT" src="https://img.shields.io/badge/code-MIT-3F6B4F"></a>
   <a href="data/LICENSE.md"><img alt="Data: CC BY-SA 4.0" src="https://img.shields.io/badge/data-CC%20BY--SA%204.0-3F6B4F"></a>
   <img alt="Node 24" src="https://img.shields.io/badge/node-24-1F2A24">
   <img alt="pnpm 11" src="https://img.shields.io/badge/pnpm-11-1F2A24">
 </p>
 
-Pagdandi ("footpath") is a website for friend groups who keep saying "this time we're definitely going on a trek". It has 20 well-known Indian treks, each one sourced fact by fact, with a meaning-aware search and a trek guide that runs on [Gemma](https://ai.google.dev/gemma), an open-weight model we host ourselves. You can listen to an audio intro for each trek and get daily email updates until the trip. Everything about the data is open: the treks are YAML files you can fix or extend by pull request.
+Every friend group has a trek it has talked about for years, and a group chat where "this time we're definitely going" never turns into a date. **Pagdandi** (पगडंडी, "footpath") is for that group. Tell it how many of you there are, who has trekked before, the budget, the days, the month and where you're starting from, and it recommends treks you can actually do, from 20 well-known Indian treks with every fact sourced. Then it gets out of the way: an audio intro for the drive, a one-page plan for the trail. It runs on a laptop, model included, and anyone can run their own copy.
 
-## What it is
+## What you get
 
-- **New plan** (`/`): the home page is the trek guide. Tell it about your group, or tap a suggestion ("Lakes high in the mountains with wildflowers"), and it recommends treks from the database as cards, with an altitude note and the next steps. Its search understands meaning, not just names.
-- **Treks** (`/treks`): all 20 treks in one table, with plain filters (name, region, month, days, difficulty, budget), the audio intro in each row, and a "weak source" mark on any fact whose only source we couldn't fully trust.
-- **Trek pages** (`/treks/<slug>`): the facts, the altitude warning above 3,500 m, the audio intro, the day-by-day plan with an altitude figure, getting there, last mobile signal, permits, today's conditions and sources. Print it as a one-page plan, or download the MP3.
-- **Daily updates** (`/updates`, coming soon): a short email at 7:00 IST until your travel date, with the forecast, news since yesterday, and one thing to do outside today. Until there's a domain, only the admin gets it.
-- **About and data** (`/about`): how the guide works, where the data comes from, privacy and credits.
+- **Ask the guide.** "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi." The guide answers in a few sentences, and the cards, nearest first, come from the database. Treks above 3,500 m come with an altitude note.
 
-How it works:
+  <img src="docs/img/home-thread-desktop.png" alt="The guide's answer for a Delhi group, with three trek cards, an altitude note and the next steps" width="720">
 
-1. Every trek is a YAML file validated by a zod schema. Any fact that isn't `null` must be backed by a source that names it.
-2. Treks are loaded into Postgres. Search fuses full-text search (`tsvector`) with EmbeddingGemma vectors (pgvector) using reciprocal rank fusion.
-3. The guide is a [Mastra](https://mastra.ai) agent on Gemma 4, with read-only tools. It returns recommendations as tool calls, and the cards are built from the database.
-4. Plain code checks every altitude, day count, distance and cost in the guide's prose against the database. A number that doesn't match becomes "(see the card)".
-5. A daily cron job fetches each followed trek's conditions once: an Open-Meteo forecast, and news via SerpApi under a hard budget cap. Gemma summarises the news, and the job emails each subscriber.
+- **A trek database with sourced facts.** All 20 treks in one table, with plain filters. Every fact names its source, a missing fact says "not known yet", and a fact whose only source is weak is marked.
 
-> [!NOTE]
-> The guide is not medical advice and not a substitute for a licensed local guide. Treks above 3,500 m always come with an altitude-safety note.
+  <img src="docs/img/treks-desktop.png" alt="The Treks table: name, state, days, max altitude, difficulty, season, budget and audio intro for every trek" width="720">
+
+- **Audio intros and a one-page plan.** Each trek page has a short audio intro to download for the drive, and prints on one page: the day-by-day, permits, last mobile signal and an altitude figure.
+- **Daily updates** (admin-only for now). One email at 7:00 IST until you leave: the forecast at the road head and the high point, news since yesterday, and one thing to do outside today. Until Pagdandi has a domain, only the admin gets them.
+
+## How it works
+
+The guide is Gemma 4 (`gemma4:e4b`) and search runs on EmbeddingGemma, both through Ollama on the laptop that serves the site: no server, and no per-chat bill. A Mastra agent with four read-only tools searches Postgres (Tiger Data or a local one) using hybrid search: full-text `tsvector` plus pgvector embeddings, fused with reciprocal rank fusion. Recommendations come back as cards rendered from the database, and plain code checks every altitude, distance, day count and cost in the guide's sentences before you see them. A daily job fetches each followed trek's forecast from Open-Meteo and news through SerpApi (under hard caps), and Gemma summarises the news. ElevenLabs voiced each trek's audio intro once, from its sourced script.
+
+## Run it
+
+On macOS with Homebrew (or the same tools on Linux):
+
+```sh
+brew install ollama postgresql@17 pgvector node@24 pnpm
+pnpm install
+cp .env.example .env            # set ADMIN_EMAIL; everything else has a working default
+pnpm dev:up                     # starts Postgres (127.0.0.1:54329) and Ollama if they aren't running
+ollama pull gemma4:e4b && ollama pull embeddinggemma:300m
+pnpm treks:load && pnpm treks:embed
+pnpm dev                        # http://localhost:3000
+```
+
+| Variable | What it unlocks |
+|---|---|
+| `DATABASE_URL` | Postgres. The default is the one `pnpm dev:up` starts; a Tiger Data service URL (with `sslmode=require`) works too. |
+| `ADMIN_EMAIL` | Required. The only address daily emails ever go to. |
+| `NEWS_MODE=serpapi`, `SERPAPI_API_KEY` | Live news in the daily email. Without them, recorded samples, labelled as samples. |
+| `EMAIL_MODE=smtp`, `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` | Sends the daily email from your own mailbox (`SMTP_PORT` 587 with STARTTLS, or 465). Without them, emails are written to `.data/outbox/`. For Gmail, use an app password; any SMTP mailbox works. |
+| `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | `pnpm audio` only, to generate the intros. |
+
+- **Daily updates:** `pnpm digest` sends today's emails. To run it at 7:00 IST from the laptop, add a cron line (with the laptop's clock on IST and `pnpm` on cron's `PATH`): `0 7 * * * cd /path/to/pagdandi && pnpm digest >> .data/digest.log 2>&1`. A launchd job works too.
+- **Audio:** `pnpm audio --estimate`, then `pnpm audio --missing`, generates the intros you don't have yet. See [CONTRIBUTING](CONTRIBUTING.md#audio-intros).
+
+`pnpm dev:down` stops only what `pnpm dev:up` started.
+
+## Data
+
+Each trek is a YAML file in `data/treks/`, written from open sources only: Wikipedia, Wikivoyage, OpenStreetMap, UNESCO and government pages, never trekking companies. Every fact that isn't `null` names the source that backs it, and the schema rejects anything else. If a fact can't be sourced it stays `null`, and the site says "not known yet". We never guess an altitude. A fact whose only source is weak carries a `weak_sources` note that the site shows. Difficulty and budget are our own estimates, made with fixed rules and labelled as such. The data is CC BY-SA 4.0. Fix a trek or add one by pull request: see [CONTRIBUTING](CONTRIBUTING.md).
+
+## Privacy and safety
+
+- Chats go to the model on the laptop serving the site, not to a model company. The page holds the conversation in memory only, and nothing is logged.
+- The guide's prompt is fixed on the server, its four tools only read the database, and chats are capped (6 a minute, 500 characters, the last 8 turns, 5 steps, 450 output tokens).
+- Cards come from the database, and plain code checks every number in the guide's sentences; anything that doesn't match becomes "(see the card)".
+- A red-team suite ([`tests/integration/red-team.test.ts`](tests/integration/red-team.test.ts)) runs real Gemma against off-topic requests, prompt injection, requests for its prompt, treks and altitudes we don't have, a Hinglish group, and HTML in the message.
+- Ollama must be on this machine unless `OLLAMA_ALLOW_REMOTE=true`, and the rate limit ignores `X-Forwarded-For` unless `TRUST_PROXY=true`.
+- Daily emails go only to the admin, over SMTP from the admin's own mailbox. We store the email, the trek and the travel date, delete them the day after travel, and keep tokens only as hashes.
+- Hosted services see some data: SerpApi trek names, ElevenLabs the audio scripts, Open-Meteo trek coordinates, and Tiger Data, if it hosts the database, the guide's search queries and the admin's subscription.
+- Not medical advice, and not a substitute for a licensed local guide.
 
 ## Built for
 
@@ -40,148 +74,25 @@ The [DEV Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://de
 
 | Category | How Pagdandi uses it |
 |---|---|
-| Gemma | Gemma 4 runs the trek guide, summarises news and drafts the audio scripts. EmbeddingGemma powers search. Both are self-hosted through Ollama. |
-| Render | One Blueprint: the Next.js web service, a private Ollama service (Render as the AI runtime) and the daily cron job. |
-| Tiger Data | Postgres with pgvector holds the treks, the hybrid search index, cached conditions, subscriptions and API budgets. |
-| SerpApi | Google News results for each trek (closures, landslides, snowfall, permits), behind per-day and per-month caps. |
-| ElevenLabs | Voices a short audio introduction for every trek, generated once and served as an MP3. |
-| Mastra | The agent framework behind the guide: the agent, its tools and the streaming chat. |
-
-## Try it
-
-*The Render URL goes here once deployed.*
-
-## Run it locally
-
-You need macOS with Homebrew (or a matching Linux setup), Node 24 and pnpm 11.
-
-```sh
-brew install node@24 pnpm ollama postgresql@17 pgvector
-pnpm install
-cp .env.example .env        # then fill in the variables below
-pnpm dev:up                  # starts Postgres (127.0.0.1:54329) and Ollama if they aren't running
-ollama pull gemma4:e4b
-ollama pull embeddinggemma:300m
-pnpm treks:load && pnpm treks:embed
-pnpm dev                     # http://localhost:3000
-```
-
-`pnpm dev:down` stops only what `pnpm dev:up` started.
-
-| Variable | Needed for | Where the value comes from |
-|---|---|---|
-| `DATABASE_URL` | everything | Locally, what `pnpm dev:up` prints. In production, the Tiger Data service URL (with `sslmode=require`). |
-| `ADMIN_EMAIL` | web, digest | The only address daily emails reach until there's a domain. |
-| `OLLAMA_BASE_URL` | chat, search, digest | Defaults to `http://127.0.0.1:11434`. On Render, `OLLAMA_HOSTPORT` is set by the Blueprint. |
-| `CHAT_MODEL`, `EMBED_MODEL` | chat, search | Default `gemma4:e4b` and `embeddinggemma:300m`. |
-| `SITE_URL` | email links | Defaults to `http://localhost:3000`. |
-| `EMAIL_MODE`, `RESEND_API_KEY` | email | `dry-run` (default) writes emails to `.data/outbox/`. `resend` sends them, using a key from resend.com. |
-| `FORECAST_MODE` | digest | `open-meteo` (default) fetches live forecasts. `fixtures` uses a recorded sample, labelled as such and never stored; CI uses it. |
-| `NEWS_MODE`, `SERPAPI_API_KEY` | digest | `fixtures` (default) uses recorded samples, labelled as such. `serpapi` makes live searches, using the key from your SerpApi dashboard. |
-| `SERPAPI_DAILY_CAP`, `SERPAPI_MONTHLY_CAP` | digest | Hard caps (25 and 200); the free plan allows 250 a month. |
-| `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | `pnpm audio` only | ElevenLabs settings and voice library. |
-
-> [!WARNING]
-> Never commit `.env`. `.gitignore` covers it, and the repo's `.npmrc` only pins the public npm registry.
-
-Other commands:
-
-| Command | What it does |
-|---|---|
-| `pnpm treks:validate` | Validate every trek file against the schema and the sourcing rule. |
-| `pnpm search:eval` | Run the five benchmark searches. |
-| `pnpm digest --dry-run` | Run the daily job and print the emails instead of sending them. Add `--no-sweep` to skip the Sunday refresh of every trek. |
-| `pnpm audio:draft` | Have Gemma draft audio scripts into the YAML. |
-| `pnpm audio --estimate` / `pnpm audio` | Count ElevenLabs characters, then generate the MP3s. |
-
-## Repository map
-
-| Path | What's there |
-|---|---|
-| `src/app/` | Pages (New plan, Treks, trek page, Daily updates, About and data) and API routes (chat, subscribe, confirm, unsubscribe, health). |
-| `src/mastra/` | The trek-guide agent, its model (Gemma via Ollama) and its tools. |
-| `src/lib/` | Env validation, database, search, fact-check, conditions (Open-Meteo, SerpApi, summaries), subscriptions, email, budget caps. |
-| `src/jobs/` | The daily digest (the cron entry point and its testable core). |
-| `src/components/` | The app shell (sidebar and tab bar), the New plan chat and composer, the trek table and card, the audio player, the altitude chart, and UI primitives. |
-| `data/treks/` | One YAML file per trek (CC BY-SA 4.0). |
-| `db/migrations/` | Plain SQL migrations. |
-| `scripts/` | Data pipeline, audio, dev stack, DevRelay setup. |
-| `ops/ollama/` | The Ollama image for Render's private service. |
-| `tests/` | `unit/` (no services) and `integration/` (needs `pnpm dev:up`). |
-| `docs/` | Build log, runbook for deploying, DevRelay setup, post draft, screenshots, and the design prototype (`docs/design/`). |
-
-## Data
-
-- **Sources:** Wikipedia, Wikivoyage, OpenStreetMap, UNESCO and official Indian government pages. Trekking companies are never used. Each trek lists its sources, and each source names the fields it backs.
-- **Unknown means `null`:** if a fact can't be sourced, the site says "not known yet". Difficulty and budget are our own estimates, made with fixed rules, and the site labels them that way.
-- **Weak sources are flagged:** when the only source for a fact is weak (copy that reads like a trek operator's, an uncited list, dated official pages), the trek file says so in `weak_sources`, with a short note for readers. Where a better source disagrees, the fact is `null` instead.
-- **Review:** an AI-assisted fact-check pass re-checked every number against its source (see [the build log](docs/BUILD_LOG.md)), and a maintainer reviews a sample.
-- **Adding a trek:** see [CONTRIBUTING.md](CONTRIBUTING.md). CI runs `pnpm treks:validate` on every pull request.
-
-> [!NOTE]
-> Some well-known facts are missing on purpose. For example, no open source names Kedarkantha's winter months, so a December search won't find it until someone adds a source.
+| Gemma | Gemma 4 runs the guide, summarises news and drafted the audio scripts; EmbeddingGemma powers search. Both run through Ollama on the laptop. |
+| Tiger Data | Postgres with pgvector: the treks, the hybrid search index, conditions, subscriptions and API budget counters. |
+| SerpApi | Google News results for each followed trek (closures, landslides, snowfall, permits), behind per-day and per-month caps. |
+| ElevenLabs | A short audio intro for every trek, generated once from its sourced script and committed as an MP3. |
+| Mastra | The agent framework behind the guide: the agent, its read-only tools and the streaming chat. |
 
 ## Testing
 
-```sh
-pnpm test               # unit: schema, search ranking, prose fact-check, pages (New plan, Treks table), cards, subscriptions, digest, budget caps, lockfile hosts, env
-pnpm dev:up
-pnpm test:integration   # real Postgres + Ollama: loading, hybrid search, a real Gemma recommendation, the red-team suite, the digest dry run
-```
+`pnpm test` runs the unit tests, with no services: schema and sourcing, the fact-check, search ranking, pages, email, audio, the digest, env validation and lockfile hosts.
 
-If the local stack is down, integration tests fail with "run `pnpm dev:up` first"; they never skip. CI runs both suites. The integration job uses Postgres with pgvector and Ollama with `gemma4:e2b`, plus recorded forecasts and news, so no test depends on an outside API.
-
-## Privacy and safety
-
-**Safety.** The guide talks to groups about mountains, so the design assumes the model will sometimes be wrong or be pushed:
-
-- **A fixed prompt.** The guide's instructions live on the server. It only talks about treks in India, only states numbers that came back from its tools, adds an altitude sentence for anything above 3,500 m, and declines everything else without revealing its instructions. The chat route builds the agent's options itself, so a request can't change the instructions, tools or limits.
-- **Read-only tools.** `searchTreks`, `getTrek`, `getConditions` (stored conditions only) and `recommendTreks` read the database and nothing else. None of them writes, and none calls an outside API; SerpApi runs only from the daily job.
-- **Caps.** 6 chats a minute and 40 an hour per IP, a 32 KB request limit, text-only messages, the last 8 turns, 500 characters per question, 5 agent steps and 450 output tokens.
-- **Plain-code fact-check.** Cards are rendered from the database, not from the model's text. Every altitude, distance, day count and cost in the model's sentences is checked against the database before it leaves the server, and anything that doesn't match becomes "(see the card)". The altitude note under the cards is added by the page, not by the model.
-- **A red-team suite.** `tests/integration/red-team.test.ts` puts real Gemma, through the real chat route, up against an off-topic request, "ignore your previous instructions", a request for its system prompt, a trek that isn't in the database (Everest Base Camp), an altitude we don't have, a Hinglish group prompt, and a message carrying a fake tool result and HTML. It checks behaviour, not wording: off-topic gets no tool calls and no cards; every card is a trek in the database; the prose passes the same fact-check again; no run of the instructions appears in the answer; no HTML is echoed back; and the Hinglish group gets a normal recommendation. It runs in CI with the rest of the integration tests.
-- **Not advice.** The site says on every relevant page that it is not medical advice and not a substitute for a licensed local guide.
-
-**Privacy.**
-
-- Chats are not stored and never logged. The page holds the conversation in memory only (no browser storage), so a reload or **New plan** clears it; the server only sees the recent turns, capped in length.
-- The model runs on our own server, so no model company sees what anyone is planning.
-- Daily emails reach only the admin until there's a domain. Any other address gets a preview message, and nothing is stored.
-- For the admin's subscription, we store the email, the trek and the travel date, and delete them the day after travel. Tokens are random and stored only as hashes.
-- No analytics, no ads, and no third-party scripts. Fonts are self-hosted at build time.
-- Hosted services do get some data: SerpApi gets trek names, ElevenLabs gets the audio scripts, Resend gets the admin's emails, and Open-Meteo gets trek coordinates.
-
-## How it's built
-
-**Gemma.** Gemma 4 (`gemma4:e4b`, or `e2b` on smaller CPUs) runs through Ollama, with thinking turned off: with thinking on, it spent its whole token budget reasoning. It powers the trek guide, the news summaries and the first drafts of the audio scripts. EmbeddingGemma (300M, 768 dimensions) embeds treks and queries with its asymmetric prompts. No model vendor is involved, and a chat costs nothing beyond the server.
-
-**Render.** `render.yaml` defines three services in one region:
-- `pagdandi-web`, the Next.js app, with a health check and a pre-deploy step that migrates the database and loads the treks;
-- `pagdandi-ollama`, a private Docker service on Render's private network, with models on a persistent disk;
-- `pagdandi-daily`, the cron job at 07:00 IST.
-
-**Tiger Data.** One Postgres database holds everything:
-- the treks, with a generated `tsvector` and a pgvector column, behind hybrid search fused with RRF;
-- conditions history;
-- subscriptions, with token hashes;
-- the API budget counters, which use atomic `insert … on conflict … where used < cap` updates.
-
-**SerpApi.** It finds Google News results for each trek, and only from the daily job, never from the chat. Each search first reserves budget against per-day and per-month caps; a full budget is an error the job reports. Gemma turns the results into at most three lines, each with its own link and date.
-
-**ElevenLabs.** `scripts/make-audio.ts` voices each trek's script once into `public/audio/<slug>.en.mp3`. The site serves the files itself, so they also work offline after download.
-
-**Mastra.** The guide is a Mastra agent with four tools: `searchTreks`, `getTrek`, `getConditions` and `recommendTreks`. `@mastra/ai-sdk` streams it to the AI SDK's `useChat`. The route builds the agent's options itself, so a browser can't change its instructions or limits.
+`pnpm test:integration` runs after `pnpm dev:up`, against real Postgres and Gemma: hybrid search, the guide's recommendations, the red-team suite and the digest dry run. CI runs both.
 
 ## License and attribution
 
-- Code: [MIT](LICENSE).
-- Trek data: [CC BY-SA 4.0](data/LICENSE.md).
-- Map data: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), ODbL.
-- Forecasts: [Weather data by Open-Meteo.com](https://open-meteo.com/), CC BY 4.0.
+- Code: [MIT](LICENSE). Trek data: [CC BY-SA 4.0](data/LICENSE.md).
+- Map data: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), ODbL. Forecasts: [Weather data by Open-Meteo.com](https://open-meteo.com/), CC BY 4.0.
 - Gemma 4: [Apache 2.0](https://ai.google.dev/gemma/apache_2). EmbeddingGemma is provided under and subject to the [Gemma Terms of Use](https://ai.google.dev/gemma/terms), and the site's terms carry the [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy).
-- Logo: the Lucide "footprints" icon, ISC ([notice](public/brand/logo-LICENSE.txt)).
-- Audio: voiced with [ElevenLabs](https://elevenlabs.io), under its terms for the plan used.
-- Fonts: Eczar and Anek Devanagari (SIL Open Font License), self-hosted at build time.
+- Audio: generated with [ElevenLabs](https://elevenlabs.io) from each trek's sourced facts; the scripts are the `audio_script` field in each trek's YAML. Voice: named in `public/audio/manifest.json` once the intros are generated.
+- Logo: the Lucide "footprints" icon, ISC ([notice](public/brand/logo-LICENSE.txt)). Fonts: Eczar and Anek Devanagari (SIL Open Font License), self-hosted at build time.
 
 ## After the deadline
 
