@@ -107,7 +107,7 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 ## 5. Fill the post's placeholders (`docs/devto-post.md`)
 
 - [x] **Video:** Demo links the video's GitHub page; "Run it in 10 minutes" stays.
-- [ ] **Screenshots:** in the DEV editor, upload `docs/img/home-thread-desktop.png`, `docs/img/treks-desktop.png` and `docs/img/trek-mobile.png` (retaken on 12 Oct from the finished site), and replace the relative paths with the uploaded URLs. Upload `docs/img/cover.png` as the cover.
+- [x] **Screenshots and cover:** the post loads `docs/img/cover.png` and the three screenshots (retaken on 12 Oct from the finished site) from the public repo's raw URLs on main, so nothing needs uploading in the DEV editor. If one is replaced, keep its file name, or update the post.
 - [ ] **Taking it outside:** Prateek's park test-walk notes and photos. Say plainly that it was a park test walk, not the trek.
 - [ ] **What I Got Wrong:** optional edits by Prateek.
 - [ ] **After publishing:** the post link under "Built for" in the README, and any commit made after 12 Oct 06:59 UTC, with its date, under "After the deadline".

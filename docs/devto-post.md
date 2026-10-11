@@ -2,7 +2,7 @@
 title: "Pagdandi: an open trek database that gets the group chat onto an actual trail"
 published: false
 tags: devchallenge, hf26challenge, opensource, webdev
-cover_image: <!-- upload docs/img/cover.png to DEV and paste its URL here -->
+cover_image: https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/cover.png
 ---
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)*
@@ -21,14 +21,14 @@ Then it gets out of the way. Each trek has a short audio introduction to listen 
 
 The screen is the shortest part of the experience: a few minutes to choose, ten seconds of email a day, then the actual walking.
 
-<!-- Paths are relative to the repo; replace them with the DEV-uploaded image URLs before publishing (see docs/RUNBOOK.md, step 5). -->
-![New plan: a group's question, the guide's answer, three trek cards, an altitude note and buttons for the next steps](docs/img/home-thread-desktop.png)
+<!-- The cover and these images load from the public repo's raw URLs on main, so nothing needs uploading; DEV may re-host them on its CDN. Local paths: docs/img/cover.png (cover), docs/img/home-thread-desktop.png, docs/img/treks-desktop.png, docs/img/trek-mobile.png. -->
+![New plan: a group's question, the guide's answer, three trek cards, an altitude note and buttons for the next steps](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/home-thread-desktop.png)
 *New plan, the home page. The Delhi group asks; the guide answers in a few sentences, and the cards, the altitude note and the next steps come from the database, not from the model.*
 
-![The Treks table: name, state, days, max altitude, difficulty, season, budget and an audio intro for every trek](docs/img/treks-desktop.png)
+![The Treks table: name, state, days, max altitude, difficulty, season, budget and an audio intro for every trek](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/treks-desktop.png)
 *Treks: all 20 in one table. Filters are plain; "weak source" marks a fact whose only source we couldn't fully trust.*
 
-![The Kedarkantha trek page on a phone: facts with weak-source marks, the altitude warning and the actions](docs/img/trek-mobile.png)
+![The Kedarkantha trek page on a phone: facts with weak-source marks, the altitude warning and the actions](https://raw.githubusercontent.com/prateek11rai/pagdandi/main/docs/img/trek-mobile.png)
 *Kedarkantha on a phone. The facts strip marks the two facts with a weak source, the altitude warning appears above 3,500 m, and the plan prints on one page.*
 
 ### Taking it outside
