@@ -70,6 +70,11 @@ describe("prose fact-check", () => {
     expect(checkSentence("Kedarkantha costs ₹90,000 rupees.", ctx).replaced).toBe(1);
   });
 
+  it("replaces a wrong altitude and a wrong day count in one crafted sentence, and keeps the rest", () => {
+    const r = checkSentence("Kedarkantha is an easy 9 days and reaches 5,200 m at the top.", ctx);
+    expect(r).toEqual({ text: `Kedarkantha is an easy ${REPLACEMENT} and reaches ${REPLACEMENT} at the top.`, replaced: 2 });
+  });
+
   it("ignores numbers without units", () => {
     expect(checkSentence("Day 2 is the summit push for 5 friends.", ctx).replaced).toBe(0);
   });

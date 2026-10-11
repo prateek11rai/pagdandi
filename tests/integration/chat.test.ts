@@ -1,46 +1,23 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { POST } from "@/app/api/chat/route";
+import { ask, expectSafe } from "./guide";
 import { closeDb, prepareDatabase } from "./stack";
 
 beforeAll(prepareDatabase);
 afterAll(closeDb);
 
-interface Chunk {
-  type: string;
-  toolName?: string;
-  toolCallId?: string;
-  output?: { cards?: { slug: string; highestAltitudeM: number | null }[] };
-  delta?: string;
-}
-
-async function ask(text: string): Promise<Chunk[]> {
-  const res = await POST(
-    new Request("http://localhost/api/chat", {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-forwarded-for": "198.51.100.7" },
-      body: JSON.stringify({ messages: [{ id: "m1", role: "user", parts: [{ type: "text", text }] }] }),
-    }),
-  );
-  expect(res.status).toBe(200);
-  const body = await res.text();
-  return body
-    .split("\n")
-    .filter((l) => l.startsWith("data: {"))
-    .map((l) => JSON.parse(l.slice(6)) as Chunk);
-}
-
 // Gemma on CI's CPU runner takes 80-180+ s for this turn (docs/BUILD_LOG.md); a slow run is not a bug.
 describe("the trek guide on real Gemma", { timeout: 420_000 }, () => {
-  it("recommends treks from the database for the group prompt", async () => {
-    const chunks = await ask("5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi");
-    const calls = chunks.filter((c) => c.type === "tool-input-available").map((c) => c.toolName);
-    expect(calls).toContain("searchTreks");
-    expect(calls).toContain("recommendTreks");
-    const recId = chunks.find((c) => c.type === "tool-input-available" && c.toolName === "recommendTreks")!.toolCallId;
-    const out = chunks.find((c) => c.type === "tool-output-available" && c.toolCallId === recId)!.output!;
-    expect(out.cards!.length).toBeGreaterThan(0);
-    const text = chunks.filter((c) => c.type === "text-delta").map((c) => c.delta).join("");
-    expect(text.length).toBeGreaterThan(20);
+  it("recommends treks from the database for the group prompt, nearest first", async () => {
+    const turn = await ask("5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi");
+    await expectSafe(turn);
+    expect(turn.toolCalls).toContain("searchTreks");
+    expect(turn.toolCalls).toContain("recommendTreks");
+    expect(turn.cards.length).toBeGreaterThan(0);
+    // Cards follow the search's distance-aware ranking, not the model's order. In December only Dayara Bugyal
+    // fits this group in Uttarakhand or Himachal (docs/BUILD_LOG.md), so only the first card is pinned.
+    expect(["uttarakhand", "himachal"]).toContain(turn.cards[0]!.region);
+    expect(turn.prose.length).toBeGreaterThan(20);
   });
 
   it("refuses a question that is too long", async () => {
