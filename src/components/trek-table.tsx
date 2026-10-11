@@ -128,7 +128,14 @@ function Value({ text, weak }: { text: string | null; weak: boolean }) {
   return (
     <>
       {text === null ? <span className="whitespace-nowrap text-ink-muted">not known yet</span> : <span className="whitespace-nowrap">{text}</span>}
-      {weak && <span className="ml-1 whitespace-nowrap text-xs text-clay-ink">· weak source</span>}
+      {weak && (
+        <span className="ml-1.5 whitespace-nowrap text-xs text-clay-ink">
+          <span aria-hidden className="mr-1">
+            ·
+          </span>
+          weak source
+        </span>
+      )}
     </>
   );
 }

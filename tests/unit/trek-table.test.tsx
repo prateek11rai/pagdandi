@@ -19,9 +19,9 @@ describe("Treks (/treks)", () => {
 
   it("marks facts that rest on a weak source", () => {
     const html = renderToStaticMarkup(<TrekTable rows={rows.filter((r) => r.slug === "kedarkantha")} initial={{}} />);
-    expect(html).toMatch(/>3<\/span><span[^>]*>· weak source</);
+    expect(html).toMatch(/>3<\/span><span[^>]*><span aria-hidden="true"[^>]*>·<\/span>weak source</);
     const triund = renderToStaticMarkup(<TrekTable rows={rows.filter((r) => r.slug === "triund")} initial={{}} />);
-    expect(triund).toMatch(/Apr–Oct<\/span><span[^>]*>· weak source</);
+    expect(triund).toMatch(/Apr–Oct<\/span><span[^>]*><span aria-hidden="true"[^>]*>·<\/span>weak source</);
   });
 
   it("starts from the filters in the URL", () => {

@@ -40,7 +40,7 @@ export function AltitudeChart({ trek, figure = 1 }: { trek: Trek; figure?: numbe
   const descId = `alt-desc-${trek.slug}`;
 
   return (
-    <figure className="m-0">
+    <figure className="m-0 print:max-w-[120mm]">
       <div className="overflow-x-auto">
       <svg
         viewBox={`0 0 ${W} ${H}`}

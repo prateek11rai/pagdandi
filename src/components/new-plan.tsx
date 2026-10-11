@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { Composer, MAX_CHARS } from "./composer";
 import { NEW_PLAN_EVENT } from "./nav";
 import { TrekCard } from "./trek-card";
+import { actionClass } from "./ui/action";
 
 export const CHIPS = [
   "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi",
@@ -244,12 +245,7 @@ function Action({ href, primary = false, icon, children }: { href: string; prima
     <Link
       href={href}
       target="_blank"
-      className={cn(
-        "inline-flex items-center gap-2 rounded-[9px] border px-3 py-2 text-sm no-underline",
-        primary
-          ? "border-moss bg-moss text-white hover:bg-moss-strong hover:text-white"
-          : "hairline bg-paper-raised text-ink hover:border-moss hover:text-ink",
-      )}
+      className={actionClass(primary)}
     >
       {icon}
       {children}

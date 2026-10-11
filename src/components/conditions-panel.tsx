@@ -20,8 +20,8 @@ export async function ConditionsPanel({ trek }: { trek: Trek }) {
     <div className="grid gap-6">
       {c.forecast && (
         <div>
-          <p className="label">Forecast · checked {IST.format(c.forecast.fetchedAt)} IST</p>
-          <div className="mt-2 grid gap-4 sm:grid-cols-2">
+          <p className="label">Forecast, checked {IST.format(c.forecast.fetchedAt)} IST</p>
+          <div className="mt-2 grid gap-4">
             {c.forecast.payload.places.map((p) => (
               <PlaceTable key={p.place} p={p} />
             ))}
@@ -34,7 +34,7 @@ export async function ConditionsPanel({ trek }: { trek: Trek }) {
       )}
       {c.news && (
         <div>
-          <p className="label">News · checked {IST.format(c.news.fetchedAt)} IST</p>
+          <p className="label">News, checked {IST.format(c.news.fetchedAt)} IST</p>
           {c.news.payload.fixture && (
             <p className="mt-1 text-sm font-semibold text-clay-ink">SAMPLE DATA for development: these are not real news reports.</p>
           )}
@@ -75,7 +75,7 @@ function PlaceTable({ p }: { p: PlaceForecast }) {
       </thead>
       <tbody>
         {p.days.slice(0, 3).map((d) => (
-          <tr key={d.date} className="border-t hairline">
+          <tr key={d.date} className="border-t border-rule [&>td]:pr-3 [&>td:last-child]:pr-0">
             <td className="py-1">{DAY.format(new Date(d.date))}</td>
             <td>{weatherLabel(d.code)}</td>
             <td className="text-right tabular-nums">
