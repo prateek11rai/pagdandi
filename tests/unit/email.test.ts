@@ -1,9 +1,9 @@
 import { mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import nodemailer from "nodemailer";
-import { dryRunMailer, smtpMailer, smtpTransportOptions } from "@/lib/email";
+import { dryRunMailer, replyCode, smtpMailer, smtpTransportOptions } from "@/lib/email";
 import { unsubscribeHeaders } from "@/lib/subscriptions";
 
 const config = {
@@ -69,6 +69,17 @@ describe("SMTP email", () => {
     expect(raw).toMatch(/^Content-Type: text\/html; charset=utf-8$/m);
     expect(raw).toMatch(/^List-Unsubscribe: <https:\/\/example\.org\/api\/unsubscribe\?token=t>$/m);
     expect(raw).toMatch(/^List-Unsubscribe-Post: List-Unsubscribe=One-Click$/m);
+  });
+
+  it("logs only the server's 3-digit reply code", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => {});
+    const reply = { sendMail: async () => ({ response: "250 2.0.0 OK  1697040000 a1b2c3d4e5-gsmtp", messageId: "<x@example.com>", accepted: ["admin@example.com"] }) };
+    await smtpMailer(config, reply).send(message);
+    expect(log.mock.calls).toEqual([["Email sent: SMTP 250"]]);
+    log.mockRestore();
+    expect(replyCode({ response: "421 4.7.0 Try again later" })).toBe("421");
+    expect(replyCode({ response: "OK" })).toBeNull();
+    expect(replyCode(undefined)).toBeNull();
   });
 
   it("refuses any recipient but the admin, before touching the server", async () => {

@@ -17,7 +17,7 @@ export interface SmtpConfig {
 }
 
 interface Transport {
-  sendMail(m: ReturnType<typeof smtpMessage>): Promise<unknown>;
+  sendMail(m: ReturnType<typeof smtpMessage>): Promise<unknown>; // nodemailer resolves with { response: "250 …" }
 }
 
 export function mailer(): Mailer {
@@ -58,18 +58,26 @@ export function smtpMessage(c: Pick<SmtpConfig, "from">, m: Message) {
 
 const same = (a: string, b: string) => addressIn(a).toLowerCase() === addressIn(b).toLowerCase();
 
+// "250 2.0.0 OK 1697040000 a1b2c3 - gsmtp" -> "250". The rest (queue and message IDs) is never logged.
+export function replyCode(info: unknown): string | null {
+  const response = (info as { response?: unknown } | null)?.response;
+  return typeof response === "string" ? (/^([2-5]\d\d)\b/.exec(response)?.[1] ?? null) : null;
+}
+
 // The admin's own mailbox, sending only to the admin until there's a domain. Errors carry a code, never the
-// server, the login or the address.
+// server, the login or the address. A sent email logs only the server's 3-digit reply code.
 export function smtpMailer(c: SmtpConfig, transport: Transport = nodemailer.createTransport(smtpTransportOptions(c))): Mailer {
   return {
     async send(m) {
       if (!same(m.to, c.adminEmail)) throw new Error("Refusing to email anyone but the admin until there's a domain.");
+      let info: unknown;
       try {
-        await transport.sendMail(smtpMessage(c, m));
+        info = await transport.sendMail(smtpMessage(c, m));
       } catch (err) {
         const code = (err as { code?: unknown }).code;
         throw new Error(`Email send failed (${typeof code === "string" ? code : "SMTP error"})`);
       }
+      console.log(`Email sent: SMTP ${replyCode(info) ?? "reply had no code"}`);
     },
   };
 }

@@ -11,6 +11,7 @@ DevRelay rules for this repo: follow `.claude/devrelay-rules.md` (gitignored; se
 - `pnpm digest --dry-run`: the daily job, printing emails instead of sending.
 - `pnpm news:check --trek <slug>`: one live SerpApi search, counted against the caps. Never in tests or CI.
 - `pnpm email:preview --trek <slug>`: render the digest and confirmation emails into `.data/outbox/` from sample data. Never sends.
+- `pnpm subscribe:admin --trek <slug> --date YYYY-MM-DD`: subscribe ADMIN_EMAIL and send the confirmation email (a real email when `EMAIL_MODE=smtp`). Never prints the address.
 - `pnpm audio --estimate`: which intros are missing or have a changed script, without calling ElevenLabs. `pnpm audio` spends ElevenLabs credits.
 - `pnpm topo`: regenerate `public/brand/topo.svg`.
 

@@ -60,6 +60,20 @@ export async function subscribe(
   return { kind: "pending" };
 }
 
+export const SUBSCRIBE_ADMIN_USAGE = "Usage: pnpm subscribe:admin --trek <slug> --date YYYY-MM-DD";
+
+// `--trek <slug> --date YYYY-MM-DD`, in either order, and nothing else.
+export function parseSubscribeAdminArgs(argv: string[]): { slug: string; travelDate: string } | { error: string } {
+  const args = argv.filter((a) => a !== "--");
+  const value = (flag: string) => (args.indexOf(flag) >= 0 ? args[args.indexOf(flag) + 1] : undefined);
+  const slug = value("--trek");
+  const travelDate = value("--date");
+  if (args.length !== 4 || !slug || !travelDate) return { error: SUBSCRIBE_ADMIN_USAGE };
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) return { error: `"${slug}" isn't a trek slug. ${SUBSCRIBE_ADMIN_USAGE}` };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(travelDate) || Number.isNaN(Date.parse(travelDate))) return { error: `"${travelDate}" isn't a date. ${SUBSCRIBE_ADMIN_USAGE}` };
+  return { slug, travelDate };
+}
+
 export async function confirm(token: string, store: SubscriptionStore): Promise<Subscription | null> {
   return store.activateByConfirmHash(hashToken(token));
 }

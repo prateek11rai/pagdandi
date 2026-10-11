@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { confirm, expire, MemorySubscriptionStore, subscribe, unsubscribe, unsubscribeUrlFor, type Mailer } from "@/lib/subscriptions";
+import { confirm, expire, MemorySubscriptionStore, parseSubscribeAdminArgs, subscribe, unsubscribe, unsubscribeUrlFor, type Mailer } from "@/lib/subscriptions";
 
 const NOW = new Date("2026-10-11T03:00:00Z"); // 08:30 IST, 11 Oct
 const ADMIN = "admin@example.com";
@@ -67,5 +67,15 @@ describe("subscription lifecycle", () => {
   it("rejects travel dates in the past", async () => {
     const { deps } = setup();
     expect((await subscribe({ email: ADMIN, slug: "triund", travelDate: "2026-10-11" }, deps)).kind).toBe("invalid");
+  });
+});
+
+describe("pnpm subscribe:admin arguments", () => {
+  it("takes exactly a trek slug and a travel date", () => {
+    expect(parseSubscribeAdminArgs(["--trek", "valley-of-flowers", "--date", "2026-10-25"])).toEqual({ slug: "valley-of-flowers", travelDate: "2026-10-25" });
+    expect(parseSubscribeAdminArgs(["--date", "2026-10-25", "--trek", "triund"])).toEqual({ slug: "triund", travelDate: "2026-10-25" });
+    for (const bad of [[], ["--trek", "triund"], ["--trek", "triund", "--date", "25-10-2026"], ["--trek", "Triund", "--date", "2026-10-25"], ["--trek", "triund", "--date", "2026-10-25", "--force"], ["--email", "x@example.com", "--trek", "triund"]]) {
+      expect(parseSubscribeAdminArgs(bad)).toHaveProperty("error");
+    }
   });
 });

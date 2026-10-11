@@ -60,8 +60,10 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    - `NEWS_MODE=serpapi` and `SERPAPI_API_KEY`;
    - `DATABASE_URL` pointing at Tiger.
 2. To look at the emails first, `pnpm email:preview --trek kedarkantha` writes the digest and the confirmation to `.data/outbox/` as HTML and text, from sample data; it never sends. Open the `.html` files in a browser.
-3. Run `pnpm dev`, open `http://localhost:3000/updates?trek=kedarkantha`, pick a travel date a week or two out, enter `ADMIN_EMAIL`, and choose **Get daily updates**.
-4. The confirmation email arrives (check spam). Click **Confirm daily updates**, which leads to `/updates?status=confirmed`.
+3. Run `pnpm dev`, then subscribe the admin to a trek a week or two out, either way:
+   - `pnpm subscribe:admin --trek kedarkantha --date YYYY-MM-DD`, which takes ADMIN_EMAIL from `.env` without printing it and logs only the SMTP reply code (`Email sent: SMTP 250`);
+   - or open `http://localhost:3000/updates?trek=kedarkantha`, pick the travel date, enter `ADMIN_EMAIL`, and choose **Get daily updates**.
+4. The confirmation email arrives (check spam). Click **Confirm daily updates** on this laptop (the link is on `SITE_URL`, `http://localhost:3000` by default), which leads to `/updates?status=confirmed`.
 5. Optional, to check SerpApi and Gemma's summary on their own: `pnpm news:check --trek kedarkantha` makes exactly one search, counted against the caps, prints the headlines, the summary and the counters, and saves nothing else.
 6. Send one digest. `--no-sweep` keeps a Sunday run from spending 20 searches:
    ```sh
