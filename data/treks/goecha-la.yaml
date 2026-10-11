@@ -118,6 +118,9 @@ audio_script: >-
   noticing the summer flowers and vibrant birdlife along the way. The day-by-day plan and permits
   are on the Pagdandi page.
 photo: null
+weak_sources:
+  - field: itinerary
+    note: The day-by-day distances come from an uncited list on Wikipedia that links to a trek operator.
 sources:
   # weak source: the itinerary list on this article is uncited, the page carries a refimprove tag and an inline link to a trekking operator; its distances are used only because no cleaner open source lays out the stages
   - url: https://en.wikipedia.org/wiki/Goecha_La

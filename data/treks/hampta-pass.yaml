@@ -89,6 +89,9 @@ audio_script: >-
   a starting point for the Chandratal lake. The day-by-day plan and permits are on the Pagdandi
   page.
 photo: null
+weak_sources:
+  - field: season_months
+    note: From the state's trekking portal, but its dates are for 2022, and one of its listings closes on 1 October instead.
 sources:
   - url: https://en.wikipedia.org/wiki/Hampta_Pass
     title: Hampta Pass

@@ -27,6 +27,7 @@ export function sampleTrek(slug = "example-trek", name = "Example Trek"): Trek {
     highlights: ["A ridge with long views."],
     audio_script: null,
     photo: null,
+    weak_sources: [],
     sources: [
       {
         url: "https://example.org/source",

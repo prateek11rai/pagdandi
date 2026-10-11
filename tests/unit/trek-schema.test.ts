@@ -26,6 +26,32 @@ describe("trek schema", () => {
     expect(check(t).join()).toMatch(/above highest_point/);
   });
 
+  it("accepts a weak-source note on a fact that has a value", () => {
+    const t = sampleTrek();
+    t.weak_sources = [
+      { field: "distance_km", note: "Only one travel-guide passage gives this figure." },
+      { field: "itinerary.day2", note: "The summit-day stage comes from an uncited list." },
+    ];
+    expect(check(t)).toEqual([]);
+  });
+
+  it("rejects a weak-source note on a null fact, an unknown field or a missing day, and duplicates", () => {
+    const t = sampleTrek();
+    t.permits = null;
+    t.weak_sources = [
+      { field: "permits", note: "x" },
+      { field: "difficulty", note: "x" },
+      { field: "itinerary.day3", note: "x" },
+      { field: "days", note: "x" },
+      { field: "days", note: "y" },
+    ];
+    const errors = check(t).join("\n");
+    expect(errors).toMatch(/weak_sources points at permits, which is null/);
+    expect(errors).toMatch(/weak_sources points at difficulty, which is null or not a sourced fact/);
+    expect(errors).toMatch(/weak_sources points at itinerary.day3/);
+    expect(errors).toMatch(/weak_sources lists days twice/);
+  });
+
   it("rejects a file whose slug doesn't match its name", () => expect(check(sampleTrek(), "other.yaml").join()).toMatch(/does not match/));
 
   it("rejects unknown keys and http sources", () => {

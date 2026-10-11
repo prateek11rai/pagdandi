@@ -63,21 +63,21 @@ itinerary:
     to: Athirumala base camp
     camp_altitude_m: null
     max_altitude_m: null
-    # weak source: undated event page that also carries outdated rules; en.wikipedia says 14 km,
-    # but that traces to agasthyamala.com, whose ownership no government page confirms.
-    distance_km: 20   # keralatourism.org event page
+    # The undated keralatourism.org event page (which also carries outdated rules) says 20 km; en.wikipedia
+    # says 14 km, tracing to agasthyamala.com, whose ownership no government page confirms. Left null.
+    distance_km: null
   - day: 2
     from: Athirumala base camp
     to: Athirumala base camp
     camp_altitude_m: null
     max_altitude_m: 1868
-    distance_km: 10   # keralatourism.org event page: to the peak and back; en.wikipedia (unreferenced) says 6 km each way
+    distance_km: null   # the same event page says 10 km to the peak and back; en.wikipedia (unreferenced) says 6 km each way; left null
   - day: 3
     from: Athirumala base camp
     to: Bonacaud
     camp_altitude_m: null
     max_altitude_m: null
-    distance_km: 20   # same route as day 1
+    distance_km: null   # same route as day 1
 highlights:
   - Over three days the route moves from shaded evergreen forest to open grassland and bare rock, crossing streams and small falls.
   - The last climb crosses into Tamil Nadu to a summit with a small stone figure of the sage Agastya.

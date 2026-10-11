@@ -17,7 +17,7 @@ Pagdandi ("footpath") is a website for friend groups who keep saying "this time 
 
 ## What it is
 
-- **Treks** (`/`): search by what you want ("snow trek for beginners in December"), filter by region, month, days, difficulty and budget, and browse guidebook-style cards.
+- **Treks** (`/`): search by what you want ("lakes high in the mountains with wildflowers"), filter by region, month, days, difficulty and budget, and browse guidebook-style cards.
 - **Trek pages** (`/treks/<slug>`): the facts, an audio intro, an altitude-by-day figure, the day-by-day plan, getting there, permits, last mobile signal, when to go, today's conditions, and sources. Add **Take it on the trail** for the MP3 and a one-page printable plan.
 - **Ask** (`/ask`): tell the guide about your group, and it recommends treks from the database.
 - **Updates** (`/updates`): a short email at 7:00 IST until your travel date, with the forecast, news since yesterday, and one thing to do outside today.
@@ -113,6 +113,7 @@ Other commands:
 
 - **Sources:** Wikipedia, Wikivoyage, OpenStreetMap, UNESCO and official Indian government pages. Trekking companies are never used. Each trek lists its sources, and each source names the fields it backs.
 - **Unknown means `null`:** if a fact can't be sourced, the site says "not known yet". Difficulty and budget are our own estimates, made with fixed rules, and the site labels them that way.
+- **Weak sources are flagged:** when the only source for a fact is weak (copy that reads like a trek operator's, an uncited list, dated official pages), the trek file says so in `weak_sources`, with a short note for readers. Where a better source disagrees, the fact is `null` instead.
 - **Review:** an AI-assisted fact-check pass re-checked every number against its source (see [the build log](docs/BUILD_LOG.md)), and a maintainer reviews a sample.
 - **Adding a trek:** see [CONTRIBUTING.md](CONTRIBUTING.md). CI runs `pnpm treks:validate` on every pull request.
 

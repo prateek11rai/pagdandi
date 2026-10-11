@@ -58,6 +58,11 @@ audio_script: >-
   Sankri during the months of April through June, or September through November. The day-by-day
   plan and permits are on the Pagdandi page.
 photo: null
+weak_sources:
+  - field: days
+    note: Only Wikivoyage gives a day count, in a passage that reads like trek-operator copy.
+  - field: distance_km
+    note: Only Wikivoyage gives this figure, in a passage that reads like trek-operator copy.
 sources:
   - url: https://en.wikipedia.org/wiki/Kedarkantha
     title: Kedarkantha

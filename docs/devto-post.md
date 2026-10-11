@@ -13,7 +13,7 @@ Every city has a version of this group chat. Five college friends in Delhi NCR (
 
 **[Pagdandi](https://github.com/prateek11rai/pagdandi)** (पगडंडी, "footpath") is built for that group. It's an open database of 20 well-known Indian treks, from Kedarkantha and the Kashmir Great Lakes to Kalsubai and the living root bridges of Nongriat, with three ways in:
 
-- **Search that understands meaning.** Type "snow trek for beginners in December" or "short trek near Delhi for a long weekend", and filter by region, month, days, difficulty and budget.
+- **Search that understands meaning.** Type "lakes high in the mountains with wildflowers" or "short trek near Delhi for a long weekend", and filter by region, month, days, difficulty and budget.
 - **A trek guide you can ask.** Tell it "5 of us, 2 first-timers, ₹12k each, 4 days in December, from Delhi" and it recommends treks from the database, with a card for each.
 - **Daily updates until you leave.** Whoever organises signs up with the travel date. Every morning at 7:00 IST they get one email: the forecast at the road head and the high point, any news since yesterday (closures, landslides, snowfall, permits), and **one thing to do outside today**, like a practice walk in the boots they'll trek in.
 

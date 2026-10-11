@@ -67,6 +67,13 @@ audio_script: >-
   connect with the mountains and the traditions of the people who live here. The day-by-day plan
   and permits are on the Pagdandi page.
 photo: null
+weak_sources:
+  - field: days
+    note: Only Wikivoyage gives a day count, in a passage that reads like trek-operator copy.
+  - field: distance_km
+    note: Only Wikivoyage gives this figure, for the route from Pantwari, in a passage that reads like trek-operator copy.
+  - field: getting_there
+    note: The distance from Dehradun comes only from a Wikivoyage passage that reads like trek-operator copy.
 sources:
   - url: https://en.wikipedia.org/wiki/Nag_Tibba
     title: Nag Tibba

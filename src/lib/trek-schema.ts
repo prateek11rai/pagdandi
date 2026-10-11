@@ -27,6 +27,7 @@ const SOURCED_FIELDS = [
   "getting_there",
   "name_local",
 ] as const;
+type SourcedField = (typeof SOURCED_FIELDS)[number];
 
 const altitude = z.number().int().min(0).max(8900).nullable();
 const km = z.number().min(0).max(500).nullable();
@@ -54,6 +55,13 @@ const source = z.strictObject({
   title: z.string().min(1),
   accessed: isoDate,
   supports: z.array(z.string().regex(/^[a-z_]+(\.day\d+)?$/)).min(1),
+});
+
+// A fact we keep although its only source is weak (operator-style copy, an uncited list, dated pages).
+// `field` uses the names from `supports`; the note is written for readers, so the page can show it.
+const weakSource = z.strictObject({
+  field: z.string().regex(/^[a-z_]+(\.day\d+)?$/),
+  note: z.string().min(1).max(200),
 });
 
 const photo = z.strictObject({
@@ -98,6 +106,7 @@ export const trekSchema = z
     highlights: z.array(z.string().min(1)).min(1).max(6),
     audio_script: z.string().min(1).nullable(),
     photo: photo.nullable(),
+    weak_sources: z.array(weakSource).default([]),
     sources: z.array(source).min(1),
     facts_checked_by: z.string().min(1).nullable(),
     last_reviewed: isoDate,
@@ -119,6 +128,13 @@ export const trekSchema = z
       }
     });
 
+    const flagged = new Set<string>();
+    t.weak_sources.forEach((w, i) => {
+      if (flagged.has(w.field)) issue(`weak_sources lists ${w.field} twice`, ["weak_sources", i]);
+      flagged.add(w.field);
+      if (!pointsAtFact(t, w.field)) issue(`weak_sources points at ${w.field}, which is null or not a sourced fact`, ["weak_sources", i]);
+    });
+
     if (t.days !== null && t.itinerary.length > 0 && t.days !== t.itinerary.length) {
       issue(`days is ${t.days} but the itinerary has ${t.itinerary.length} days`, ["days"]);
     }
@@ -137,6 +153,13 @@ export const trekSchema = z
   });
 
 export type Trek = z.infer<typeof trekSchema>;
+
+function pointsAtFact(t: { itinerary: unknown[] } & Record<SourcedField, unknown>, field: string): boolean {
+  if (field === "itinerary") return t.itinerary.length > 0;
+  const day = /^itinerary\.day(\d+)$/.exec(field);
+  if (day) return Number(day[1]) >= 1 && Number(day[1]) <= t.itinerary.length;
+  return (SOURCED_FIELDS as readonly string[]).includes(field) && hasFact(t[field as SourcedField]);
+}
 
 function hasFact(value: unknown): boolean {
   if (value === null || value === undefined) return false;

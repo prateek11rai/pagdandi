@@ -80,6 +80,9 @@ audio_script: >-
   to camp nearby. The valley itself spans the border, a place claimed by communities on both
   sides. The day-by-day plan and permits are on the Pagdandi page.
 photo: null
+weak_sources:
+  - field: season_months
+    note: From a contributed guide on a government tourism portal that reads like a travel blog. No other source gives months.
 sources:
   - url: https://en.wikipedia.org/wiki/Dzukou_Valley
     title: Dzukou Valley

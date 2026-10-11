@@ -13,7 +13,15 @@ Each trek is one file, `data/treks/<slug>.yaml`. The data is CC BY-SA 4.0, so an
    - Write in your own words. Don't paste sentences from a source.
    - **If you can't source a fact, write `null`.** The site shows it as "not known yet". Never guess an altitude.
    - If sources disagree, pick the more authoritative one (official, then Wikipedia, then Wikivoyage, then OSM) and leave a comment: `# conflict: A says X, B says Y`.
-   - If the only source for a fact reads like operator copy, keep it but add `# weak source: <why>`.
+   - If the only source for a fact is weak (it reads like operator copy, it's an uncited list, or its dates are old), keep the fact, add `# weak source: <why>` next to it, and add an entry to `weak_sources` with a one-sentence note for readers:
+
+     ```yaml
+     weak_sources:
+       - field: distance_km     # a name from `supports`, e.g. season_months or itinerary.day2
+         note: Only Wikivoyage gives this figure, in a passage that reads like trek-operator copy.
+     ```
+
+     If a better source disagrees with the weak one, write `null` instead and record both in a comment.
 3. Two fields are ours and need no source:
    - `difficulty` uses a fixed rubric:
      - `easy` up to 3,000 m with no technical sections;
@@ -27,7 +35,7 @@ Each trek is one file, `data/treks/<slug>.yaml`. The data is CC BY-SA 4.0, so an
    pnpm treks:validate
    ```
 
-   The validator checks types and ranges, that every non-null fact has a source naming it, that the itinerary days are numbered 1..n, and that no camp is higher than the highest point.
+   The validator checks types and ranges, that every non-null fact has a source naming it, that each `weak_sources` entry points at a fact that has a value, that the itinerary days are numbered 1..n, and that no camp is higher than the highest point.
 
 6. Open a pull request. CI runs the same validation, and a maintainer reviews the sources.
 

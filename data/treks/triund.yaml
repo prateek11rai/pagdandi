@@ -77,6 +77,9 @@ audio_script: >-
   pheasants and various birds, and you will also encounter the forests where black bears and
   leopards live. The day-by-day plan and permits are on the Pagdandi page.
 photo: null
+weak_sources:
+  - field: season_months
+    note: These are the official months for the Indrahar Pass route through Triund, not months given for Triund itself.
 sources:
   - url: https://himachaltourism.gov.in/destination/dharamshala/
     title: Dharamshala - Himachal Tourism Official Website

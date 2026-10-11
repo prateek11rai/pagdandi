@@ -143,3 +143,18 @@ Dead ends on the way:
 - **Cut before publishing:** Sentry (it would add a third-party data flow the privacy notes don't cover) and Hindi audio (a check found nothing in the repo or the post that promises it).
 - **Demo query:** shot 2 now uses "lakes high in the mountains with wildflowers", which finds Kashmir Great Lakes, Brahmatal, Kedarkantha, Valley of Flowers and Goecha La without naming any of them. The December snow query stays out of the demo, because Kedarkantha's winter months stay `null` until an open source names them. We changed the query, not the data.
 - **Numbers:** 74 unit tests, and 13 integration tests in 38 s on the laptop.
+
+### Weak-source audit
+- **What it covered:** the trek files carried 28 `# weak source` flags. 13 of them were on altitude, distance, season or permit facts; we added the 4 day counts, which are just as soft.
+- **The rule:** where a better or equal source disagrees, the fact becomes `null`. Where the weak source is the only one and nothing contradicts it, we keep the fact and add a `weak_sources` entry with a one-sentence note for readers. The schema checks that every note points at a fact that has a value, and a unit test covers it.
+- **Made `null` (3):**
+  - Dayara Bugyal's distance: Wikivoyage's 22 km, against the district page's 9 km one way.
+  - Dayara Bugyal's railhead distance: 185 km, against the district page's 200 + 30 km.
+  - Agasthyarkoodam's day distances: an undated event page and an unverified figure on Wikipedia disagree. The 50 km total stays: Kerala Tourism's 2020 article gives it too, not only the event page.
+- **Kept with a note (13):**
+  - Season: Dayara Bugyal, Dzukou Valley, Hampta Pass, Triund.
+  - Permits: Dayara Bugyal.
+  - Distance: Kedarkantha, Nag Tibba, Nag Tibba's railhead, Goecha La's day distances.
+  - Day counts: Dayara Bugyal, Har Ki Dun, Kedarkantha, Nag Tibba.
+- **Why Dayara Bugyal's season is a note, not `null`:** making it `null` would drop the trek from every month filter, including the Delhi group's December pick. The district page is consistent with year-round access (summer grazing, winter snow); only the month list rests on an operator's blog.
+- **Not shown yet:** the trek page doesn't display the notes yet. That comes with the new layout.

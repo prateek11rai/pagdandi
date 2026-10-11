@@ -84,6 +84,9 @@ audio_script: >-
   beneath the Bandarpunch glacier. This four-day journey takes you through incredible natural
   scenery. The day-by-day plan and permits are on the Pagdandi page.
 photo: null
+weak_sources:
+  - field: days
+    note: Counted from the stages on Hindi Wikipedia, which cites a 2010 forum post. No official page gives the stages.
 sources:
   - url: https://uttarakhandtourism.gov.in/destination/govind-national-park
     title: Govind National Park (Uttarakhand Tourism)

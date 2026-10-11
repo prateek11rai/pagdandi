@@ -7,8 +7,7 @@ area: Above Bhatwari in the Bhagirathi valley, Uttarkashi district
 difficulty: moderate
 days: 3              # Wikivoyage: 3 to 4 days from Raithal
   # weak source: both Wikivoyage passages read like operator copy (the Uttarkashi listing links to a trek operator); no official or Wikipedia day count found
-distance_km: 22      # Wikivoyage: about 22 km round trip from Raithal
-  # weak source: only the Wikivoyage Uttarkashi listing that links to a trek operator gives this
+distance_km: null    # Wikivoyage's "about 22 km round trip from Raithal" is in a listing that links to a trek operator; left null because the district page disagrees
   # conflict: Uttarkashi district says the trek in is 9 km one way from Raithal, state tourism says 8 km from Barsu, Wikivoyage's Gangotri page says 6 km from Raithal
 highest_point:
   name: Dayara Bugyal (upper meadow)
@@ -27,7 +26,7 @@ end:
   altitude_m: null
   coords_source: osm
 getting_there:
-  railhead: {name: Dehradun, distance_km: 185}   # weak source: only the operator-style Wikivoyage Dehradun passage gives this; the district page instead gives Dehradun-Uttarkashi 200 km plus about 30 km on to Bhatwari/Raithal
+  railhead: {name: Dehradun, distance_km: null}   # the operator-style Wikivoyage Dehradun passage says 185 km, but the district page gives Dehradun-Uttarkashi 200 km plus about 30 km on to Bhatwari/Raithal; left null
   airport: {name: Dehradun (Jolly Grant), iata: DED, distance_km: null}
   road_head: Raithal
   notes: >-
@@ -78,6 +77,13 @@ audio_script: >-
   August. This three-day adventure shows you the diverse character of this region. The day-by-day
   plan and permits are on the Pagdandi page.
 photo: null
+weak_sources:
+  - field: days
+    note: Only Wikivoyage gives a day count, in passages that read like trek-operator copy.
+  - field: season_months
+    note: Wikipedia's all-year claim cites a trek operator's blog. The district page backs summer grazing and winter snow but names no months.
+  - field: permits
+    note: Only a Wikivoyage passage that reads like trek-operator copy mentions this permit. No official page about it was found.
 sources:
   - url: https://uttarkashi.nic.in/tourist-place/dayara-bugyal/
     title: Dayara Bugyal (Uttarkashi district)
@@ -98,7 +104,7 @@ sources:
   - url: https://en.wikivoyage.org/wiki/Uttarkashi
     title: Uttarkashi (Wikivoyage), Dayara Bugyal listing
     accessed: 2026-10-11
-    supports: [days, distance_km, start]
+    supports: [days, start]
   - url: https://en.wikivoyage.org/wiki/Gangotri
     title: Gangotri (Wikivoyage), Go next
     accessed: 2026-10-11
