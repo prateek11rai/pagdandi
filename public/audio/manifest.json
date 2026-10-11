@@ -1,0 +1,107 @@
+{
+  "voice": "George - Warm, Captivating Storyteller",
+  "model": "eleven_multilingual_v2",
+  "format": "mp3_44100_64",
+  "intros": {
+    "agasthyarkoodam": {
+      "script_sha256": "a14a69de0f2c9b3f452e2333e3fd52f2246ce85b1e7a7e2cbb82391f67cffebc",
+      "chars": 442,
+      "generated_at": "2026-10-11T16:06:50.012Z"
+    },
+    "brahmatal": {
+      "script_sha256": "039813fa5d06333624dcdc7646f6ca325d6b24ea31394a4830c8b6ac0f129542",
+      "chars": 461,
+      "generated_at": "2026-10-11T16:06:54.624Z"
+    },
+    "chembra-peak": {
+      "script_sha256": "c6f5b70118f9a1fb5ad0f538c94eac995ffe73f2dc35391e9a13c9237d6da0ad",
+      "chars": 478,
+      "generated_at": "2026-10-11T16:06:59.359Z"
+    },
+    "dayara-bugyal": {
+      "script_sha256": "edab06bb2bfb6e7de8ed451cb19fad2d90f3392a699576989d625d3a6efacc36",
+      "chars": 457,
+      "generated_at": "2026-10-11T16:07:04.174Z"
+    },
+    "dzukou-valley": {
+      "script_sha256": "aacbba87a1f9c8c8c7c48b987ac39b061cde6f21b0a5c0646affa448a8f73d5f",
+      "chars": 443,
+      "generated_at": "2026-10-11T16:07:08.967Z"
+    },
+    "goecha-la": {
+      "script_sha256": "ef9b68b5015b45a1478fd06036046feeea3dc072779546c1d1b310f57eaee74c",
+      "chars": 474,
+      "generated_at": "2026-10-11T16:07:13.703Z"
+    },
+    "hampta-pass": {
+      "script_sha256": "ce6e4ce79024aee90a07f352befacc3e1332ec477de8bfadc8baad03874af1f7",
+      "chars": 462,
+      "generated_at": "2026-10-11T16:07:18.393Z"
+    },
+    "har-ki-dun": {
+      "script_sha256": "507a6ef199eb50db11bb7567d50a5284f8fbffa1002d59333fca5aa419879385",
+      "chars": 447,
+      "generated_at": "2026-10-11T16:07:23.016Z"
+    },
+    "harishchandragad": {
+      "script_sha256": "1aabdeb0aa62439344f6b4ca813bb0c8afeec672b50f84df5582ccc89d6972b8",
+      "chars": 445,
+      "generated_at": "2026-10-11T16:07:28.196Z"
+    },
+    "kalsubai": {
+      "script_sha256": "e0d8742632f9f3d9825267d250605b0860c027747d8e954b02c1220dbf85f3f9",
+      "chars": 462,
+      "generated_at": "2026-10-11T16:07:32.810Z"
+    },
+    "kashmir-great-lakes": {
+      "script_sha256": "428982065038c0a74e0f48047aea0a0044bc1e6468c4e72368efc618d3660a19",
+      "chars": 447,
+      "generated_at": "2026-10-11T16:07:37.749Z"
+    },
+    "kedarkantha": {
+      "script_sha256": "d9360d27b5a4538380b06ea92c5c8ed402185b772a0f005785fffa7945f516b1",
+      "chars": 439,
+      "generated_at": "2026-10-11T16:01:03.900Z"
+    },
+    "kheerganga": {
+      "script_sha256": "037c671119c990eaa8d4023f4b9e6a1c84ec5bc92a741cc0cd33a6c644563ed8",
+      "chars": 462,
+      "generated_at": "2026-10-11T16:07:42.566Z"
+    },
+    "kudremukh": {
+      "script_sha256": "667054829f499d1bb4becfa1f8a794a3e40aa4405556c97ed717a18be6358c44",
+      "chars": 457,
+      "generated_at": "2026-10-11T16:07:47.489Z"
+    },
+    "kumara-parvatha": {
+      "script_sha256": "db95cfddfb0b30af4445c52b2cebbb6cbdfe881ae186d4d77af5e2f16888bc10",
+      "chars": 483,
+      "generated_at": "2026-10-11T16:07:52.549Z"
+    },
+    "nag-tibba": {
+      "script_sha256": "8fd513f18272bcd1cc78ad193443268781fc9b8137ebecc45a26bf92cd07dd6e",
+      "chars": 477,
+      "generated_at": "2026-10-11T16:07:57.318Z"
+    },
+    "nongriat-root-bridges": {
+      "script_sha256": "9d0150642b84ce0168eb793024f8751d556e06871f6d3a17bc2d22c1ae161cc1",
+      "chars": 478,
+      "generated_at": "2026-10-11T16:08:02.176Z"
+    },
+    "sandakphu": {
+      "script_sha256": "1867737316bd0c41af3b9caed3c2658acbb65583286bdc0446c30c1ddc491947",
+      "chars": 462,
+      "generated_at": "2026-10-11T16:08:06.570Z"
+    },
+    "triund": {
+      "script_sha256": "c85a2ed510e2219741354d5edb046f19b07098bc73a5e914870a1fac1b2efa0f",
+      "chars": 481,
+      "generated_at": "2026-10-11T16:01:08.849Z"
+    },
+    "valley-of-flowers": {
+      "script_sha256": "dbeaf38c8cfa17d16fd85197f007e49061b28f20427557a6ce42f19d9bedc5b3",
+      "chars": 450,
+      "generated_at": "2026-10-11T16:08:10.886Z"
+    }
+  }
+}

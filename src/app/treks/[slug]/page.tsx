@@ -106,7 +106,7 @@ export default async function TrekPage({ params }: Props) {
         <div className="grid gap-x-7 @min-[50rem]:grid-cols-2">
           <div className="min-w-0">
             <Section id="listen" title="Listen" className="no-print">
-              <p className="mb-2.5 text-ink-muted">Why this trek matters and what you&apos;ll see, in about a minute and a half.</p>
+              <p className="mb-2.5 text-ink-muted">Why this trek matters and what you&apos;ll see, in about half a minute.</p>
               {audio ? (
                 <>
                   <AudioPlayer src={audio} title={trek.name} size="full" />

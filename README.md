@@ -91,7 +91,7 @@ The [DEV Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://de
 - Code: [MIT](LICENSE). Trek data: [CC BY-SA 4.0](data/LICENSE.md).
 - Map data: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), ODbL. Forecasts: [Weather data by Open-Meteo.com](https://open-meteo.com/), CC BY 4.0.
 - Gemma 4: [Apache 2.0](https://ai.google.dev/gemma/apache_2). EmbeddingGemma is provided under and subject to the [Gemma Terms of Use](https://ai.google.dev/gemma/terms), and the site's terms carry the [Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy).
-- Audio: generated with [ElevenLabs](https://elevenlabs.io) from each trek's sourced facts; the scripts are the `audio_script` field in each trek's YAML. Voice: named in `public/audio/manifest.json` once the intros are generated.
+- Audio: generated with [ElevenLabs](https://elevenlabs.io) from each trek's sourced facts; the scripts are the `audio_script` field in each trek's YAML. Voice: George - Warm, Captivating Storyteller, an ElevenLabs default voice (`eleven_multilingual_v2`).
 - Logo: the Lucide "footprints" icon, ISC ([notice](public/brand/logo-LICENSE.txt)). Fonts: Eczar and Anek Devanagari (SIL Open Font License), self-hosted at build time.
 
 ## After the deadline
