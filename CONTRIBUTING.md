@@ -50,15 +50,16 @@ Each trek is one file, `data/treks/<slug>.yaml`. The data is CC BY-SA 4.0, so an
 
 Each trek's intro is an MP3 in `public/audio/`, generated with ElevenLabs from the `audio_script` in its YAML file and committed, so the site serves it and it plays offline once downloaded. Only real audio is committed: never a placeholder or a test file. A trek without one shows "not recorded yet".
 
-- **From a laptop.** Put `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` in `.env`, then:
-  - `pnpm audio --estimate` counts the characters (credits) and the expected size, without calling ElevenLabs.
-  - `pnpm audio --only kedarkantha` makes one; listen to it before doing the rest.
-  - `pnpm audio --missing` makes every intro that doesn't have a file yet. `--force` remakes existing ones.
+`public/audio/manifest.json` records what each file was made from: the voice's name (never its ID), the model and the format, and for each trek the script's SHA-256, its length and when it was made.
 
-  Files are mono MP3 at 64 kbps (about 0.5 MB a minute), and the script stops if `public/audio/` passes 30 MB. If the credits run out, it stops at the first failure, keeps what finished, and lists the rest.
-- **From GitHub.** *Actions → Audio intros → Run workflow* does the same with the repository secrets `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`. Leave **slugs** empty for every missing intro, or name some (`kedarkantha,triund`). It opens a pull request with the new files. Two repository settings matter:
-  - *Settings → Actions → General → Allow GitHub Actions to create and approve pull requests* must be on.
-  - A pull request opened by the workflow doesn't start CI by itself (GitHub's rule for its own token). Close and reopen it to run the checks.
+To add or change an intro, put `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` in `.env`, then:
+
+1. Edit `audio_script` in the trek's YAML.
+2. Run `pnpm audio --estimate` to see what would be regenerated: each trek whose MP3 is missing or whose script changed, with the reason, the characters (credits) and the expected size. Unchanged treks are skipped. It doesn't call ElevenLabs.
+3. Run `pnpm audio`. `--only kedarkantha,triund` narrows the run, and `--force` remakes intros even if unchanged.
+4. Listen, then commit the MP3 and the manifest together.
+
+Files are mono MP3 at 64 kbps (about 0.5 MB a minute), and the script stops if `public/audio/` passes 30 MB. If the credits run out, it stops at the first failure, keeps what finished, and lists the rest. A trek goes into the manifest only after its MP3 is saved. The manifest names one voice for every intro, so to change the voice, remake them all with `--force`.
 
 ## Repository map
 
@@ -70,7 +71,7 @@ Each trek's intro is an MP3 in `public/audio/`, generated with ElevenLabs from t
 | `src/jobs/` | The daily digest (the cron entry point and its testable core). |
 | `src/components/` | The app shell (sidebar and tab bar), the New plan chat and composer, the trek table and card, the audio player, the altitude chart, and UI primitives. |
 | `data/treks/` | One YAML file per trek (CC BY-SA 4.0), including its audio script. |
-| `public/audio/` | The audio intros, and a small manifest naming the voice. |
+| `public/audio/` | The audio intros, and the manifest of what each was made from. |
 | `db/migrations/` | Plain SQL migrations. |
 | `scripts/` | Data pipeline, audio, dev stack, DevRelay setup. |
 | `tests/` | `unit/` (no services) and `integration/` (needs `pnpm dev:up`), including the red-team suite. |

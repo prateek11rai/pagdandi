@@ -49,7 +49,7 @@ pnpm dev                        # http://localhost:3000
 | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | `pnpm audio` only, to generate the intros. |
 
 - **Daily updates:** `pnpm digest` sends today's emails. To run it at 7:00 IST from the laptop, add a cron line (with the laptop's clock on IST and `pnpm` on cron's `PATH`): `0 7 * * * cd /path/to/pagdandi && pnpm digest >> .data/digest.log 2>&1`. A launchd job works too.
-- **Audio:** `pnpm audio --estimate`, then `pnpm audio --missing`, generates the intros you don't have yet. See [CONTRIBUTING](CONTRIBUTING.md#audio-intros).
+- **Audio:** `pnpm audio --estimate` lists the intros that are missing or whose script changed, and `pnpm audio` makes them. See [CONTRIBUTING](CONTRIBUTING.md#audio-intros).
 
 `pnpm dev:down` stops only what `pnpm dev:up` started.
 

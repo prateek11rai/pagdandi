@@ -38,21 +38,20 @@ Run commands from the repository root. Keep secrets out of shell history: read a
    pnpm audio --estimate      # expect: 20 intro(s) to generate, 9,207 characters, about 4.7 MB
    ```
    The Free plan's 10,000 characters a month covers it, with a little room for a retry; a unit test keeps the 20 scripts under 10,000. Check the plan's attribution terms before publishing: when we last looked, the Free plan required "elevenlabs.io" in the title of anything published.
-3. Make one, and listen on `http://localhost:3000/treks/kedarkantha`:
+3. Make two, and listen on `http://localhost:3000/treks/kedarkantha` and `/treks/triund`:
    ```sh
-   pnpm audio --only kedarkantha
+   pnpm audio --only kedarkantha,triund
    ```
-4. If it sounds right, make the rest. If the credits run out, the script stops and lists the treks still to do:
+4. If they sound right, make the rest; `pnpm audio` skips the two you have. If the credits run out, the script stops and lists the treks still to do:
    ```sh
-   pnpm audio --missing        # expect: ✓ for each, and "public/audio: … MB in total" under 30 MB
+   pnpm audio                  # expect: ✓ for each, and "public/audio: … MB in total" under 30 MB
    ```
-5. Fill in the voice's name in the README (*License and attribution*); `public/audio/manifest.json` has it. Commit after the leak check:
+5. Fill in the voice's name in the README (*License and attribution*); `public/audio/manifest.json` has it. Commit the MP3s and the manifest together, after the leak check:
    ```sh
    git add public/audio README.md && bash .git/info/leak-check.sh && git commit -m "Add audio intros"
    ```
-   The *Audio intros* workflow on GitHub can do steps 2–4 with repository secrets instead (see CONTRIBUTING).
 
-**Rollback:** `git rm public/audio/*.mp3`. Trek pages fall back to "The audio intro for this trek is still being recorded", and the table to "not recorded yet".
+**Rollback:** `git rm -r public/audio`. Trek pages fall back to "The audio intro for this trek is still being recorded", and the table to "not recorded yet".
 
 ## 3. One real digest email over SMTP
 

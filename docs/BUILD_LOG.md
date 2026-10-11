@@ -238,7 +238,7 @@ Things that bit along the way:
   - The voice's name goes into `public/audio/manifest.json` for the credits; its ID stays in the env.
   - A manual `Audio intros` workflow does the same from GitHub, with repository secrets, and opens a pull request.
 
-### Sunday 11 October 2026: audio scripts by hand
+### Sunday 11 October 2026: audio scripts by hand, and no audio workflow
 - **Decision (Prateek):** the 20 audio scripts are written by hand from each trek's sourced fields, not drafted by Gemma. They come to 9,207 characters, 71–85 words each. Every number in a script appears in that trek's YAML, and weakly sourced fields are left out.
 - **Why:**
   - **The 10,000-character cap.** One ElevenLabs free month is 10,000 characters. Gemma's last drafts came to 16,638 (122–155 words each); the hand-written set fits, with a little room for a retry.
@@ -248,3 +248,8 @@ Things that bit along the way:
   - The schema caps `audio_script` at 90 words (it was 260), and a unit test keeps the 20 scripts together under 10,000 characters.
   - CONTRIBUTING asks for a hand-written script of at most 85 words, with every number taken from the file's own data.
   - Gemma still runs the guide and the news summaries.
+- **No audio workflow; intros are remade when their script changes.**
+  - `.github/workflows/audio.yml` is deleted. `workflow_dispatch` can only be started by someone with write access, and secrets never reach a pull request from a fork, so it wasn't exploitable. But it was a second place that held the key and spent credits, and the laptop script is enough.
+  - `public/audio/manifest.json` is now the record of what each file was made from: `{ voice, model, format, intros: { <slug>: { script_sha256, chars, generated_at } } }`, with the voice's name, never its ID.
+  - `pnpm audio` makes a trek when its MP3 is missing or its script's SHA-256 differs from the manifest. `--estimate` lists each one with its reason and the character total, and says which are skipped as unchanged. A trek is written to the manifest only after its MP3 is saved, so a failed run can't mark anything done.
+  - An unknown argument stops the script, so a mistyped `--estimate` can't start a paid run. A run that would change the voice for some intros but not others stops too, since the manifest names one voice for all of them.
