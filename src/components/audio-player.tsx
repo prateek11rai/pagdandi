@@ -5,7 +5,24 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 // Only one intro plays at a time across the page.
-let current: HTMLAudioElement | null = null;
+type Playable = Pick<HTMLAudioElement, "play" | "pause">;
+let current: Playable | null = null;
+
+// Plays one intro, pausing whichever was playing. If the browser refuses (its autoplay policy, a file that won't
+// load), `refused` puts the player back to paused, so its button can't stay on "Pause".
+export function playOnly(a: Playable, refused: () => void): Promise<void> {
+  if (current && current !== a) current.pause();
+  current = a;
+  return a.play().catch(() => {
+    release(a);
+    a.pause();
+    refused();
+  });
+}
+
+export function release(a: Playable): void {
+  if (current === a) current = null;
+}
 
 export function clock(s: number): string {
   if (!Number.isFinite(s) || s < 0) return "0:00";
@@ -37,31 +54,30 @@ export function AudioPlayer({ src, title, size = "mini" }: { src: string; title:
       setStarted(true);
     };
     const onPause = () => setPlaying(false);
+    const onEnded = () => {
+      setPlaying(false);
+      release(a);
+    };
     if (a.readyState >= 1) onMeta();
     a.addEventListener("loadedmetadata", onMeta);
     a.addEventListener("timeupdate", onTime);
     a.addEventListener("play", onPlay);
     a.addEventListener("pause", onPause);
-    a.addEventListener("ended", onPause);
+    a.addEventListener("ended", onEnded);
     return () => {
       a.removeEventListener("loadedmetadata", onMeta);
       a.removeEventListener("timeupdate", onTime);
       a.removeEventListener("play", onPlay);
       a.removeEventListener("pause", onPause);
-      a.removeEventListener("ended", onPause);
+      a.removeEventListener("ended", onEnded);
     };
   }, []);
 
   const toggle = () => {
     const a = audio.current;
     if (!a) return;
-    if (a.paused) {
-      if (current && current !== a) current.pause();
-      current = a;
-      void a.play();
-    } else {
-      a.pause();
-    }
+    if (a.paused) void playOnly(a, () => setPlaying(false));
+    else a.pause();
   };
 
   const full = size === "full";
