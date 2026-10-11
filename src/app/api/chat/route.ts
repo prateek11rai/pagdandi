@@ -7,6 +7,7 @@ import { userNumbersFrom } from "@/lib/fact-check";
 import { allow, CHAT_LIMITS, clientKey } from "@/lib/rate-limit";
 import { allTrekFacts } from "@/lib/trek-facts";
 import { mastra } from "@/mastra";
+import { instructionsFor } from "@/mastra/agents/trek-guide";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -44,7 +45,7 @@ export async function POST(req: Request) {
     const checked = factCheckedStream(
       stream,
       { treks: facts, userNumbers: userNumbersFrom(chat.userText) },
-      { origin: cityIn(chat.userText) },
+      { instructions: instructionsFor(new Date()), origin: cityIn(chat.userText) },
     );
     return createUIMessageStreamResponse({ stream: checked });
   } catch {

@@ -61,7 +61,7 @@ Each trek is a YAML file in `data/treks/`, written from open sources only: Wikip
 
 - Chats go to the model on the laptop serving the site, not to a model company. The page holds the conversation in memory only, and nothing is logged.
 - The guide's prompt is fixed on the server, its four tools only read the database, and chats are capped (6 a minute, 500 characters, the last 8 turns, 5 steps, 450 output tokens).
-- Cards come from the database, and plain code checks every number in the guide's sentences; anything that doesn't match becomes "(see the card)".
+- Cards come from the database, and plain code checks every number in the guide's sentences; anything that doesn't match becomes "(see the card)". A sentence that copies eight or more words in a row from the guide's instructions is replaced with a fixed reply.
 - A red-team suite ([`tests/integration/red-team.test.ts`](tests/integration/red-team.test.ts)) runs real Gemma against off-topic requests, prompt injection, requests for its prompt, treks and altitudes we don't have, a Hinglish group, and HTML in the message.
 - Ollama must be on this machine unless `OLLAMA_ALLOW_REMOTE=true`, and the rate limit ignores `X-Forwarded-For` unless `TRUST_PROXY=true`.
 - Daily emails go only to the admin, over SMTP from the admin's own mailbox. We store the email, the trek and the travel date, delete them the day after travel, and keep tokens only as hashes.

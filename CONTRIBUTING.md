@@ -52,7 +52,7 @@ Each trek's intro is an MP3 in `public/audio/`, generated with ElevenLabs from t
 
 `public/audio/manifest.json` records what each file was made from: the voice's name (never its ID), the model and the format, and for each trek the script's SHA-256, its length and when it was made.
 
-To add or change an intro, put `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` in `.env`, then:
+To add or change an intro, put `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` in `.env`. On ElevenLabs' free plan, the voice must be a premade one from the **Default** tab under Voices: the API refuses every Voice Library voice with HTTP 402. The free plan also has no commercial licence, and anything published with its audio must carry "elevenlabs.io" or "11.ai" in its title. Then:
 
 1. Edit `audio_script` in the trek's YAML.
 2. Run `pnpm audio --estimate` to see what would be regenerated: each trek whose MP3 is missing or whose script changed, with the reason, the characters (credits) and the expected size. Unchanged treks are skipped. It doesn't call ElevenLabs.

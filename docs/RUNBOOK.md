@@ -32,12 +32,12 @@ Run commands from the repository root. Keep secrets out of shell history: read a
 
 ## 2. Audio from the laptop: ElevenLabs
 
-1. In `.env`, set `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`. Pick a voice in the ElevenLabs library; an Indian English voice suits the scripts.
+1. In `.env`, set `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID`. The voice must be a premade one, from the **Default** tab under Voices, not the Voice Library: on the free plan the API refuses every Library voice with HTTP 402 ("Free users cannot use library voices via the API"). None of the 21 premade voices is Indian English; we use George.
 2. Check the credits and the size first. This makes no API call:
    ```sh
    pnpm audio --estimate      # expect: 20 intro(s) to generate, 9,207 characters, about 4.7 MB
    ```
-   The Free plan's 10,000 characters a month covers it, with a little room for a retry; a unit test keeps the 20 scripts under 10,000. Check the plan's attribution terms before publishing: when we last looked, the Free plan required "elevenlabs.io" in the title of anything published.
+   The free plan's 10,000 characters a month covers it, with a little room for a retry; a unit test keeps the 20 scripts under 10,000. The free plan has no commercial licence, and anything published with its audio must carry "elevenlabs.io" or "11.ai" in its title.
 3. Make two, and listen on `http://localhost:3000/treks/kedarkantha` and `/treks/triund`:
    ```sh
    pnpm audio --only kedarkantha,triund

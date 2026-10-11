@@ -4,6 +4,7 @@ node_modules/
 out/
 build/
 coverage/
+.vitest/
 *.tsbuildinfo
 
 # Environment: only the example is committed

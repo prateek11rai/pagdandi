@@ -29,7 +29,7 @@ describe("card order", () => {
       },
     });
     const out: UIMessageChunk[] = [];
-    for await (const c of factCheckedStream(source, { treks: [], userNumbers: [] })) out.push(c);
+    for await (const c of factCheckedStream(source, { treks: [], userNumbers: [] }, { instructions: "" })) out.push(c);
     const rec = out.at(-1) as { output: { cards: { slug: string }[] } };
     expect(rec.output.cards.map((c) => c.slug)).toEqual(["dayara-bugyal", "sandakphu", "nongriat-root-bridges"]);
   });
@@ -53,7 +53,7 @@ describe("card order", () => {
       },
     });
     const out: UIMessageChunk[] = [];
-    for await (const c of factCheckedStream(source, { treks: [], userNumbers: [] }, { origin: cityIn("4 days in December, from Delhi") })) out.push(c);
+    for await (const c of factCheckedStream(source, { treks: [], userNumbers: [] }, { instructions: "", origin: cityIn("4 days in December, from Delhi") })) out.push(c);
     const rec = out.at(-1) as { output: { cards: { slug: string }[] } };
     expect(rec.output.cards.map((c) => c.slug)).toEqual(["dayara-bugyal", "sandakphu"]);
   });
