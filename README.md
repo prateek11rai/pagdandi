@@ -10,7 +10,9 @@
 Every friend group has a trek it has talked about for years, and a group chat where "this time we're definitely going" never turns into a date. **Pagdandi** (पगडंडी, "footpath") is for that group. Tell it how many of you there are, who has trekked before, the budget, the days, the month and where you're starting from, and it recommends treks you can actually do, from 20 well-known Indian treks with every fact sourced. Then it gets out of the way: an audio intro for the drive, a one-page plan for the trail. It runs on a laptop, model included, and anyone can run their own copy.
 
 **[Watch the demo](docs/demo/pagdandi-demo.mp4)** (2½ minutes, 6 MB): the guide, the table with its audio intros, a trek page and the one-page plan, then a sign-up and the daily email.
-<!-- Prateek: open this file in GitHub's web editor and drag docs/demo/pagdandi-demo.mp4 onto the empty line below; GitHub inserts a user-attachments link that plays inline. -->
+
+https://github.com/user-attachments/assets/b3a51baa-203e-4924-904a-ce43253f180f
+
 
 ## What you get
 
