@@ -75,7 +75,7 @@ Each trek is a YAML file in `data/treks/`, written from open sources only: Wikip
 
 ## Built for
 
-The [DEV Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05). Submission post: *link added when published*.
+The [DEV Hacktoberfest Open-Source AI Challenge, Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05). Submission post: [Pagdandi: an open trek database that gets the group chat onto an actual trail](https://dev.to/prateek11rai/pagdandi-an-open-trek-database-that-gets-the-group-chat-onto-an-actual-trail-171d).
 
 | Category | How Pagdandi uses it |
 |---|---|
