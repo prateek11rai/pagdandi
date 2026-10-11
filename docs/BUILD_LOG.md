@@ -160,7 +160,7 @@ Dead ends on the way:
 - **Not shown yet:** the trek page doesn't display the notes yet. That comes with the new layout.
 
 ### Sunday evening: restructure to a chat-first app shell
-Prateek reviewed the site and we agreed a new structure, from an interactive prototype (`docs/design/proto.html`, with its screenshots). Everything underneath stayed: search, the Mastra agent, the fact-check, the digest, the data and the tests.
+Prateek reviewed the site and we agreed a new structure, from an interactive prototype (`docs/design/proto.html`, with its screenshots; deleted once the site matched it, and kept in git history). Everything underneath stayed: search, the Mastra agent, the fact-check, the digest, the data and the tests.
 - **Why chat-first.** The group's real question is "which trek can *we* actually do?", and only the guide answers that: their size, budget, days, month and city. So the home page is the guide: one question, the composer, three suggestions, and three treks to browse. The old search box is gone. Semantic search is still there, inside the guide; the Treks page is a plain table with plain filters.
 - **Why one theme.** Two themes doubled every screenshot and every contrast check, for a site you mostly glance at before going outside. The dark tokens, the toggle and its inline script are gone.
 - **Why Eczar and Anek Devanagari.** Both are designed for Devanagari as well as Latin, so "पगडंडी" and the trek names in Hindi match the English beside them. Fraunces with a separate Devanagari face never quite did. Both come through `next/font/google`, self-hosted at build time.

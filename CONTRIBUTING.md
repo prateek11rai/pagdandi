@@ -73,6 +73,6 @@ Files are mono MP3 at 64 kbps (about 0.5 MB a minute), and the script stops if `
 | `data/treks/` | One YAML file per trek (CC BY-SA 4.0), including its audio script. |
 | `public/audio/` | The audio intros, and the manifest of what each was made from. |
 | `db/migrations/` | Plain SQL migrations. |
-| `scripts/` | Data pipeline, audio, dev stack, DevRelay setup. |
+| `scripts/` | Database migrations, the trek data pipeline, search eval, audio, the topo pattern, the dev stack, DevRelay setup. |
 | `tests/` | `unit/` (no services) and `integration/` (needs `pnpm dev:up`), including the red-team suite. |
-| `docs/` | Build log, runbook, DevRelay setup, post draft, screenshots, and the design prototype and banner sources (`docs/design/`). |
+| `docs/` | Build log, runbook, DevRelay setup, post draft, the screenshots the README and the post use (`docs/img/`), and the banner and cover sources (`docs/design/`). |
